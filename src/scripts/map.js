@@ -2,18 +2,18 @@ var EventEmitter = require('events').EventEmitter;
 
 var eventBus = new EventEmitter();
 module.exports = eventBus;
-module.exports.toggleLayer = function (id) {
+module.exports.toggleLayer = id => {
   eventBus.emit('toggleLayer', id);
 };
 
-window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "dojo/domReady!"], function(Map, ArcGISDynamicMapServiceLayer, BasemapToggle) {
+window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "dojo/domReady!"], (Map, ArcGISDynamicMapServiceLayer, BasemapToggle) => {
   var map = new Map("mapDiv", {
     center: [10, 63],
     zoom: 5,
     basemap: "streets"
   });
 
-  map.on("load", function(){
+  map.on("load", () => {
     eventBus.emit("map:load");
   });
 
@@ -28,7 +28,7 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/di
   dekningsLayer.setVisibleLayers(layers);
   map.addLayer(dekningsLayer);
 
-  eventBus.on('toggleLayer', function (id) {
+  eventBus.on('toggleLayer', id => {
     var index = layers.indexOf(id);
     if(index < 0){
       layers.push(id);
