@@ -1,0 +1,26 @@
+{
+  "name": "telenor-dekningskart",
+  "version": "0.0.1",
+  "description": "Ny, responsive, Telenor dekningskart",
+  "private": true,
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "devDependencies": {
+    "browserify": "^5.11.0",
+    "del": "^0.1.2",
+    "gulp": "^3.8.7",
+    "gulp-autoprefixer": "0.0.10",
+    "gulp-cache": "^0.2.2",
+    "gulp-concat": "^2.3.4",
+    "gulp-jshint": "^1.8.4",
+    "gulp-less": "^1.3.5",
+    "gulp-livereload": "^2.1.1",
+    "gulp-notify": "^1.5.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.1.4",
+    "vinyl-source-stream": "^0.1.1"
+  }
+}
