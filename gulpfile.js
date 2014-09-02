@@ -59,7 +59,7 @@ gulp.task('default', ['compile']);
 gulp.task('watch', ['compile', 'server'], function () {
   gulp.watch(['src/styles/*.less', 'src/styles/**/*.less'], ['styles']);
   gulp.watch(['src/scripts/*.js', 'src/scripts/**/*.js'], ['scripts']);
-
+  gulp.watch(['src/*.html'], ['static']);
   livereload.listen();
   gulp.watch('dist/**').on('change', livereload.changed);
 });

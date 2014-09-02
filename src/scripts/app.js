@@ -1,2 +1,5 @@
 var map = require('./map');
-console.log(map.run());
+map.on("map:load", function(){
+	debugger;
+	map.toggleLayer(3);
+});
