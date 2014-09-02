@@ -44,7 +44,7 @@ gulp.task('jshint', function () {
 
 gulp.task('scripts', ['jshint'], function () {
   return browserify({
-      entries: ['./src/scripts/app.js']
+      entries: ['./src/scripts/app.js'], debug: true
     })
     .bundle()
     .pipe(source('app.js'))

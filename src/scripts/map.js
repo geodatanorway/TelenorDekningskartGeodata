@@ -3,8 +3,8 @@ var EventEmitter = require('events').EventEmitter;
 var eventBus = new EventEmitter();
 module.exports = eventBus;
 
-module.exports.toggleLayer = function () {
-	eventBus.emit('toggleLayer', 3);
+module.exports.toggleLayer = function (id) {
+	eventBus.emit('toggleLayer', id);
 };
 
 window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "dojo/domReady!"], function(Map, ArcGISDynamicMapServiceLayer, BasemapToggle) {
@@ -30,10 +30,11 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/di
 	map.addLayer(dekningsLayer);
 
 	eventBus.on('toggleLayer', function (id) {
-		if(layers.indexOf(id) < 0){
+		var index = layers.indexOf(id);
+		if(index < 0){
 			layers.push(id);
 		} else {
-			layers.pop(id);
+			layers.splice(index, 1);
 		}
 		dekningsLayer.setVisibleLayers(layers);
 	});
