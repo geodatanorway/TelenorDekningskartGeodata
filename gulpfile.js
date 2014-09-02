@@ -1,6 +1,7 @@
 var gulp         = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     jshint       = require('gulp-jshint'),
+    jshintyfancy = require('jshint-stylish'),
     less         = require('gulp-less'),
     rename       = require('gulp-rename'),
     concat       = require('gulp-concat'),
@@ -10,23 +11,32 @@ var gulp         = require('gulp'),
     livereload   = require('gulp-livereload'),
     source       = require('vinyl-source-stream'),
     browserify   = require('browserify'),
-    del          = require('del');
+    embedlr      = require('gulp-embedlr'),
+    del          = require('del'),
+    connect      = require('connect'),
+    serveStatic  = require('serve-static')
+    ;
 
-// gulp.task('static', function (cb) {
-//   return gulp.src('./src/index.html')
-//     .pipe(gulp.dest('./dist'));
-// });
-
-gulp.task('clean', function (cb) {
-  del(['dist/*'], cb);
+gulp.task('server', function () {
+  connect()
+    .use(serveStatic(__dirname + '/dist'))
+    .listen(3000);
+});
+gulp.task('static', function () {
+  return gulp.src('./src/index.html')
+    .pipe(embedlr())
+    .pipe(gulp.dest('./dist'))
+    .pipe(livereload());
 });
 
-gulp.task('styles', ['clean'], function () {
+gulp.task('styles', function () {
   gulp.src('./src/styles/app.less')
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist/styles'));
+    .pipe(gulp.dest('./dist/styles'))
+    .pipe(livereload())
+    .pipe(notify({ message: 'styles task complete' }));
 });
 
 // gulp.task('jshint', function () {
@@ -38,22 +48,22 @@ gulp.task('styles', ['clean'], function () {
 //     .pipe(jshint.reporter('default'));
 // });
 
-gulp.task('scripts', ['clean'], function () {
+gulp.task('scripts', function () {
   return browserify({
       entries: ['./src/scripts/app.js']
     })
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest('dist/scripts'))
-    .pipe(notify({ message: 'Scripts task complete' }));
+    .pipe(livereload())
+    .pipe(notify({ message: 'scripts task complete' }));
 });
 
-gulp.task('compile', ['scripts']);
+gulp.task('compile', ['scripts', 'styles', 'static']);
 
 gulp.task('default', ['compile']);
 
-gulp.task('watch', function () {
+gulp.task('watch', ['compile', 'server'], function () {
   gulp.watch(['src/styles/*.less', 'src/styles/**/*.less'], ['styles']);
   gulp.watch(['src/scripts/*.js', 'src/scripts/**/*.js'], ['scripts']);
-//   gulp.watch(['dist/**']).on('change', livereload.changed);
 });

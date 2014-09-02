@@ -1,5 +1,9 @@
 # telenor dekningskart
 
-## develop
+## start a development server
 
-    npm-run watch
+    npm run watch
+
+## compile
+
+    npm run compile
