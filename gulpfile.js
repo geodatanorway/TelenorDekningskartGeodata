@@ -1,6 +1,7 @@
 var gulp         = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     jshint       = require('gulp-jshint'),
+    less         = require('gulp-less'),
     rename       = require('gulp-rename'),
     concat       = require('gulp-concat'),
     notify       = require('gulp-notify'),
@@ -20,13 +21,13 @@ gulp.task('clean', function (cb) {
   del(['dist/*'], cb);
 });
 
-// gulp.task('styles', ['clean'], function () {
-//   gulp.src('./src/styles/app.less')
-//     .pipe(sourcemaps.init())
-//     .pipe(less())
-//     .pipe(sourcemaps.write())
-//     .pipe(gulp.dest('./dist/styles'));
-// });
+gulp.task('styles', ['clean'], function () {
+  gulp.src('./src/styles/app.less')
+    .pipe(sourcemaps.init())
+    .pipe(less())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./dist/styles'));
+});
 
 // gulp.task('jshint', function () {
 //   return gulp.src([
@@ -52,7 +53,7 @@ gulp.task('compile', ['scripts']);
 gulp.task('default', ['compile']);
 
 gulp.task('watch', function () {
-//   gulp.watch([ 'src/styles/*.less', 'src/styles/**/*.less'], ['styles']);
+  gulp.watch(['src/styles/*.less', 'src/styles/**/*.less'], ['styles']);
   gulp.watch(['src/scripts/*.js', 'src/scripts/**/*.js'], ['scripts']);
 //   gulp.watch(['dist/**']).on('change', livereload.changed);
 });
