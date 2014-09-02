@@ -32,17 +32,18 @@ gulp.task('styles', function () {
     .pipe(gulp.dest('./dist/styles'));
 });
 
-gulp.task('jshint', function () {
+gulp.task('lint', function () {
   return gulp.src([
       './src/scripts/*.js',
       './src/scripts/**/*.js'
     ])
     .pipe(plumber())
     .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('scripts', ['jshint'], function () {
+gulp.task('scripts', ['lint'], function () {
   return browserify({
       entries: ['./src/scripts/app.js'], debug: true
     })
