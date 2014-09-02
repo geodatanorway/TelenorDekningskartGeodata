@@ -7,6 +7,7 @@ var gulp         = require('gulp'),
     source       = require('vinyl-source-stream'),
     buffer       = require('vinyl-buffer'),
     browserify   = require('browserify'),
+    es6ify       = require('es6ify'),
     embedlr      = require('gulp-embedlr'),
     connect      = require('connect'),
     serveStatic  = require('serve-static'),
@@ -110,9 +111,12 @@ function compileStatic (indexFile, includeLiveReloadInHtml, targetFolder) {
 /** Compiles js with browserify. Minifies or creates sourcermaps. */
 function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
   return browserify({
-      entries: [browserifyEntryPoint],
-      debug: !minify // adds sourcemaps
+      debug: !minify // source maps
     })
+    // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
+    .add(es6ify.runtime)
+    .transform(es6ify)
+    .require(require.resolve(browserifyEntryPoint), { entry: true })
     .bundle()
     .pipe(source(jsTargetFile))
     .pipe(buffer())
