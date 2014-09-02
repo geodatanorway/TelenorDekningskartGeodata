@@ -8,7 +8,8 @@ var gulp         = require('gulp'),
     browserify   = require('browserify'),
     embedlr      = require('gulp-embedlr'),
     connect      = require('connect'),
-    serveStatic  = require('serve-static')
+    serveStatic  = require('serve-static'),
+    plumber      = require('gulp-plumber')
     ;
 
 gulp.task('server', function () {
@@ -28,8 +29,7 @@ gulp.task('styles', function () {
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./dist/styles'))
-    .pipe(notify({ message: 'styles task complete' }));
+    .pipe(gulp.dest('./dist/styles'));
 });
 
 gulp.task('jshint', function () {
@@ -37,9 +37,9 @@ gulp.task('jshint', function () {
       './src/scripts/*.js',
       './src/scripts/**/*.js'
     ])
+    .pipe(plumber())
     .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(notify({ message: 'jshint task complete' }));
+    .pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('scripts', ['jshint'], function () {
@@ -48,8 +48,7 @@ gulp.task('scripts', ['jshint'], function () {
     })
     .bundle()
     .pipe(source('app.js'))
-    .pipe(gulp.dest('dist/scripts'))
-    .pipe(notify({ message: 'scripts task complete' }));
+    .pipe(gulp.dest('dist/scripts'));
 });
 
 gulp.task('compile', ['scripts', 'styles', 'static']);
