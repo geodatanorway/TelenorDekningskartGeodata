@@ -1,4 +1,15 @@
-var connect      = require('connect'),
-	serveStatic  = require('serve-static');
+var connect     = require('connect'),
+    serveStatic = require('serve-static'),
+    compression = require('compression');
 
-connect().use(serveStatic(__dirname + "/dist")).listen(process.env.PORT || 3000);
+var oneDay = 86400000,
+    oneYear = oneDay * 365;
+
+var PORT = process.env.PORT || 3000;
+
+connect()
+  .use(compression())
+  .use(serveStatic(__dirname + "/dist", { maxAge: oneYear }))
+  .listen(PORT, function () {
+    console.log(' listening on', PORT);
+  });
