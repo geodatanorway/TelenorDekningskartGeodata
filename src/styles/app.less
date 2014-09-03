@@ -8,7 +8,7 @@
    Variables
    ========================================================================== */
 
-@searchBarWidth: 400px;
+@searchBarWidth: 588px;
 @panelWidth: 588px;
 
 /* ==========================================================================
@@ -48,7 +48,7 @@
 
 #searchBar {
     position: absolute;
-    top: 15%;
+    top: 14%;
     left: 50%;
     margin-left: -@searchBarWidth / 2;
     z-index: 50;
@@ -65,7 +65,24 @@
     outline: none;
     -webkit-appearance: none; box-shadow: none !important;
     border: 0;
-    width: 100%;
+    width: 65%;
     height: 41px;
     padding-left: 20px;
+    left: 15px;
+    position: absolute;
+}
+
+#searchBar button {
+    background-color: #00ace8;
+    color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none; box-shadow: none !important;
+    border: 0;
+    width: 29%;
+    height: 41px;
+    right: 15px;
+    position: absolute;
 }
