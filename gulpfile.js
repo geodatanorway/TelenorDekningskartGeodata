@@ -119,20 +119,23 @@ function revisions (targetFolder) {
 
 /** Compiles the html file. May include a <script> snippet in the body to support live reload. */
 function compileStatic (indexFile, minify, targetFolder) {
+  var manifest;
 
-  var manifest = require("./dist/rev-manifest.json");
-  for (var key in manifest) {
-    // replace full path in key, so only app.js and app.css are left
-    var newkey = key.replace(/.*\//, "");
-    manifest[newkey] = manifest[key];
-    delete manifest[key];
+  if (minify) {
+    manifest = require("./dist/rev-manifest.json");
+    for (var key in manifest) {
+      // replace full path in key, so only app.js and app.css are left
+      var newkey = key.replace(/.*\//, "");
+      manifest[newkey] = manifest[key];
+      delete manifest[key];
+    }
   }
 
   return gulp.src(indexFile)
     .pipe(gulpif(!minify, embedlr()))
     .pipe(template({
-      appCss: manifest['app.css'],
-      appJs:  manifest['app.js'],
+      appCss: minify ? manifest['app.css'] : 'styles/app.css',
+      appJs:  minify ? manifest['app.js']  : 'scripts/app.js',
     }))
     .pipe(gulp.dest(targetFolder));
 }
