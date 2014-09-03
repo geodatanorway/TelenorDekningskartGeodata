@@ -1,8 +1,8 @@
 var jsonp = require('jsonp');
-var Promise = require('bluebird');
+var P = require('bluebird');
 
 function getJsonp(url) {
-  return new Promise((resolve, reject) => {
+  return new P((resolve, reject) => {
     jsonp(url, function(err, data) {
       if (err)
         reject(err);

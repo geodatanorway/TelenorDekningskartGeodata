@@ -6,15 +6,23 @@ module.exports.toggleLayer = id => {
   eventBus.emit('toggleLayer', id);
 };
 
-window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "dojo/domReady!"], (Map, ArcGISDynamicMapServiceLayer) => {
+module.exports.centerAt = (x, y) => {
+  eventBus.emit('centerAt', [x, y]);
+}
+
+window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/geometry/Point", "esri/SpatialReference", "dojo/domReady!"], 
+  (Map, ArcGISDynamicMapServiceLayer, Point, SpatialReference) => {
   var map = new Map("mapDiv", {
     center: [10, 63],
     zoom: 5,
     basemap: "streets"
   });
 
+  map.enableScrollWheelZoom();
+
   map.on("load", () => {
     eventBus.emit("map:load");
+    console.dir(map.spatialReference);
   });
 
   var DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
@@ -36,6 +44,11 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "dojo/do
       layers.splice(index, 1);
     }
     dekningsLayer.setVisibleLayers(layers);
+  });
+
+
+  eventBus.on('centerAt', ([x,y]) => {
+    map.centerAndZoom(new Point(x, y, new SpatialReference({wkid: 102100})), 8);
   });
 
   // var toggle = new BasemapToggle({

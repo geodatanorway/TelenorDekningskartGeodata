@@ -74,6 +74,10 @@
             <div id="searchBar">
                 <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" />
                 <button></button>
+
+                <ul id="searchResults" data-bind="foreach: searchResults">
+                    <li data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
+                </ul>
             </div>
         </div>
         <script src="http://js.arcgis.com/3.10compact/"></script>
