@@ -38,7 +38,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 // Tasks
 gulp.task('clean',   clean(FILE_TARGET));
 gulp.task('server',  startServer(FILE_TARGET));
-gulp.task('lint',    function () { return lint(FILES_JS); });
+gulp.task('lint',    function () { return lint(FILES_JS, isProduction); });
 gulp.task('rev',     ['scripts', 'styles'], function () { return revisions(FILE_TARGET); });
 gulp.task('styles',  function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
 gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
@@ -71,7 +71,7 @@ function startServer (folder) {
 }
 
 /** Lints the js and reports errors as os notifications. */
-function lint (jsFiles) {
+function lint (jsFiles, isProduction) {
   var jshintNotifyOnError = notify(function (file) {
     if (file.jshint.success) {
       return false; // Don't show something if success
@@ -88,7 +88,7 @@ function lint (jsFiles) {
   return gulp.src(jsFiles)
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshintNotifyOnError);
+    .pipe(gulpif(isProduction, jshintNotifyOnError));
 }
 
 /** Compiles less. Minifies or creates source maps. */
