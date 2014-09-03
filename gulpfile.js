@@ -121,7 +121,7 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
     // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
     .transform(reactify)
     .add(es6ify.runtime)
-    .transform(es6ify)
+    .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .require(require.resolve(browserifyEntryPoint), { entry: true })
     .bundle()
     .pipe(source(jsTargetFile))

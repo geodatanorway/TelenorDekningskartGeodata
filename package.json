@@ -14,16 +14,6 @@
     "postinstall": "npm run compile",
     "start": "node server"
   },
-  "browserify": {
-    "transform": [
-      [
-        "reactify",
-        {
-          "es6": true
-        }
-      ]
-    ]
-  },
   "author": "",
   "devDependencies": {
     "bluebird": "^2.3.2",
@@ -45,6 +35,7 @@
     "open": "0.0.5",
     "react": "^0.11.1",
     "reactify": "^0.14.0",
+    "rx": "^2.3.8",
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
     "vinyl-source-stream": "^0.1.1",

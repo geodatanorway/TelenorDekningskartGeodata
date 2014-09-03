@@ -1,13 +1,18 @@
 /** @jsx React.DOM */
 /* jshint ignore:start */
-var React = require('react');
+var React 	= require('react'),
+	Rx		= require('rx')
+	;
+
+React.initializeTouchEvents(true);
 
 var SearchBar = React.createClass({
 	render: function() {
-		return <div>
-			<input placeholder="Adresse" />
-			
-		</div>;
+		return (
+			<div>
+				<input placeholder="Søk etter adresse eller sted"  />
+			</div>
+		);
 	}
 });
 
