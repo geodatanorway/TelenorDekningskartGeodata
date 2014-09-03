@@ -40,7 +40,10 @@
                 <!-- <div id="basemapToggle"></div> -->
             </div>
             <div id="panel" name="panel"></div>
-            <div id="searchBar" name="Geir"></div>
+            <div id="searchBar">
+                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText" />
+                <button></button>
+            </div>
         </div>
         <script src="http://js.arcgis.com/3.10compact/"></script>
         <script src="<%= appJs %>"></script>
