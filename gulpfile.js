@@ -7,6 +7,7 @@ var gulp         = require('gulp'),
     source       = require('vinyl-source-stream'),
     buffer       = require('vinyl-buffer'),
     browserify   = require('browserify'),
+    watchify     = require('watchify'),
     es6ify       = require('es6ify'),
     embedlr      = require('gulp-embedlr'),
     connect      = require('connect'),
@@ -36,19 +37,19 @@ var FILE_INDEX         = './src/index.html',
 var isProduction = (process.env.NODE_ENV === 'production');
 
 // Tasks
-gulp.task('clean',   clean(FILE_TARGET));
-gulp.task('server',  startServer(FILE_TARGET));
-gulp.task('lint',    function () { return lint(FILES_JS, isProduction); });
-gulp.task('rev',     ['scripts', 'styles'], function () { return revisions(FILE_TARGET); });
-gulp.task('styles',  function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
-gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
+gulp.task('clean',     clean(FILE_TARGET));
+gulp.task('server',    startServer(FILE_TARGET));
+gulp.task('lint',      function () { return lint(FILES_JS, isProduction); });
+gulp.task('styles',    function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
+gulp.task('scripts',   ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
+gulp.task('scripts-w', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts', true); });
+gulp.task('rev',     ['scripts', 'styles'], function () { return revisions(FILE_TARGET, isProduction); });
 gulp.task('static',  ['rev'], function () { return compileStatic(FILE_INDEX, isProduction, FILE_TARGET); });
 gulp.task('compile', ['static']);
 gulp.task('default', ['compile']);
-gulp.task('watch',   ['compile', 'server'], function () {
+gulp.task('watch',   ['scripts-w', 'styles', 'server'], function () {
   gulp.watch(FILES_HTML, ['static']);
   gulp.watch(FILES_LESS, ['styles']);
-  gulp.watch(FILES_JS,   ['scripts']);
 
   livereload.listen();
   gulp.watch(FILES_ALL_COMPILED).on('change', livereload.changed);
@@ -106,7 +107,12 @@ function styles (lessEntryPoint, minify, targetFolder) {
     .pipe(gulp.dest(targetFolder));
 }
 
-function revisions (targetFolder) {
+function revisions (targetFolder, minify) {
+  if (!minify) {
+    // Don't add hashes to files names if we're not minifying
+    return function (fn) { fn(); };
+  }
+
   return gulp.src([
       "./dist/styles/app.css",
       "./dist/scripts/app.js"
@@ -140,33 +146,45 @@ function compileStatic (indexFile, minify, targetFolder) {
     .pipe(gulp.dest(targetFolder));
 }
 
-/** Compiles js with browserify. Minifies or creates sourcermaps. */
-function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
-  var props = {
-      debug: !minify // source maps
-  };
-  var bundler = browserify(props);
+/** Compiles js with browserify. Minifies or creates sourcermaps. Watch uses browserify with watchify, which incrementally builds the browserified js files. */
+function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watch) {
 
-  var stream = bundler
+  var bundler = browserify(browserifyEntryPoint, {
+    debug: !minify, // source maps
+    cache: {},
+    packageCache: {},
+    fullPaths: watch
+  });
+
+  if (watch) {
+    bundler = watchify(bundler);
+  }
+
+  bundler
     // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
-    .transform(reactify)
     .add(es6ify.runtime)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
-    .require(require.resolve(browserifyEntryPoint), { entry: true })
-    .bundle();
+    .on('update', rebundle);
 
-  stream.on('error', handleErrors)
-    .pipe(source(jsTargetFile))
-    .pipe(buffer())
-    .pipe(gulpif(minify, uglify()))
-    .pipe(gulp.dest(targetFolder));
+  return rebundle();
 
-  function handleErrors() {
-    var args = Array.prototype.slice.call(arguments);
-    notify.onError({
-        title: "Compile Error",
-        message: "<%= error.message %>"
-      }).apply(this, args);
-    this.emit('end'); // Keep gulp from hanging on this task
+  function rebundle () {
+    var stream = bundler.bundle();
+    return stream.on('error', handleErrors('Browserify'))
+      .pipe(source(jsTargetFile))
+      .pipe(buffer())
+      .pipe(gulpif(minify, uglify()))
+      .pipe(gulp.dest(targetFolder));
+  }
+
+  function handleErrors (description) {
+    return function () {
+      var args = Array.prototype.slice.call(arguments);
+      notify.onError({
+          title: description + " error",
+          message: "<%= error.message %>"
+        }).apply(this, args);
+      this.emit('end'); // Keep gulp from hanging on this task
+    };
   }
 }
