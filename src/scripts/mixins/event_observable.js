@@ -2,34 +2,34 @@ var Rx = require('rx');
 var _ = require('lodash');
 
 module.exports = {
-    componentWillMount: function() {
-        if (!this.subjects) return;
+  componentWillMount: function() {
+    if (!this.subjects) return;
 
-        var eventHandlers = {},
-        subjects = {};
+    var eventHandlers = {},
+    subjects = {};
 
-        this.subjects.forEach(function(key) {
-            var subject = new Rx.Subject();
+    this.subjects.forEach(function(key) {
+      var subject = new Rx.Subject();
 
-            eventHandlers[key] = subject.onNext.bind(subject);
-            subjects[key] = subject;
-        });
+      eventHandlers[key] = subject.onNext.bind(subject);
+      subjects[key] = subject;
+    });
 
-        this.handlers = eventHandlers;
-        this.subjects = subjects;
-    },
+    this.handlers = eventHandlers;
+    this.subjects = subjects;
+  },
 
-    componentDidMount: function() {
-        if (!this.subjects) return;
+  componentDidMount: function() {
+    if (!this.subjects) return;
 
-        var streams = this.fireStreams();
-    },
+    var streams = this.fireStreams();
+  },
 
-    componentWillUnmount: function() {
-        if (!this.subjects) return;
+  componentWillUnmount: function() {
+    if (!this.subjects) return;
 
-        this.subjects.forEach(function(key) {
-            this.subjects[key].dispose();
-        });
-    }
+    this.subjects.forEach(function(key) {
+      this.subjects[key].dispose();
+    });
+  }
 };
