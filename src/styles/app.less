@@ -1,2 +1,50 @@
+/* ==========================================================================
+   Imports
+   ========================================================================== */
 @import 'globals';
 @import "normalize.less";
+
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+@searchBarWidth: 200px;
+@panelWidth: 588px;
+
+/* ==========================================================================
+   Selectors
+   ========================================================================== */
+
+#map {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+#panel {
+    width: @panelWidth;
+    min-height: 238px;
+    background-color: #fff;
+    display: block;
+    position: absolute;
+    top: 10%;
+    left:50%;
+    margin-left: -@panelWidth / 2;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+}
+
+#searchBar {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    margin-left: -@searchBarWidth / 2;
+    z-index: 50;
+    width: @searchBarWidth;
+    background: red;
+    text-align: center;
+}
