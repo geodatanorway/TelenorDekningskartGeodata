@@ -8,7 +8,7 @@ module.exports.toggleLayer = id => {
 
 module.exports.centerAt = (x, y) => {
   eventBus.emit('centerAt', [x, y]);
-}
+};
 
 window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/geometry/Point", "esri/SpatialReference", "dojo/domReady!"], 
   (Map, ArcGISDynamicMapServiceLayer, Point, SpatialReference) => {
