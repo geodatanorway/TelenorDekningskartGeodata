@@ -1,14 +1,16 @@
 var ko = require('knockout');
 var Rx = require('rx');
-var koRx = require('./knockoutRx');
+//var koRx = require('./knockoutRx');
 
 class ViewModel {
   constructor(){
     this.searchText = ko.observable("");
 
-    this.searchText.subscribe(newValue => {
-      console.log(newValue);
-    });
+    //var obs = this.searchText.toRx(true);
+
+    // obs
+    //   .throttle(500)
+    //   .log();
   }
 }
 

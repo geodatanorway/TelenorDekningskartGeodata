@@ -1,4 +1,5 @@
 var ko = require("knockout");
+var Rx = require("rx");
 
 ko.subscribable.fn.toRx = function(startWithCurrentValue) {
   /// <summary>Returns an Rx.Observable that signals whenever the underlying ko object changes</summary>
