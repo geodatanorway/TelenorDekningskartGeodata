@@ -2,12 +2,17 @@
   "name": "telenor-dekningskart",
   "version": "0.0.1",
   "description": "Ny, responsive, Telenor dekningskart",
+  "engines": {
+    "node": "0.10.x"
+  },
   "private": true,
   "main": "gulpfile.js",
   "scripts": {
     "compile": "./node_modules/.bin/gulp",
     "watch": "./node_modules/.bin/gulp watch",
-    "clean": "./node_modules/.bin/gulp clean"
+    "clean": "./node_modules/.bin/gulp clean",
+    "postinstall": "npm run compile",
+    "start": "node server"
   },
   "author": "",
   "devDependencies": {
@@ -31,5 +36,9 @@
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
     "vinyl-source-stream": "^0.1.1"
+  },
+  "dependencies": {
+    "connect": "^3.1.1",
+    "serve-static": "^1.5.3"
   }
 }
