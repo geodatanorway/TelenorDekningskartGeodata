@@ -1,17 +1,19 @@
 /** @jsx React.DOM */
 /* jshint ignore:start */
 var React 	= require('react'),
-	Rx		= require('rx')
-	;
+  //Rx		= require('rx'),
+  EventObservableMixin = require('./mixins/event_observable');
 
 React.initializeTouchEvents(true);
 
 var SearchBar = React.createClass({
+  mixins: [EventObservableMixin],
   getInitialState: function(){
     return {searchText: ''};
   },
   handleChange: function(event) {
     this.setState({searchText: event.target.value});
+
   },
 	render: function() {
 		return (
