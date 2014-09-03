@@ -146,15 +146,27 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
       debug: !minify // source maps
   };
   var bundler = browserify(props);
-  return bundler
+
+  var stream = bundler
     // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
     .transform(reactify)
     .add(es6ify.runtime)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .require(require.resolve(browserifyEntryPoint), { entry: true })
-    .bundle()
+    .bundle();
+
+  stream.on('error', handleErrors)
     .pipe(source(jsTargetFile))
     .pipe(buffer())
     .pipe(gulpif(minify, uglify()))
     .pipe(gulp.dest(targetFolder));
+
+  function handleErrors() {
+    var args = Array.prototype.slice.call(arguments);
+    notify.onError({
+        title: "Compile Error",
+        message: "<%= error.message %>"
+      }).apply(this, args);
+    this.emit('end'); // Keep gulp from hanging on this task
+  }
 }
