@@ -1,4 +1,6 @@
 var ko = require('knockout');
+var Rx = require('rx');
+var koRx = require('./knockoutRx');
 
 class ViewModel {
   constructor(){
