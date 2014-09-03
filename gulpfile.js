@@ -148,7 +148,7 @@ function compileStatic (indexFile, minify, targetFolder) {
 /** Compiles js with browserify. Minifies or creates sourcermaps. Watch uses browserify with watchify, which incrementally builds the browserified js files. */
 function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watch) {
 
-  var bundler = browserify(browserifyEntryPoint, {
+  var bundler = browserify(es6ify.runtime, {
     debug: !minify, // source maps
     cache: {},
     packageCache: {},
@@ -161,7 +161,7 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
 
   bundler
     // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
-    .add(es6ify.runtime)
+    .add(browserifyEntryPoint)
     .transform(es6ify.configure(/^(?!.*node_modules)+.+\.js$/))
     .on('update', rebundle);
 
