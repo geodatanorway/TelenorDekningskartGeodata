@@ -7,14 +7,16 @@ var React 	= require('react'),
 React.initializeTouchEvents(true);
 
 var SearchBar = React.createClass({
+  getInitialState: function(){
+    return {searchText: ''};
+  },
   handleChange: function(event) {
     this.setState({searchText: event.target.value});
-    //console.log("LOL");
   },
 	render: function() {
 		return (
 			<div>
-				<input placeholder="Søk etter adresse eller sted" /*onChange="{this.handleChange}"*/ />
+				<input value={this.state.searchText} placeholder="Søk etter adresse eller sted" onChange={this.handleChange} />
 			</div>
 		);
 	}
@@ -23,6 +25,8 @@ var SearchBar = React.createClass({
 React.renderComponent(
 	<SearchBar name="Geir" />,
 	document.getElementById('searchBar'));
+
+
 
 
 module.exports = SearchBar;

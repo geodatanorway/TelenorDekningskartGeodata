@@ -6,7 +6,7 @@ module.exports.toggleLayer = id => {
   eventBus.emit('toggleLayer', id);
 };
 
-window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/dijit/BasemapToggle", "dojo/domReady!"], (Map, ArcGISDynamicMapServiceLayer, BasemapToggle) => {
+window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "dojo/domReady!"], (Map, ArcGISDynamicMapServiceLayer) => {
   var map = new Map("mapDiv", {
     center: [10, 63],
     zoom: 5,
@@ -38,9 +38,9 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/di
     dekningsLayer.setVisibleLayers(layers);
   });
 
-  var toggle = new BasemapToggle({
-    map: map,
-    basemap: "satellite"
-  }, "basemapToggle");
-  toggle.startup();
+  // var toggle = new BasemapToggle({
+  //   map: map,
+  //   basemap: "satellite"
+  // }, "basemapToggle");
+  // toggle.startup();
 });
