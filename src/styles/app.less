@@ -30,6 +30,7 @@
 }
 
 #panel {
+    min-width: 300px;
     width: @panelWidth;
     min-height: 238px;
     background-color: #fff;
@@ -85,4 +86,30 @@
     height: 41px;
     right: 15px;
     position: absolute;
+    content: 'Sjekk rino' !important;
+}
+
+#searchBar button:before {
+    content: 'Sjekk dekning';
+}
+
+@media all and (max-width: 550px) {
+    #panel {
+        display: none;
+    }
+    
+    #searchBar {
+        width: @searchBarWidth / 2 ;
+        margin-left: -@searchBarWidth / 4;
+    }
+    
+    #searchBar input {
+        width: 58%;
+        background-color: #fff;
+        
+    }
+    
+    #searchBar button:before {
+        content: 'Sjekk';
+    }
 }

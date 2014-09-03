@@ -19,7 +19,7 @@ var SearchBar = React.createClass({
 		return (
 			<div>
 				<input value={this.state.searchText} placeholder="Søk etter adresse eller sted" onChange={this.handleChange} />
-                                <button>Sjekk dekning</button>
+                                <button></button>
 			</div>
 		);
 	}
