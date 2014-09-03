@@ -1,6 +1,4 @@
 var map = require('./map');
-map.on("map:load", () => {
-	
-});
-
+var searchBar = require('./search');
 console.log(map);
+console.log(searchBar);

@@ -15,7 +15,9 @@ var gulp         = require('gulp'),
     mincss       = require('gulp-minify-css'),
     del          = require('del'),
     openBrowser  = require('open'),
-    uglify       = require('gulp-uglify')
+    uglify       = require('gulp-uglify'),
+    reactify     = require('reactify'),
+    watchify     = require('watchify')
     ;
 
 var FILE_INDEX         = './src/index.html',
@@ -37,9 +39,10 @@ gulp.task('server',  startServer(FILE_TARGET));
 gulp.task('lint',    function () { return lint(FILES_JS); });
 gulp.task('static',  function () { return compileStatic(FILE_INDEX, !isProduction, FILE_TARGET); });
 gulp.task('styles',  function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
-gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
+gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts', false); });
 gulp.task('compile', ['static', 'styles', 'scripts']);
 gulp.task('default', ['compile']);
+gulp.task('watchify', function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts', true); });
 gulp.task('watch',   ['compile', 'server'], function () {
   gulp.watch(FILES_HTML, ['static']);
   gulp.watch(FILES_LESS, ['styles']);
@@ -109,11 +112,14 @@ function compileStatic (indexFile, includeLiveReloadInHtml, targetFolder) {
 }
 
 /** Compiles js with browserify. Minifies or creates sourcermaps. */
-function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
-  return browserify({
+function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watch) {
+  var props = {
       debug: !minify // source maps
-    })
+  };
+  var bundler = browserify(props);
+  return bundler
     // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
+    .transform(reactify)
     .add(es6ify.runtime)
     .transform(es6ify)
     .require(require.resolve(browserifyEntryPoint), { entry: true })

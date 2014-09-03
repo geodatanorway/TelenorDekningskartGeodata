@@ -14,6 +14,16 @@
     "postinstall": "npm run compile",
     "start": "node server"
   },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "es6": true
+        }
+      ]
+    ]
+  },
   "author": "",
   "devDependencies": {
     "bluebird": "^2.3.2",
@@ -33,9 +43,12 @@
     "gulp-uglify": "^1.0.0",
     "jshint-stylish": "^0.4.0",
     "open": "0.0.5",
+    "react": "^0.11.1",
+    "reactify": "^0.14.0",
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
-    "vinyl-source-stream": "^0.1.1"
+    "vinyl-source-stream": "^0.1.1",
+    "watchify": "^1.0.2"
   },
   "dependencies": {
     "bluebird": "^2.3.2",
@@ -55,6 +68,7 @@
     "gulp-uglify": "^1.0.0",
     "jshint-stylish": "^0.4.0",
     "open": "0.0.5",
+    "react": "^0.11.1",
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
     "vinyl-source-stream": "^0.1.1"
