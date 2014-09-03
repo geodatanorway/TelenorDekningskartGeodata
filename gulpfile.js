@@ -17,7 +17,8 @@ var gulp         = require('gulp'),
     openBrowser  = require('open'),
     uglify       = require('gulp-uglify'),
     reactify     = require('reactify'),
-    watchify     = require('watchify')
+    rev          = require('gulp-rev'),
+    template     = require('gulp-template')
     ;
 
 var FILE_INDEX         = './src/index.html',
@@ -37,12 +38,11 @@ var isProduction = (process.env.NODE_ENV === 'production');
 gulp.task('clean',   clean(FILE_TARGET));
 gulp.task('server',  startServer(FILE_TARGET));
 gulp.task('lint',    function () { return lint(FILES_JS); });
-gulp.task('static',  function () { return compileStatic(FILE_INDEX, !isProduction, FILE_TARGET); });
 gulp.task('styles',  function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
-gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts', false); });
-gulp.task('compile', ['static', 'styles', 'scripts']);
+gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
+gulp.task('static',  ['scripts', 'styles'], function () { return compileStatic(FILE_INDEX, isProduction, FILE_TARGET); });
+gulp.task('compile', ['static']);
 gulp.task('default', ['compile']);
-gulp.task('watchify', function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts', true); });
 gulp.task('watch',   ['compile', 'server'], function () {
   gulp.watch(FILES_HTML, ['static']);
   gulp.watch(FILES_LESS, ['styles']);
@@ -101,18 +101,29 @@ function styles (lessEntryPoint, minify, targetFolder) {
       noAdvanced: true,
       compatibility: true
     })))
+    .pipe(rev())
+    .pipe(gulp.dest(targetFolder))
+    .pipe(rev.manifest())
     .pipe(gulp.dest(targetFolder));
 }
 
 /** Compiles the html file. May include a <script> snippet in the body to support live reload. */
-function compileStatic (indexFile, includeLiveReloadInHtml, targetFolder) {
+function compileStatic (indexFile, minify, targetFolder) {
+
+  var cssManifest = require('./dist/styles/rev-manifest.json');
+  var jsManifest  = require('./dist/scripts/rev-manifest.json');
+
   return gulp.src(indexFile)
-    .pipe(gulpif(includeLiveReloadInHtml, embedlr()))
+    .pipe(gulpif(!minify, embedlr()))
+    .pipe(gulpif(minify, template({
+      appCss: 'styles/'  + cssManifest['app.css'],
+      appJs:  'scripts/' + jsManifest['app.js'],
+    })))
     .pipe(gulp.dest(targetFolder));
 }
 
 /** Compiles js with browserify. Minifies or creates sourcermaps. */
-function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watch) {
+function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
   var props = {
       debug: !minify // source maps
   };
@@ -127,5 +138,8 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
     .pipe(source(jsTargetFile))
     .pipe(buffer())
     .pipe(gulpif(minify, uglify()))
+    .pipe(rev())
+    .pipe(gulp.dest(targetFolder))
+    .pipe(rev.manifest())
     .pipe(gulp.dest(targetFolder));
 }
