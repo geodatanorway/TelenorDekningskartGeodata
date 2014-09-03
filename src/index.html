@@ -72,7 +72,8 @@
                 </div>
             </div>
             <div id="searchBar">
-                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText" />
+                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" />
+                <span data-bind="text: searchTextThrottled" style="position: relative; top: 200px; z-index: 2000;"></span>
                 <button></button>
             </div>
         </div>

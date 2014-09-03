@@ -1,5 +1,6 @@
 var map = require('./map');
 var ko = require('knockout');
+require('rx');
 var ViewModel = require('./ViewModel');
 
 ko.applyBindings(new ViewModel());
