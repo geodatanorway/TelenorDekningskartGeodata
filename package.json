@@ -22,6 +22,7 @@
     "del": "^0.1.2",
     "es6ify": "^1.3.0",
     "gulp": "^3.8.7",
+    "gulp-debug": "^1.0.1",
     "gulp-embedlr": "^0.5.2",
     "gulp-if": "^1.2.4",
     "gulp-jshint": "^1.8.4",

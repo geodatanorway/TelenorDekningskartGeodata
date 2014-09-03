@@ -18,7 +18,8 @@ var gulp         = require('gulp'),
     uglify       = require('gulp-uglify'),
     reactify     = require('reactify'),
     rev          = require('gulp-rev'),
-    template     = require('gulp-template')
+    template     = require('gulp-template'),
+    debug        = require('gulp-debug')
     ;
 
 var FILE_INDEX         = './src/index.html',
@@ -38,9 +39,10 @@ var isProduction = (process.env.NODE_ENV === 'production');
 gulp.task('clean',   clean(FILE_TARGET));
 gulp.task('server',  startServer(FILE_TARGET));
 gulp.task('lint',    function () { return lint(FILES_JS); });
+gulp.task('rev',     ['scripts', 'styles'], function () { return revisions(FILE_TARGET); });
 gulp.task('styles',  function () { return styles(FILE_LESS_ENTRY, isProduction, FILE_TARGET + '/styles'); });
 gulp.task('scripts', ['lint'], function () { return scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FILE_TARGET + '/scripts'); });
-gulp.task('static',  ['scripts', 'styles'], function () { return compileStatic(FILE_INDEX, isProduction, FILE_TARGET); });
+gulp.task('static',  ['rev'], function () { return compileStatic(FILE_INDEX, isProduction, FILE_TARGET); });
 gulp.task('compile', ['static']);
 gulp.task('default', ['compile']);
 gulp.task('watch',   ['compile', 'server'], function () {
@@ -101,6 +103,14 @@ function styles (lessEntryPoint, minify, targetFolder) {
       noAdvanced: true,
       compatibility: true
     })))
+    .pipe(gulp.dest(targetFolder));
+}
+
+function revisions (targetFolder) {
+  return gulp.src([
+      "./dist/styles/app.css",
+      "./dist/scripts/app.js"
+    ], { base: targetFolder })
     .pipe(rev())
     .pipe(gulp.dest(targetFolder))
     .pipe(rev.manifest())
@@ -110,15 +120,20 @@ function styles (lessEntryPoint, minify, targetFolder) {
 /** Compiles the html file. May include a <script> snippet in the body to support live reload. */
 function compileStatic (indexFile, minify, targetFolder) {
 
-  var cssManifest = require('./dist/styles/rev-manifest.json');
-  var jsManifest  = require('./dist/scripts/rev-manifest.json');
+  var manifest = require("./dist/rev-manifest.json");
+  for (var key in manifest) {
+    // replace full path in key, so only app.js and app.css are left
+    var newkey = key.replace(/.*\//, "");
+    manifest[newkey] = manifest[key];
+    delete manifest[key];
+  }
 
   return gulp.src(indexFile)
     .pipe(gulpif(!minify, embedlr()))
-    .pipe(gulpif(minify, template({
-      appCss: 'styles/'  + cssManifest['app.css'],
-      appJs:  'scripts/' + jsManifest['app.js'],
-    })))
+    .pipe(template({
+      appCss: manifest['app.css'],
+      appJs:  manifest['app.js'],
+    }))
     .pipe(gulp.dest(targetFolder));
 }
 
@@ -138,8 +153,5 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder) {
     .pipe(source(jsTargetFile))
     .pipe(buffer())
     .pipe(gulpif(minify, uglify()))
-    .pipe(rev())
-    .pipe(gulp.dest(targetFolder))
-    .pipe(rev.manifest())
     .pipe(gulp.dest(targetFolder));
 }
