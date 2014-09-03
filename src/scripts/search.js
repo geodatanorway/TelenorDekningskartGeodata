@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 /* jshint ignore:start */
-var React 	= require('react'),
+var React 	= require('react/addons'),
   //Rx		= require('rx'),
   EventObservableMixin = require('./mixins/event_observable');
 
@@ -13,7 +13,6 @@ var SearchBar = React.createClass({
   },
   handleChange: function(event) {
     this.setState({searchText: event.target.value});
-
   },
 	render: function() {
 		return (
