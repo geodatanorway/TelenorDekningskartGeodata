@@ -125,7 +125,7 @@ function styles (lessEntryPoint, minify, targetCssFile, targetFolder) {
   return function () {
     return gulp.src(lessEntryPoint)
       .pipe(gulpif(!minify, sourcemaps.init()))
-      .pipe(less())
+      .pipe(less().on('error', handleErrors('Less')))
       .pipe(autoprefix({ map: !minify }))
       .pipe(gulpif(!minify, sourcemaps.write()))
       .pipe(gulpif(minify, mincss({
@@ -223,15 +223,16 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
         .pipe(gulpif(watch, notify({ title: "Browserify", message: 'reloaded' })));
     }
 
-    function handleErrors (description) {
-      return function () {
-        var args = Array.prototype.slice.call(arguments);
-        notify.onError({
-            title: description + " error",
-            message: "<%= error.message %>"
-          }).apply(this, args);
-        this.emit('end'); // Keep gulp from hanging on this task
-      };
-    }
+  };
+}
+
+function handleErrors (description) {
+  return function () {
+    var args = Array.prototype.slice.call(arguments);
+    notify.onError({
+      title: description + " error",
+      message: "<%= error.message %>"
+    }).apply(this, args);
+    this.emit('end'); // Keep gulp from hanging on this task
   };
 }
