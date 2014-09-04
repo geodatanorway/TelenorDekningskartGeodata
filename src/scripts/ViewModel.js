@@ -71,20 +71,20 @@ class ViewModel {
     this.mapKeys = function() {
         $("#searchResults").children().each(function( index, value ) {
             $(value).keydown(function( event ) {
-                if (event.which == 40) {
+                if (event.which === 40) {
                     $(value).next().focus();
                 }
-                if (event.which == 38) {
+                if (event.which === 38) {
                     $(value).prev().focus();
                 }
-                if (event.which == 13) {
+                if (event.which === 13) {
                     $(value).click();
                 }
             });
         });
         
         $("#searchResults").children().first().focus();
-    }
+    };
     
     map.on("loading", () => NProgress.start());
     map.on("load",    () => NProgress.done());
