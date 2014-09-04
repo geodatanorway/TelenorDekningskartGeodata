@@ -37,11 +37,21 @@
 
 }
 
-    #mapDiv_layer0 img {
-        filter: url(filters.svg#grayscale) !important; /* Firefox 3.5+ */
-        filter: gray !important; /* IE5+ */
-        -webkit-filter: grayscale(1) !important; /* Webkit Nightlies &amp; Chrome Canary */
-    }
+.leaflet-tile-pane img {
+    filter: url(filters.svg#grayscale) !important; /* Firefox 3.5+ */
+    filter: gray !important; /* IE5+ */
+    -webkit-filter: grayscale(1) !important; /* Webkit Nightlies &amp; Chrome Canary */
+}
+
+.filter(@filter){
+    -webkit-filter: @filter;
+    filter: @filter;
+}
+
+.leaflet-objects-pane img {
+    .filter(blur(3px));
+}
+
 #panel {
     min-width: 300px;
     width: @panelWidth;

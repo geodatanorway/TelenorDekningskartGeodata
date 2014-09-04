@@ -23,7 +23,7 @@ class ViewModel {
     this.show4g = ko.observable(true);
 
     this.onSuggestionClicked = (item) => {
-      map.centerAt(item.x, item.y);
+      map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
     };
 
@@ -32,7 +32,7 @@ class ViewModel {
     };
 
     this.onKeyPressed = (vm, event) => {
-      if(event.which === 27) { // escape
+      if (event.which === 27) { // escape
         this.clearSearchResults();
       }
       return true;
@@ -46,17 +46,19 @@ class ViewModel {
           var suggestions = results.suggestions;
           var types = results.type;
           var joinedPoints = encodeURIComponent(coords.join(",\n"));
-          var pointResults = yield ajax.jsonp(self.geometryUrl + "?inSR=32633&outSR=102100&geometries=" + joinedPoints + "&f=pjson");
+          var pointResults = yield ajax.jsonp(self.geometryUrl + "?inSR=32633&outSR=4326&geometries=" + joinedPoints + "&f=pjson");
           var geometries = pointResults.geometries;
 
           var rows = [];
           for (var i = 0; i < coords.length; i++) {
-            var x = geometries[i].x;
-            var y = geometries[i].y;
+            var {
+              x: lon,
+              y: lat
+            } = geometries[i];
             var suggestion = suggestions[i];
             var type = types[i];
             var row = {
-              x, y, suggestion, type
+              lat, lon, suggestion, type
             };
             rows.push(row);
           }
