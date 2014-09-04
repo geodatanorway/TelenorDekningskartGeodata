@@ -44,25 +44,6 @@ module.exports = _.extend(eventBus, {
     In4G: 2,
     In4GiPhone: 0
   },
-  toggleLayer: id => {
-    var index = layers.indexOf(id);
-    if (index < 0) {
-      layers.push(id);
-    } else {
-      layers.splice(index, 1);
-    }
-    dekningLayer.setLayers(layers);
-  },
-
-  setLayerVisible: (id, visible) => {
-    var index = layers.indexOf(id);
-    if (index < 0 && visible) {
-      layers.push(id);
-    } else if (index >= 0 && !visible) {
-      layers.splice(index, 1);
-    }
-    dekningLayer.setLayers(layers);
-  },
 
   setLayers: (ids) => {
     dekningLayer.setLayers(ids);

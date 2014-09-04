@@ -3,12 +3,11 @@ var async = require('./async');
 var ajax = require('./ajax');
 var _ = require('lodash');
 var map = require('./map');
+var geodata = require('./geodata');
 
 class ViewModel {
   constructor() {
     var self = this;
-    this.searchUrl = "http://ws.geodataonline.no/search/geodataservice/autocomplete?token=xWZMDJR2KMEMdOpMzf5nqPnepXvI9dKj-tjPzKd_Trr0WtFM-WNdzJLl4ai__oOA&query=";
-    this.geometryUrl = "http://services2.geodataonline.no/arcgis/rest/services/Utilities/Geometry/GeometryServer/project";
     this.searchText = ko.observable("");
     this.searchTextThrottled = ko.pureComputed(this.searchText).extend({
       rateLimit: {
@@ -26,19 +25,19 @@ class ViewModel {
 
     this.layers = ko.pureComputed(() => {
       var layers = [];
-      if(this.outdoors() === "true"){
-        if(this.show2g())
+      if (this.outdoors() === "true") {
+        if (this.show2g())
           layers.push(map.Layers.Out2G);
-        if(this.show3g())
+        if (this.show3g())
           layers.push(map.Layers.Out3G);
-        if(this.show4g())
+        if (this.show4g())
           layers.push(map.Layers.Out4G);
       } else {
-        if(this.show2g())
+        if (this.show2g())
           layers.push(map.Layers.In2G);
-        if(this.show3g())
+        if (this.show3g())
           layers.push(map.Layers.In3G);
-        if(this.show4g())
+        if (this.show4g())
           layers.push(map.Layers.In4G);
       }
       return layers;
@@ -58,6 +57,13 @@ class ViewModel {
       this.isLoading(false);
     });
 
+    this.searchTextThrottled.subscribe(newValue => {
+      async(function * () {
+        var rows = yield geodata.autoComplete(newValue);
+        self.searchResults(rows);
+      });
+    });
+
     this.onSuggestionClicked = (item) => {
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
@@ -73,32 +79,6 @@ class ViewModel {
       }
       return true;
     };
-
-    this.searchTextThrottled.subscribe(newValue => {
-      async(function * () {
-        try {
-          var results = yield ajax.jsonp(self.searchUrl + newValue);
-          var coords = results.data;
-          var suggestions = results.suggestions;
-          var types = results.type;
-          var joinedPoints = encodeURIComponent(coords.join(",\n"));
-          var pointResults = yield ajax.jsonp(self.geometryUrl + "?inSR=32633&outSR=4326&geometries=" + joinedPoints + "&f=pjson");
-          var geometries = pointResults.geometries;
-
-          var rows = [];
-          for (var i = 0; i < coords.length; i++) {
-            var { x: lon, y: lat } = geometries[i];
-            var suggestion = suggestions[i];
-            var type = types[i];
-            var row = { lat, lon, suggestion, type }; // jshint ignore:line
-            rows.push(row);
-          }
-          self.searchResults(rows);
-        } catch (err) {
-          console.dir(err);
-        }
-      });
-    });
   }
 }
 
