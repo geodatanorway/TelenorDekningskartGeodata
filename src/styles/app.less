@@ -133,11 +133,18 @@ body,
     height: 41px;
     margin-top: 20px;
 
+    &.searchBar--in-panel {
+      input,
+      button {
+        .no-shadow();
+      }
+    }
+
     input {
         background-color: #fff;
         .rounded();
+        .shadowed();
         outline: none;
-        -webkit-appearance: none; box-shadow: none !important;
         border: 0;
         width: 65%;
         height: 41px;
@@ -151,8 +158,8 @@ body,
         background-color: @color-primary;
         color: #fff;
         .rounded();
+        .shadowed();
         outline: none;
-        -webkit-appearance: none; box-shadow: none !important;
         border: 0;
         width: 29%;
         height: 41px;

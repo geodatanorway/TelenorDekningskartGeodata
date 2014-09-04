@@ -5,6 +5,9 @@ var NProgress = require('nprogress');
 var map = require('./map');
 var ViewModel = require('./ViewModel');
 
+// removes the ~200ms delay on mobile
+var attachFastClick = require('fastclick');
+attachFastClick(document.body);
 
 NProgress.start();
 map.on('load', () => NProgress.done());

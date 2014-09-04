@@ -31,7 +31,7 @@
                         </div>
                         <div>
                             <label><input type="radio" name="type" value="Wifi" data-bind="checked: mode">Trådløs sone</label>
-                        </div>          
+                        </div>
                     </div>
                     <div class="group" data-bind="visible: mode() == 'Dekning'">
                         <div>
@@ -42,7 +42,7 @@
                         </div>
                         <div>
                             <label><input type="checkbox" name="dataspeed" value="2G" data-bind="checked: show2g" >2G</label>
-                        </div>   
+                        </div>
                     </div>
                     <div class="group" data-bind="visible: mode() == 'Dekning'">
                         <div>
@@ -56,6 +56,7 @@
             </div>
             <div id="searchBar">
                 <input placeholder="Adresse" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
+            <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
                 <button data-bind="click: togglePanelVisibility"></button>
                 <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults">
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
