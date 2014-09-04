@@ -124,7 +124,7 @@ function styles (lessEntryPoint, minify, targetCssFile, targetFolder) {
   return function () {
     return gulp.src(lessEntryPoint)
       .pipe(gulpif(!minify, sourcemaps.init()))
-      .pipe(less().on('error', handleErrors('Less')))
+      .pipe(gulpif(minify, less(), less().on('error', handleErrors('Less'))))
       .pipe(autoprefix({ map: !minify }))
       .pipe(gulpif(!minify, sourcemaps.write()))
       .pipe(gulpif(minify, mincss({
