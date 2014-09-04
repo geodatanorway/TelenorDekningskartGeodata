@@ -8,7 +8,7 @@ var CenterZoom = 12;
 var map = L.map('mapDiv').setView(trondheim, InitialZoom);
 L.esri.basemapLayer('Streets').addTo(map);
 
-map.locate({ setView: true });
+map.locate({ setView: true, maxZoom: CenterZoom });
 map.on('locationfound', e => L.marker(e.latlng).addTo(map));
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
