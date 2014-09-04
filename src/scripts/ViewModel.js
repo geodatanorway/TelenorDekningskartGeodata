@@ -21,6 +21,31 @@ class ViewModel {
     this.show2g = ko.observable(true);
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
+    this.outdoors = ko.observable("true");
+
+    this.layers = ko.pureComputed(() => {
+      var layers = [];
+      if(this.outdoors() === "true"){
+        if(this.show2g())
+          layers.push(map.Layers.Out2G);
+        if(this.show3g())
+          layers.push(map.Layers.Out3G);
+        if(this.show4g())
+          layers.push(map.Layers.Out4G);
+      } else {
+        if(this.show2g())
+          layers.push(map.Layers.In2G);
+        if(this.show3g())
+          layers.push(map.Layers.In3G);
+        if(this.show4g())
+          layers.push(map.Layers.In4G);
+      }
+      return layers;
+    });
+
+    this.layers.subscribe(newValue => {
+      map.setLayers(newValue);
+    });
 
     this.isLoading = ko.observable();
 
@@ -30,16 +55,6 @@ class ViewModel {
 
     map.on("load", () => {
       this.isLoading(false);
-    });
-
-    this.show2g.subscribe(newValue => {
-      map.setLayerVisible(map.Mobile2G, newValue);
-    });
-    this.show3g.subscribe(newValue => {
-      map.setLayerVisible(map.Mobile3G, newValue);
-    });
-    this.show4g.subscribe(newValue => {
-      map.setLayerVisible(map.Mobile4G, newValue);
     });
 
     this.onSuggestionClicked = (item) => {

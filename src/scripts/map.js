@@ -30,9 +30,16 @@ dekningLayer.addTo(map);
 
 
 module.exports = _.extend(eventBus, {
-  Mobile2G: 9,
-  Mobile3G: 7,
-  Mobile4G: 3,
+  Layers: {
+    Out2G: 9,
+    Out3G: 7,
+    Out4G: 3,
+    Out4GiPhone: 1,
+    In2G: 8,
+    In3G: 6,
+    In4G: 2,
+    In4GiPhone: 0
+  },
   toggleLayer: id => {
     var index = layers.indexOf(id);
     if (index < 0) {
@@ -51,6 +58,10 @@ module.exports = _.extend(eventBus, {
       layers.splice(index, 1);
     }
     dekningLayer.setLayers(layers);
+  },
+
+  setLayers: (ids) => {
+    dekningLayer.setLayers(ids);
   },
 
   centerAt: (lat, lon) => {
