@@ -22,10 +22,14 @@ var map = L.map('mapDiv', {
 
 L.esri.basemapLayer('Streets').addTo(map);
 
-map.locate({ setView: true, maxZoom: 13, enableHighAccuracy: true });
+var userLocationMarker, opts = { icon: icons.MyLocation };
+map.locate({ setView: true, maxZoom: 14, enableHighAccuracy: true });
 map.on('locationfound', e => {
-  var opts = { icon: icons.MyLocation };
-  L.marker(e.latlng, opts).addTo(map);
+  if (userLocationMarker) {
+    map.removeLayer(userLocationMarker);
+  }
+  userLocationMarker = L.marker(e.latlng, opts);
+  userLocationMarker.addTo(map);
 });
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
@@ -58,6 +62,8 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   }
 });
 
+var tracking = false;
+
 module.exports = _.extend(eventBus, {
   Layers: {
     Out2G: 9,
@@ -72,6 +78,17 @@ module.exports = _.extend(eventBus, {
 
   setLayers: (ids) => {
     dekningLayer.setLayers(ids);
+  },
+
+  toggleTrackUser: () => {
+    if (!tracking) {
+      var zoom = map.getZoom();
+      map.locate({ maxZoom: zoom, setView: true, watch: true, enableHighAccuracy: true });
+    }
+    else {
+      map.stopLocate();
+    }
+    tracking = !tracking;
   },
 
   centerAt: (lat, lon) => {

@@ -61,6 +61,9 @@
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
             </div>
+            <div class="track-user">
+              <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
+            </div>
         </div>
 
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>

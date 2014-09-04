@@ -1,0 +1,19 @@
+.track-user {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+
+  .track {
+    background-color: @color-white;
+    color: @color-disabled;
+    padding: 0.2em 0.3em;
+    font-size: 2em;
+    .rounded();
+    .pointer();
+  }
+
+  .track--selected {
+    background-color: @color-primary;
+    color: @color-white;
+  }
+}

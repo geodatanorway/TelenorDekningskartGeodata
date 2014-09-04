@@ -21,7 +21,9 @@ class ViewModel {
     this.searchResults = ko.observableArray();
 
     this.shouldShowPanel = ko.observable(false);
-    
+
+    this.trackUser = ko.observable(false);
+
     this.show2g = ko.observable(true);
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
@@ -39,11 +41,11 @@ class ViewModel {
         break;
       }
     });
-    
+
     this.togglePanelVisibility = function() {
         self.shouldShowPanel(!self.shouldShowPanel());
     };
-    
+
     this.layers = ko.pureComputed(() => {
       var layers = [];
       if (this.outdoors() === "true") {
@@ -67,7 +69,7 @@ class ViewModel {
     this.layers.subscribe(newValue => {
       map.setLayers(newValue);
     });
-    
+
     this.mapKeys = function() {
         $("#searchResults").children().each(function( index, value ) {
             $(value).keydown(function( event ) {
@@ -82,10 +84,10 @@ class ViewModel {
                 }
             });
         });
-        
+
         $("#searchResults").children().first().focus();
     };
-    
+
     map.on("loading", () => NProgress.start());
     map.on("load",    () => NProgress.done());
 
@@ -95,6 +97,11 @@ class ViewModel {
         self.searchResults(rows);
       });
     });
+
+    this.onTrackUserClicked = () => {
+      self.trackUser(!self.trackUser());
+      map.toggleTrackUser();
+    };
 
     this.onSuggestionClicked = (item) => {
       map.centerAt(item.lat, item.lon);
@@ -112,7 +119,7 @@ class ViewModel {
       if (event.which === 40) {
           self.mapKeys();
       }
-      
+
       return true;
     };
   }
