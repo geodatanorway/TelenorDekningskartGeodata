@@ -3,18 +3,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
         <link rel="stylesheet" type="text/css" href="<%= appCss %>" />
-        <!--
-          Apple-Specific Meta Tag Keys
-          https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html#//apple_ref/doc/uid/TP40008193-SW2
-        -->
+
         <!-- Sets whether a web application runs in full-screen mode -->
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <!-- Sets the style of the status bar for a web application -->
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <title>Telenor Dekning</title>
-        <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
     </head>
     <body>
         <div class="container">
@@ -60,7 +58,10 @@
                 </ul>
             </div>
         </div>
-        <script src="http://js.arcgis.com/3.10compact/"></script>
+
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>
+
         <script src="<%= appJs %>"></script>
     </body>
 </html>

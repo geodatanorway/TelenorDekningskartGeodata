@@ -5,7 +5,6 @@ var $ = require('zepto-browserify').$;
 
 var viewModel = new ViewModel();
 
-
 $(document).on("click", e => {
   if (!$(e.target).closest("#searchResults").length) {
     viewModel.clearSearchResults();
