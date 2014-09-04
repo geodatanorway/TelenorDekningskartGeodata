@@ -22,7 +22,6 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/ge
 
   map.on("load", () => {
     eventBus.emit("map:load");
-    console.dir(map.spatialReference);
   });
 
   var DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";

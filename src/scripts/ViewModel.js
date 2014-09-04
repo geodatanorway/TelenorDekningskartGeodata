@@ -1,6 +1,6 @@
 var ko = require('knockout');
 //var Rx = require('rx');
-var koRx = require('./knockoutRx');
+//var koRx = require('./knockoutRx');
 var async = require('./async');
 var ajax = require('./ajax');
 var _ = require('lodash');
@@ -42,7 +42,7 @@ class ViewModel {
           var coords = results.data;
           var suggestions = results.suggestions;
           var types = results.type;
-          var joinedPoints = encodeURIComponent(coords.join("\n"));
+          var joinedPoints = encodeURIComponent(coords.join(",\n"));
           var pointResults = yield ajax.jsonp(self.geometryUrl + "?inSR=32633&outSR=102100&geometries=" + joinedPoints + "&f=pjson");
           var geometries = pointResults.geometries;
 
