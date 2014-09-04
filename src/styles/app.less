@@ -67,7 +67,7 @@ body,
     background-color: #fff;
     display: block;
     position: absolute;
-    top: 10%;
+    top: 2%;
     left:50%;
     margin-left: -@panelWidth / 2;
     border-radius: 4px;
@@ -111,7 +111,7 @@ body,
 
 #searchBar {
     position: absolute;
-    top: 10%;
+    top: 2%;
     left: 50%;
     margin-left: -@searchBarWidth / 2;
     z-index: 50;
@@ -193,7 +193,7 @@ body,
 @media all and (max-width: 550px) {
     #panel {
         width: @panelWidth / 2;
-        margin-left: -@panelWidth / 4;
+        margin-left: (-@panelWidth / 4) - 3;
     }
     #searchBar {
         width: @searchBarWidth / 2;
@@ -217,5 +217,9 @@ body,
         display: inline-block;
         margin-left: auto;
         margin-right: auto;
+    }
+    
+    .leaflet-control-zoom {
+        display: none;
     }
 }
