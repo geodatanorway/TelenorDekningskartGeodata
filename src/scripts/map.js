@@ -34,7 +34,7 @@ map.on('locationfound', e => {
 });
 map.on('locationerror', e => {
   var code = e.code;
-  var positionUnavailable = (code == 2);
+  var positionUnavailable = (code === 2);
   if (positionUnavailable) {
     eventBus.emit('location:denied');
   }
