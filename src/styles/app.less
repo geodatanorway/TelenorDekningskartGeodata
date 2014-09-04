@@ -1,15 +1,15 @@
 /* ==========================================================================
    Imports
    ========================================================================== */
-   @import 'globals';
-   @import "normalize.less";
+@import 'globals';
+@import "normalize.less";
 
 /* ==========================================================================
    Variables
    ========================================================================== */
 
-   @searchBarWidth: 588px;
-   @panelWidth: 588px;
+@searchBarWidth: 588px;
+@panelWidth: 588px;
 
 /* ==========================================================================
    Selectors
@@ -140,10 +140,9 @@ body,
         height: 41px;
         right: 15px;
         position: absolute;
-        content: 'Sjekk rino' !important;
 
         &:before {
-            content: 'Sjekk dekning';
+            content: 'Filter';
         }
     }
 
@@ -166,21 +165,53 @@ body,
     }
 }
 
+.groups {
+    padding: 10px;
+    zoom: 1;
+}
 
+.groups:before,
+.groups:after {
+    content: ' ';
+    display: table;
+}
+
+.groups:after {
+    clear: both;
+}
+
+.group {
+    float: left;
+    width: 33.3%;
+    margin:0 0 40px;
+}
 
 @media all and (max-width: 550px) {
     #panel {
-        display: none;
+        width: @panelWidth / 2;
+        margin-left: -@panelWidth / 4;
     }
     #searchBar {
         width: @searchBarWidth / 2;
         margin-left: -@searchBarWidth / 4;
         input {
             width: 58%;
-            background-color: #fff;
         }
-        button:before {
-            content: 'Sjekk';
-        }
+    }
+    .groups {
+        zoom: 0.8;
+    }
+    
+    .group {
+        float: none;
+        width: 100%;
+        clear: both;
+        margin:0 0 30px;
+    }
+    
+    .group div {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

@@ -24,35 +24,42 @@
                 <div class="nowShowing">
                     <label class="showsNow">Viser nå:</label><label class="dataShown">Tale/data, 4G, 3G, 2G, Innendørs</label>
                 </div>
-                <div class="settings">
-                    <table class="settingsTable">
-                        <tr>
-                            <td>
-                                <div>
-                                    <input type="radio" name="type" value="Tale/data" checked="checked">Tale/data<br>
-                                    <input type="radio" name="type" value="Trådløs sone">Trådløs sone<br>
-                                    <input type="radio" name="type" value="Under utbygging">Under utbygging
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <input type="checkbox" name="dataspeed" value="4G" data-bind="checked: show4g">4G (Inntil 50 Mbit/s)<br>
-                                    <input type="checkbox" name="dataspeed" value="3G" data-bind="checked: show3g">3G<br>
-                                    <input type="checkbox" name="dataspeed" value="2G" data-bind="checked: show2g" >2G
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <input type="radio" name="zone" value="Innendørs" checked="checked">Innendørs<br>
-                                    <input type="radio" name="zone" value="Utendørs">Utendørs
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="settings groups">
+                    <div class="group">
+                        <div>
+                            <input type="radio" name="type" value="Tale/data" checked="checked">Tale/data
+                        </div>
+                        <div>
+                            <input type="radio" name="type" value="Trådløs sone">Trådløs sone
+                        </div>
+                        <div>
+                            <input type="radio" name="type" value="Under utbygging">Under utbygging
+                        </div>             
+                    </div>
+                    <div class="group">
+                        <div>
+                            <input type="checkbox" name="dataspeed" value="4G" data-bind="checked: show4g">4G (Inntil 50 Mbit/s)
+                        </div>
+                        <div>
+                            <input type="checkbox" name="dataspeed" value="3G" data-bind="checked: show3g">3G
+                        </div>
+                        <div>
+                            <input type="checkbox" name="dataspeed" value="2G" data-bind="checked: show2g" >2G
+                        </div>   
+                    </div>
+                    <div class="group">
+                        <div>
+                            <input type="radio" name="zone" value="Innendørs" checked="checked">Innendørs
+                        </div>
+                        <div>
+                            <input type="radio" name="zone" value="Utendørs">Utendørs
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="searchBar">
-                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
+                <input placeholder="Adresse" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
+                <button></button>
                 <ul id="searchResults" data-bind="foreach: searchResults">
                     <li data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
