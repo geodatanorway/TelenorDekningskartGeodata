@@ -4,8 +4,9 @@ var P = require('bluebird');
 function getJsonp(url) {
   return new P((resolve, reject) => {
     jsonp(url, function(err, data) {
-      if (err)
-        reject(err);
+      var e;
+      if (e = (err || data.error))
+        reject(e);
       else
         resolve(data);
     });

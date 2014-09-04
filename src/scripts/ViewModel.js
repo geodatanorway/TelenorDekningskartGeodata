@@ -25,11 +25,15 @@ class ViewModel {
       map.centerAt(item.x, item.y);
     };
 
-    $(document).on("click", e => {
-      if (!$(e.target).closest("#searchResults").length) {
-        this.searchResults.removeAll();
-      }
-    });
+    // $(document).on("click", e => {
+    //   if (!$(e.target).closest("#searchResults").length) {
+    //     this.searchResults.removeAll();
+    //   }
+    // });
+
+    this.clearSearchResults = (event) => {
+      this.searchResults.removeAll();
+    };
 
     this.searchTextThrottled.subscribe(newValue => {
       async(function * () {
@@ -38,7 +42,7 @@ class ViewModel {
           var coords = results.data;
           var suggestions = results.suggestions;
           var types = results.type;
-          var joinedPoints = encodeURIComponent(coords.join(",\n"));
+          var joinedPoints = encodeURIComponent(coords.join("\n"));
           var pointResults = yield ajax.jsonp(self.geometryUrl + "?inSR=32633&outSR=102100&geometries=" + joinedPoints + "&f=pjson");
           var geometries = pointResults.geometries;
 

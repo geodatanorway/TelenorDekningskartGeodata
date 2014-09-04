@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div id="searchBar">
-                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown']" />
+                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { blur: clearSearchResults }" />
                 <button></button>
 
                 <ul id="searchResults" data-bind="foreach: searchResults">
