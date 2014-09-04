@@ -1,26 +1,27 @@
-var browserify  = require('browserify'),
-    buffer      = require('vinyl-buffer'),
-    connect     = require('connect'),
-    debug       = require('gulp-debug'),
-    embedlr     = require('gulp-embedlr'),
-    es6ify      = require('es6ify'),
-    gulp        = require('gulp'),
-    gulpif      = require('gulp-if'),
-    jshint      = require('gulp-jshint'),
-    less        = require('gulp-less'),
-    livereload  = require('gulp-livereload'),
-    mincss      = require('gulp-minify-css'),
-    minhtml     = require('gulp-htmlmin'),
-    notify      = require('gulp-notify'),
-    openBrowser = require('open'),
-    rev         = require('gulp-rev'),
-    rimraf      = require('rimraf'),
-    serveStatic = require('serve-static'),
-    source      = require('vinyl-source-stream'),
-    sourcemaps  = require('gulp-sourcemaps'),
-    template    = require('gulp-template'),
-    uglify      = require('gulp-uglify'),
-    watchify    = require('watchify')
+var autoprefix = require('gulp-autoprefixer'),
+    browserify = require('browserify'),
+    buffer     = require('vinyl-buffer'),
+    connect    = require('connect'),
+    debug      = require('gulp-debug'),
+    embedlr    = require('gulp-embedlr'),
+    es6ify     = require('es6ify'),
+    gulp       = require('gulp'),
+    gulpif     = require('gulp-if'),
+    jshint     = require('gulp-jshint'),
+    less       = require('gulp-less'),
+    livereload = require('gulp-livereload'),
+    mincss     = require('gulp-minify-css'),
+    minhtml    = require('gulp-htmlmin'),
+    notify     = require('gulp-notify'),
+    openBrowser= require('open'),
+    rev        = require('gulp-rev'),
+    rimraf     = require('rimraf'),
+    serveStatic= require('serve-static'),
+    source     = require('vinyl-source-stream'),
+    sourcemaps = require('gulp-sourcemaps'),
+    template   = require('gulp-template'),
+    uglify     = require('gulp-uglify'),
+    watchify   = require('watchify')
     ;
 
 var FILES_SRC          = './src',
@@ -48,7 +49,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 gulp.task('clean',      clean(FOLDER_TARGET));
 gulp.task('server',     startServer(FOLDER_TARGET));
 gulp.task('lint',       lint(FILES_JS, isProduction));
-gulp.task('styles',     styles(FILE_LESS_ENTRY, isProduction, FOLDER_CSS_TARGET));
+gulp.task('styles',     styles(FILE_LESS_ENTRY, isProduction, FILE_CSS_TARGET, FOLDER_CSS_TARGET));
 gulp.task('static',              compileStatic(FILE_INDEX, isProduction, FOLDER_TARGET));
 gulp.task('static-rev', ['rev'], compileStatic(FILE_INDEX, isProduction, FOLDER_TARGET));
 gulp.task('scripts',    ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET));
@@ -104,11 +105,12 @@ function lint (jsFiles, isProduction) {
 }
 
 /** Compiles less. Minifies or creates source maps. */
-function styles (lessEntryPoint, minify, targetFolder) {
+function styles (lessEntryPoint, minify, targetCssFile, targetFolder) {
   return function () {
     return gulp.src(lessEntryPoint)
       .pipe(gulpif(!minify, sourcemaps.init()))
       .pipe(less())
+      .pipe(autoprefix({ map: !minify }))
       .pipe(gulpif(!minify, sourcemaps.write()))
       .pipe(gulpif(minify, mincss({
         // https://github.com/jonathanepollack/gulp-minify-css

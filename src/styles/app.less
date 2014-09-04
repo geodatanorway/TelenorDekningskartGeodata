@@ -15,9 +15,9 @@
    Selectors
    ========================================================================== */
 
-   html,
-   body,
-   #mapDiv {
+html,
+body,
+#mapDiv {
     padding: 0;
     margin: 0;
     height: 100%;
@@ -30,26 +30,23 @@
     position: relative;
     background-color: #fff;
 }
+
 #map {
     text-align: center;
     width: 100%;
     height: 100% !important;
+}
 
+#mapDiv_layer0 img {
+    filter: grayscale(1);
 }
 
 .leaflet-tile-pane img {
-    filter: url(filters.svg#grayscale) !important; /* Firefox 3.5+ */
-    filter: gray !important; /* IE5+ */
-    -webkit-filter: grayscale(1) !important; /* Webkit Nightlies &amp; Chrome Canary */
-}
-
-.filter(@filter){
-    -webkit-filter: @filter;
-    filter: @filter;
+    filter: grayscale(1);
 }
 
 .leaflet-objects-pane img {
-    .filter(blur(3px));
+    filter: blur(3px);
 }
 
 #panel {
@@ -62,11 +59,7 @@
     top: 10%;
     left:50%;
     margin-left: -@panelWidth / 2;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
 
     .searchBarPlaceholder {
@@ -118,8 +111,6 @@
 
     input {
         background-color: #e8e9eb;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
         border-radius: 4px;
         outline: none;
         -webkit-appearance: none; box-shadow: none !important;
@@ -134,8 +125,6 @@
     button {
         background-color: #00ace8;
         color: #fff;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
         border-radius: 4px;
         outline: none;
         -webkit-appearance: none; box-shadow: none !important;
