@@ -61,15 +61,10 @@ class ViewModel {
 
           var rows = [];
           for (var i = 0; i < coords.length; i++) {
-            var {
-              x: lon,
-              y: lat
-            } = geometries[i];
+            var { x: lon, y: lat } = geometries[i];
             var suggestion = suggestions[i];
             var type = types[i];
-            var row = {
-              lat, lon, suggestion, type
-            };
+            var row = { lat, lon, suggestion, type }; // jshint ignore:line
             rows.push(row);
           }
           self.searchResults(rows);
