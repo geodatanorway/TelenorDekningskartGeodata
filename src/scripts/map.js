@@ -3,7 +3,9 @@ var _ = require('lodash');
 var layers = [3, 7, 9];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
-var map = L.map('mapDiv').setView(trondheim, 6);
+var InitialZoom = 6;
+var CenterZoom = 12;
+var map = L.map('mapDiv').setView(trondheim, InitialZoom);
 L.esri.basemapLayer('Streets').addTo(map);
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
@@ -29,7 +31,8 @@ dekningLayer.on("load", event => {
 dekningLayer.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
-  token: GeodataToken
+  token: GeodataToken,
+  where: "1=1"
 });
 wifiLayer.addTo(map);
 
@@ -50,7 +53,7 @@ module.exports = _.extend(eventBus, {
   },
 
   centerAt: (lat, lon) => {
-    map.setView(L.latLng(lat, lon), 12);
+    map.setView(L.latLng(lat, lon), CenterZoom);
   }
 
 });
