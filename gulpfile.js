@@ -1,3 +1,4 @@
+try {
 var autoprefix  = require('gulp-autoprefixer'),
     browserify  = require('browserify'),
     buffer      = require('vinyl-buffer'),
@@ -25,6 +26,10 @@ var autoprefix  = require('gulp-autoprefixer'),
     uglify      = require('gulp-uglify'),
     watchify    = require('watchify')
     ;
+} catch (e) {
+  console.error('Some packages are missing, you need to:\n  npm install');
+  process.exit(1);
+}
 
 var FILES_SRC            = './src',
     FOLDER_JS            = FILES_SRC + '/scripts',
