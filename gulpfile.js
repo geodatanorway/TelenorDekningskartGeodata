@@ -214,7 +214,7 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
 
     function rebundle () {
       var stream = bundler.bundle();
-      return stream.on('error', handleErrors('Browserify'))
+      return gulpif(minify, stream, stream.on('error', handleErrors('Browserify')))
         .pipe(source(jsTargetFile))
         .pipe(buffer())
         .pipe(gulpif(minify, uglify()))
