@@ -30,9 +30,7 @@ exports.autoComplete = async(function * (query) {
     } = geometries[i];
     var suggestion = suggestions[i];
     var type = types[i];
-    var row = {
-      lat, lon, suggestion, type
-    }; // jshint ignore:line
+    var row = { lat, lon, suggestion, type }; // jshint ignore:line
     rows.push(row);
   }
   return rows;
