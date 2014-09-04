@@ -1,29 +1,30 @@
-var autoprefix = require('gulp-autoprefixer'),
-    browserify = require('browserify'),
-    buffer     = require('vinyl-buffer'),
-    connect    = require('connect'),
-    cache      = require('gulp-cache'),
-    debug      = require('gulp-debug'),
-    embedlr    = require('gulp-embedlr'),
-    es6ify     = require('es6ify'),
-    gulp       = require('gulp'),
-    gulpif     = require('gulp-if'),
-    imagemin   = require('gulp-imagemin'),
-    jshint     = require('gulp-jshint'),
-    less       = require('gulp-less'),
-    livereload = require('gulp-livereload'),
-    mincss     = require('gulp-minify-css'),
-    minhtml    = require('gulp-htmlmin'),
-    notify     = require('gulp-notify'),
-    openBrowser= require('open'),
-    rev        = require('gulp-rev'),
-    rimraf     = require('rimraf'),
-    serveStatic= require('serve-static'),
-    source     = require('vinyl-source-stream'),
-    sourcemaps = require('gulp-sourcemaps'),
-    template   = require('gulp-template'),
-    uglify     = require('gulp-uglify'),
-    watchify   = require('watchify')
+var autoprefix  = require('gulp-autoprefixer'),
+    browserify  = require('browserify'),
+    buffer      = require('vinyl-buffer'),
+    connect     = require('connect'),
+    cache       = require('gulp-cache'),
+    debug       = require('gulp-debug'),
+    embedlr     = require('gulp-embedlr'),
+    es6ify      = require('es6ify'),
+    gulp        = require('gulp'),
+    gulpif      = require('gulp-if'),
+    imagemin    = require('gulp-imagemin'),
+    jshint      = require('gulp-jshint'),
+    less        = require('gulp-less'),
+    livereload  = require('gulp-livereload'),
+    mincss      = require('gulp-minify-css'),
+    minhtml     = require('gulp-htmlmin'),
+    notify      = require('gulp-notify'),
+    openBrowser = require('open'),
+    plumber     = require('gulp-plumber'),
+    rev         = require('gulp-rev'),
+    rimraf      = require('rimraf'),
+    serveStatic = require('serve-static'),
+    source      = require('vinyl-source-stream'),
+    sourcemaps  = require('gulp-sourcemaps'),
+    template    = require('gulp-template'),
+    uglify      = require('gulp-uglify'),
+    watchify    = require('watchify')
     ;
 
 var FILES_SRC            = './src',
@@ -61,11 +62,12 @@ gulp.task('static-rev', ['rev'], compileStatic(FILE_INDEX, isProduction, FOLDER_
 gulp.task('scripts',    ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET));
 gulp.task('scripts-w',  ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET, true));
 gulp.task('rev',        ['scripts', 'styles'], revisions(FOLDER_TARGET, isProduction));
-gulp.task('compile',    ['static-rev']);
+gulp.task('compile',    ['static-rev', 'images']);
 gulp.task('default',    ['compile']);
-gulp.task('watch',      ['scripts-w', 'styles', 'static', 'server'], function () {
-  gulp.watch(FILES_HTML, ['static']);
-  gulp.watch(FILES_LESS, ['styles']);
+gulp.task('watch',      ['scripts-w', 'images', 'styles', 'static', 'server'], function () {
+  gulp.watch(FILES_HTML,   ['static']);
+  gulp.watch(FILES_LESS,   ['styles']);
+  gulp.watch(FILES_IMAGES, ['images']);
 
   livereload.listen();
   gulp.watch(FILES_ALL_COMPILED).on('change', livereload.changed);
