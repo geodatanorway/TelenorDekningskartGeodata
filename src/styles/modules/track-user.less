@@ -3,6 +3,12 @@
   bottom: 1em;
   left: 1em;
 
+  transition: all 1s;
+  opacity: 0;
+  &.track-user--visible {
+    opacity: 1;
+  }
+
   .track {
     background-color: @color-white;
     color: @color-disabled;

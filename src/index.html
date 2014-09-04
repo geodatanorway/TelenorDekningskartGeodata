@@ -61,7 +61,7 @@
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
             </div>
-            <div class="track-user">
+            <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }">
               <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
             </div>
         </div>

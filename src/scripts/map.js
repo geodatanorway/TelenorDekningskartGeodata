@@ -25,11 +25,19 @@ L.esri.basemapLayer('Streets').addTo(map);
 var userLocationMarker, opts = { icon: icons.MyLocation };
 map.locate({ setView: true, maxZoom: 14, enableHighAccuracy: true });
 map.on('locationfound', e => {
+  eventBus.emit('location:found');
   if (userLocationMarker) {
     map.removeLayer(userLocationMarker);
   }
   userLocationMarker = L.marker(e.latlng, opts);
   userLocationMarker.addTo(map);
+});
+map.on('locationerror', e => {
+  var code = e.code;
+  var positionUnavailable = (code == 2);
+  if (positionUnavailable) {
+    eventBus.emit('location:denied');
+  }
 });
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
