@@ -1,6 +1,4 @@
 var ko = require('knockout');
-//var Rx = require('rx');
-//var koRx = require('./knockoutRx');
 var async = require('./async');
 var ajax = require('./ajax');
 var _ = require('lodash');
@@ -19,6 +17,10 @@ class ViewModel {
       }
     });
     this.searchResults = ko.observableArray();
+
+    this.show2g = ko.observable(true);
+    this.show3g = ko.observable(true);
+    this.show4g = ko.observable(true);
 
     this.onSuggestionClicked = (item) => {
       map.centerAt(item.x, item.y);
