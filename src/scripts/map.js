@@ -1,17 +1,27 @@
+var EventEmitter = require('events').EventEmitter;
+var _ = require('lodash');
 var layers = [3, 7, 9];
 var trondheim = L.latLng(63.430494, 10.395056);
-
+var eventBus = new EventEmitter();
 var map = L.map('mapDiv').setView(trondheim, 9);
 L.esri.basemapLayer('Topographic').addTo(map);
 
 var dekningLayer = L.esri.dynamicMapLayer("http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer", {
   opacity: 0.4,
   token: "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs",
-  layers: layers
+  layers: layers,
+
+});
+dekningLayer.on("loading", event => {
+  eventBus.emit("loading");
+});
+dekningLayer.on("load", event => {
+  eventBus.emit("load");
 });
 dekningLayer.addTo(map);
 
-module.exports = {
+
+module.exports = _.extend(eventBus, {
   Mobile2G: 9,
   Mobile3G: 7,
   Mobile4G: 3,
@@ -39,4 +49,4 @@ module.exports = {
     map.setView(L.latLng(lat, lon));
   }
 
-};
+});

@@ -24,6 +24,14 @@ class ViewModel {
 
     this.isLoading = ko.observable();
 
+    map.on("loading", () => {
+      this.isLoading(true);
+    });
+
+    map.on("load", () => {
+      this.isLoading(false);
+    })
+
     this.show2g.subscribe(newValue => {
       map.setLayerVisible(map.Mobile2G, newValue);
     });
