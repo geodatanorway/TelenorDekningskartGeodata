@@ -1,6 +1,6 @@
 var ko = require('knockout');
 var $ = require('zepto-browserify').$;
-var NProgress = require('NProgress');
+var NProgress = require('nprogress');
 
 var map = require('./map');
 var ViewModel = require('./ViewModel');

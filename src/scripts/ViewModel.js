@@ -1,6 +1,6 @@
 var ko = require('knockout');
 var _ = require('lodash');
-var NProgress = require('NProgress');
+var NProgress = require('nprogress');
 
 var map = require('./map');
 var geodata = require('./geodata');

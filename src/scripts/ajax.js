@@ -1,6 +1,6 @@
 var jsonp = require('jsonp');
 var P = require('bluebird');
-var NProgress = require('NProgress');
+var NProgress = require('nprogress');
 
 function getJsonp(url) {
   return new P((resolve, reject) => {
