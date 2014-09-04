@@ -7,6 +7,7 @@ function getJsonp(url) {
     NProgress.start();
     jsonp(url, function(err, data) {
       NProgress.done();
+      data = data || {};
       var e = (err || data.error);
       if (e)
         reject(e);
