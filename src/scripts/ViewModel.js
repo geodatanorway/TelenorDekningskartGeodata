@@ -1,5 +1,6 @@
 var ko = require('knockout');
 var _ = require('lodash');
+var $ = require('zepto-browserify').$;
 var NProgress = require('nprogress');
 
 var map = require('./map');
@@ -66,7 +67,25 @@ class ViewModel {
     this.layers.subscribe(newValue => {
       map.setLayers(newValue);
     });
-
+    
+    this.mapKeys = function() {
+        $("#searchResults").children().each(function( index, value ) {
+            $(value).keydown(function( event ) {
+                if (event.which == 40) {
+                    $(value).next().focus();
+                }
+                if (event.which == 38) {
+                    $(value).prev().focus();
+                }
+                if (event.which == 13) {
+                    $(value).click();
+                }
+            });
+        });
+        
+        $("#searchResults").children().first().focus();
+    }
+    
     map.on("loading", () => NProgress.start());
     map.on("load",    () => NProgress.done());
 
@@ -90,6 +109,10 @@ class ViewModel {
       if (event.which === 27) { // escape
         this.clearSearchResults();
       }
+      if (event.which === 40) {
+          self.mapKeys();
+      }
+      
       return true;
     };
   }

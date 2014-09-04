@@ -57,8 +57,8 @@
             <div id="searchBar">
                 <input placeholder="Adresse" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
                 <button data-bind="click: togglePanelVisibility"></button>
-                <ul id="searchResults" data-bind="foreach: searchResults">
-                    <li data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
+                <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults">
+                    <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
             </div>
         </div>
