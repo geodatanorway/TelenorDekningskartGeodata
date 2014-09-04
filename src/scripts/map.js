@@ -37,7 +37,6 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: GeodataToken,
   where: "1=1"
 });
-wifiLayer.addTo(map);
 
 module.exports = _.extend(eventBus, {
   Layers: {
@@ -57,6 +56,13 @@ module.exports = _.extend(eventBus, {
 
   centerAt: (lat, lon) => {
     map.setView(L.latLng(lat, lon), CenterZoom);
+  },
+
+  setWifiVisibility: (visible) => {
+    if(visible)
+      map.addLayer(wifiLayer);
+    else
+      map.removeLayer(wifiLayer);
   }
 
 });

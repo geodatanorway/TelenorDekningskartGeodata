@@ -26,6 +26,18 @@ class ViewModel {
     this.show4g = ko.observable(true);
     this.outdoors = ko.observable("true");
     this.mode = ko.observable("Dekning");
+    this.mode.subscribe(newValue => {
+      switch(newValue){
+        case "Dekning":
+        map.setWifiVisibility(false);
+        map.setLayers(this.layers());
+        break;
+        case "Wifi":
+        map.setWifiVisibility(true);
+        map.setLayers([]);
+        break;
+      }
+    });
     
     this.togglePanelVisibility = function() {
         self.shouldShowPanel(!self.shouldShowPanel());
