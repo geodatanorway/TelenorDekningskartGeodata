@@ -13,7 +13,7 @@ const AnimateDuration = 0.5;
 var map = L.map('mapDiv', {zoomAnimationThreshold: 8}).setView(trondheim, InitialZoom, {animate: true, pan: {duration: AnimateDuration}, zoom: {duration: AnimateDuration}});
 L.esri.basemapLayer('Streets').addTo(map);
 
-map.locate({ setView: true, maxZoom: 13 });
+map.locate({ setView: true, maxZoom: 13, enableHighAccuracy: true });
 map.on('locationfound', e => L.marker(e.latlng, { icon: myLocationMarker }).addTo(map));
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
