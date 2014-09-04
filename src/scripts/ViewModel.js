@@ -22,6 +22,16 @@ class ViewModel {
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
 
+    this.show2g.subscribe(newValue => {
+      map.setLayerVisible(map.Mobile2G, newValue);
+    });
+    this.show3g.subscribe(newValue => {
+      map.setLayerVisible(map.Mobile3G, newValue);
+    })
+    this.show4g.subscribe(newValue => {
+      map.setLayerVisible(map.Mobile4G, newValue);
+    })
+
     this.onSuggestionClicked = (item) => {
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();

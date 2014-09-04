@@ -11,16 +11,32 @@ var dekningLayer = L.esri.dynamicMapLayer("http://153.110.250.77/arcgis/rest/ser
 });
 dekningLayer.addTo(map);
 
-module.exports.toggleLayer = id => {
-  var index = layers.indexOf(id);
-  if(index < 0){
-    layers.push(id);
-  } else {
-    layers.splice(index, 1);
-  }
-  dekningLayer.setLayers(layers);
-};
+module.exports = {
+  Mobile2G: 9,
+  Mobile3G: 7,
+  Mobile4G: 3,
+  toggleLayer: id => {
+    var index = layers.indexOf(id);
+    if (index < 0) {
+      layers.push(id);
+    } else {
+      layers.splice(index, 1);
+    }
+    dekningLayer.setLayers(layers);
+  },
 
-module.exports.centerAt = (lat, lon) => {
-  map.setView(L.latLng(lat, lon));
+  setLayerVisible: (id, visible) => {
+    var index = layers.indexOf(id);
+    if (index < 0 && visible) {
+      layers.push(id);
+    } else if (index >= 0 && !visible) {
+      layers.splice(index, 1);
+    }
+    dekningLayer.setLayers(layers);
+  },
+
+  centerAt: (lat, lon) => {
+    map.setView(L.latLng(lat, lon));
+  }
+
 };
