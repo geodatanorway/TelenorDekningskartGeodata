@@ -58,10 +58,6 @@ body,
     filter: blur(3px);
 }
 
-.leaflet-control-zoom {
-  display: none;
-}
-
 #panel {
     min-width: 300px;
     width: @panelWidth;
@@ -154,6 +150,7 @@ body,
 
     #searchResults {
         width: @panelWidth - 40;
+        max-height: 500px;
         margin-left: auto;
         margin-right: auto;
         margin-top: 48px;
@@ -231,7 +228,7 @@ body,
     }
     
     #searchResults {
-        max-height: 300px;
+        max-height: 300px !important;
         width: 280px !important;
     }
 }

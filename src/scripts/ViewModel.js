@@ -19,12 +19,18 @@ class ViewModel {
     });
     this.searchResults = ko.observableArray();
 
+    this.shouldShowPanel = ko.observable(false);
+    
     this.show2g = ko.observable(true);
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
     this.outdoors = ko.observable("true");
     this.mode = ko.observable("Dekning");
-
+    
+    this.togglePanelVisibility = function() {
+        self.shouldShowPanel(!self.shouldShowPanel());
+    };
+    
     this.layers = ko.pureComputed(() => {
       var layers = [];
       if (this.outdoors() === "true") {

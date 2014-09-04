@@ -19,7 +19,7 @@
             <div id="mapDiv">
                 <!-- <div id="basemapToggle"></div> -->
             </div>
-            <div id="panel" name="panel">
+            <div id="panel" data-bind="visible: shouldShowPanel">
                 <div class="searchBarPlaceholder"></div>
                 <div class="nowShowing">
                     <label class="showsNow">Viser nå:</label><label class="dataShown">Tale/data, 4G, 3G, 2G, Innendørs</label>
@@ -56,7 +56,7 @@
             </div>
             <div id="searchBar">
                 <input placeholder="Adresse" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
-                <button></button>
+                <button data-bind="click: togglePanelVisibility"></button>
                 <ul id="searchResults" data-bind="foreach: searchResults">
                     <li data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
