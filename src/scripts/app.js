@@ -1,7 +1,13 @@
-var map = require('./map');
 var ko = require('knockout');
-var ViewModel = require('./ViewModel');
 var $ = require('zepto-browserify').$;
+var NProgress = require('NProgress');
+
+var map = require('./map');
+var ViewModel = require('./ViewModel');
+
+
+NProgress.start();
+map.on('load', () => NProgress.done());
 
 var viewModel = new ViewModel();
 
@@ -11,11 +17,4 @@ $(document).on("click", e => {
   }
 });
 
-
 ko.applyBindings(viewModel);
-
-
-
-//var searchBar = require('./search');
-// console.log(map);
-// console.log(searchBar);

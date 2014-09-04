@@ -1,9 +1,11 @@
 var ko = require('knockout');
-var async = require('./async');
-var ajax = require('./ajax');
 var _ = require('lodash');
+var NProgress = require('NProgress');
+
 var map = require('./map');
 var geodata = require('./geodata');
+var async = require('./async');
+var ajax = require('./ajax');
 
 class ViewModel {
   constructor() {
@@ -47,15 +49,8 @@ class ViewModel {
       map.setLayers(newValue);
     });
 
-    this.isLoading = ko.observable();
-
-    map.on("loading", () => {
-      this.isLoading(true);
-    });
-
-    map.on("load", () => {
-      this.isLoading(false);
-    });
+    map.on("loading", () => NProgress.start());
+    map.on("load",    () => NProgress.done());
 
     this.searchTextThrottled.subscribe(newValue => {
       async(function * () {

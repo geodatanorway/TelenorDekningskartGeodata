@@ -1,3 +1,5 @@
+var NProgress = require('NProgress');
+
 var ajax = require('./ajax');
 var async = require('./async');
 
@@ -6,12 +8,19 @@ var SearchUrl = "http://ws.geodataonline.no/search/geodataservice/autocomplete?t
     var GeometryUrl = "http://services2.geodataonline.no/arcgis/rest/services/Utilities/Geometry/GeometryServer/project";
 exports.autoComplete = (query) => {
   return async(function * () {
+    NProgress.start();
     var results = yield ajax.jsonp(SearchUrl + query);
+    NProgress.done();
+
     var coords = results.data;
     var suggestions = results.suggestions;
     var types = results.type;
     var joinedPoints = encodeURIComponent(coords.join(",\n"));
+
+    NProgress.start();
     var pointResults = yield ajax.jsonp(GeometryUrl + "?inSR=32633&outSR=4326&geometries=" + joinedPoints + "&f=pjson");
+    NProgress.done();
+
     var geometries = pointResults.geometries;
 
     var rows = [];
@@ -29,4 +38,4 @@ exports.autoComplete = (query) => {
     }
     return rows;
   });
-}
+};

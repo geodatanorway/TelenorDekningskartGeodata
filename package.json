@@ -43,6 +43,7 @@
     "jsonp": "0.0.4",
     "knockout": "^3.2.0",
     "lodash": "^2.4.1",
+    "nprogress": "^0.1.6",
     "open": "0.0.5",
     "rimraf": "^2.2.8",
     "serve-static": "^1.5.3",
