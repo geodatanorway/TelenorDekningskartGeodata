@@ -2,8 +2,21 @@ var map = require('./map');
 var ko = require('knockout');
 require('rx');
 var ViewModel = require('./ViewModel');
+var $ = require('zepto-browserify').$;
 
-ko.applyBindings(new ViewModel());
+var viewModel = new ViewModel();
+
+
+$(document).on("click", e => {
+  if (!$(e.target).closest("#searchResults").length) {
+    viewModel.clearSearchResults();
+  }
+});
+
+
+ko.applyBindings(viewModel);
+
+
 
 //var searchBar = require('./search');
 // console.log(map);

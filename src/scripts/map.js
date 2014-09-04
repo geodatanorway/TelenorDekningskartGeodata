@@ -15,7 +15,7 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/ge
   var map = new Map("mapDiv", {
     center: [10, 63],
     zoom: 5,
-    basemap: "streets"
+    basemap: "topo"
   });
 
   map.enableScrollWheelZoom();
@@ -28,7 +28,7 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/ge
   var DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer?token=" + DekningToken;
 
   var dekningsLayer = new ArcGISDynamicMapServiceLayer(DekningUrl, {
-    opacity: 0.5
+    opacity: 0.4
   });
   var layers = [3,7,9];
 
@@ -45,9 +45,10 @@ window.require(["esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/ge
     dekningsLayer.setVisibleLayers(layers);
   });
 
+  //TODO finn level utifra type
 
   eventBus.on('centerAt', ([x,y]) => {
-    map.centerAndZoom(new Point(x, y, new SpatialReference({wkid: 102100})), 8);
+    map.centerAndZoom(new Point(x, y, new SpatialReference({wkid: 102100})), 12);
   });
 
   // var toggle = new BasemapToggle({

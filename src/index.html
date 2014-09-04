@@ -54,9 +54,7 @@
                 </div>
             </div>
             <div id="searchBar">
-                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { blur: clearSearchResults }" />
-                <button></button>
-
+                <input placeholder="Søk etter adresse eller sted" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }" />
                 <ul id="searchResults" data-bind="foreach: searchResults">
                     <li data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>

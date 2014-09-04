@@ -5,7 +5,6 @@ var async = require('./async');
 var ajax = require('./ajax');
 var _ = require('lodash');
 var map = require('./map');
-var $ = require('zepto-browserify').$;
 
 class ViewModel {
   constructor() {
@@ -23,16 +22,18 @@ class ViewModel {
 
     this.onSuggestionClicked = (item) => {
       map.centerAt(item.x, item.y);
+      this.clearSearchResults();
     };
-
-    // $(document).on("click", e => {
-    //   if (!$(e.target).closest("#searchResults").length) {
-    //     this.searchResults.removeAll();
-    //   }
-    // });
 
     this.clearSearchResults = (event) => {
       this.searchResults.removeAll();
+    };
+
+    this.onKeyPressed = (vm, event) => {
+      if(event.which === 27) { // escape
+        this.clearSearchResults();
+      }
+      return true;
     };
 
     this.searchTextThrottled.subscribe(newValue => {

@@ -15,9 +15,9 @@
    Selectors
    ========================================================================== */
 
-html,
-body,
-#mapDiv {
+   html,
+   body,
+   #mapDiv {
     padding: 0;
     margin: 0;
     height: 100%;
@@ -34,7 +34,14 @@ body,
     text-align: center;
     width: 100%;
     height: 100% !important;
+
 }
+
+    #mapDiv_layer0 img {
+        filter: url(filters.svg#grayscale) !important; /* Firefox 3.5+ */
+        filter: gray !important; /* IE5+ */
+        -webkit-filter: grayscale(1) !important; /* Webkit Nightlies &amp; Chrome Canary */
+    }
 #panel {
     min-width: 300px;
     width: @panelWidth;
