@@ -22,6 +22,8 @@ class ViewModel {
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
 
+    this.isLoading = ko.observable();
+
     this.show2g.subscribe(newValue => {
       map.setLayerVisible(map.Mobile2G, newValue);
     });
