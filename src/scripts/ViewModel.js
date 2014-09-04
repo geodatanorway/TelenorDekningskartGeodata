@@ -22,6 +22,7 @@ class ViewModel {
     this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
     this.outdoors = ko.observable("true");
+    this.mode = ko.observable("Dekning");
 
     this.layers = ko.pureComputed(() => {
       var layers = [];

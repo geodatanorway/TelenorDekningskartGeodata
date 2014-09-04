@@ -27,16 +27,13 @@
                 <div class="settings groups">
                     <div class="group">
                         <div>
-                            <input type="radio" name="type" value="Tale/data" checked="checked">Tale/data
+                            <label><input type="radio" name="type" value="Dekning" data-bind="checked: mode">Mobildekning</label>
                         </div>
                         <div>
-                            <input type="radio" name="type" value="Trådløs sone">Trådløs sone
-                        </div>
-                        <div>
-                            <input type="radio" name="type" value="Under utbygging">Under utbygging
-                        </div>             
+                            <label><input type="radio" name="type" value="Wifi" data-bind="checked: mode">Trådløs sone</label>
+                        </div>          
                     </div>
-                    <div class="group">
+                    <div class="group" data-bind="visible: mode() == 'Dekning'">
                         <div>
                             <label><input type="checkbox" name="dataspeed" value="4G" data-bind="checked: show4g">4G (Inntil 50 Mbit/s)</label>
                         </div>
@@ -47,7 +44,7 @@
                             <label><input type="checkbox" name="dataspeed" value="2G" data-bind="checked: show2g" >2G</label>
                         </div>   
                     </div>
-                    <div class="group">
+                    <div class="group" data-bind="visible: mode() == 'Dekning'">
                         <div>
                             <label><input type="radio" name="zone" value="true" data-bind="checked: outdoors">Utendørs</label>
                         </div>

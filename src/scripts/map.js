@@ -8,14 +8,14 @@ L.esri.basemapLayer('Streets').addTo(map);
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
-
+const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
 // var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 //   token: GeodataToken,
 //   subdomains: ["s1", "s2", "s3", "s4", "s5"]
 // });
 // basemap.addTo(map);
 
-var dekningLayer = L.esri.dynamicMapLayer("http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer", {
+var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
   opacity: 0.5,
   token: GeodataToken,
   layers: layers,
@@ -28,6 +28,10 @@ dekningLayer.on("load", event => {
 });
 dekningLayer.addTo(map);
 
+var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
+  token: GeodataToken
+});
+wifiLayer.addTo(map);
 
 module.exports = _.extend(eventBus, {
   Layers: {
