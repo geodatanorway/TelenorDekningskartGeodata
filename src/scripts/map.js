@@ -1,8 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 
-var AwesomeMarkers = require('./libs/leaflet.awesome-markers');
-var myLocationMarker = AwesomeMarkers.icon({ markerColor: 'green' });
+var icons = require('./map-icons');
 
 var layers = [3, 7, 9];
 var trondheim = L.latLng(63.430494, 10.395056);
@@ -10,11 +9,24 @@ var eventBus = new EventEmitter();
 var InitialZoom = 6;
 var CenterZoom = 12;
 const AnimateDuration = 0.5;
-var map = L.map('mapDiv', {zoomAnimationThreshold: 8}).setView(trondheim, InitialZoom, {animate: true, pan: {duration: AnimateDuration}, zoom: {duration: AnimateDuration}});
+
+var map = L.map('mapDiv', {
+    zoomAnimationThreshold: 8,
+    inertiaDeceleration: 3500 // by experimentation..
+  })
+  .setView(trondheim, InitialZoom, {
+    animate: true,
+    pan: { duration: AnimateDuration },
+    klzoom: { duration: AnimateDuration }
+  });
+
 L.esri.basemapLayer('Streets').addTo(map);
 
 map.locate({ setView: true, maxZoom: 13, enableHighAccuracy: true });
-map.on('locationfound', e => L.marker(e.latlng, { icon: myLocationMarker }).addTo(map));
+map.on('locationfound', e => {
+  var opts = { icon: icons.MyLocation };
+  L.marker(e.latlng, opts).addTo(map);
+});
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
@@ -40,7 +52,10 @@ dekningLayer.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: GeodataToken,
-  where: "1=1"
+  where: "1=1",
+  pointToLayer: function (geojson, latlng) {
+    return L.marker(latlng, { icon: icons.Wifi });
+  }
 });
 
 module.exports = _.extend(eventBus, {
@@ -60,7 +75,11 @@ module.exports = _.extend(eventBus, {
   },
 
   centerAt: (lat, lon) => {
-    map.setView(L.latLng(lat, lon), CenterZoom, {animate: true, pan: {duration: AnimateDuration}, zoom: {duration: AnimateDuration}});
+    map.setView(L.latLng(lat, lon), CenterZoom, {
+      animate: true,
+      pan: { duration: AnimateDuration },
+      zoom: { duration: AnimateDuration }
+    });
   },
 
   setWifiVisibility: (visible) => {

@@ -35,13 +35,16 @@ var FILES_SRC            = './src',
     FOLDER_JS            = FILES_SRC + '/scripts',
     FOLDER_LESS          = FILES_SRC + '/styles',
     FOLDER_IMAGES        = FILES_SRC + '/images',
+    FOLDER_FONTS         = FILES_SRC + '/fonts',
     FILE_INDEX           = FILES_SRC + '/index.html',
     FILE_JS_ENTRY        = FOLDER_JS + '/app.js',
     FILE_LESS_ENTRY      = FOLDER_LESS + '/app.less',
     FILES_HTML           = [FILES_SRC     + '/*.html'],
+    FILES_CSS            = [FOLDER_LESS   + '/*.css', FOLDER_LESS + '/**/*.css'],
     FILES_LESS           = [FOLDER_LESS   + '/*.less', FOLDER_LESS + '/**/*.less'],
     FILES_JS             = [FOLDER_JS     + '/*.js',   FOLDER_JS + '/**/*.js'],
     FILES_IMAGES         = [FOLDER_IMAGES + '/*',      FOLDER_IMAGES + '/**/*'],
+    FILES_FONTS          = [FOLDER_FONTS + '/*'],
     FILE_CSS_TARGET      = 'app.css',
     FILE_JS_TARGET       = 'app.js',
     FILE_CSS_URL         = 'styles/'  + FILE_CSS_TARGET,
@@ -50,6 +53,7 @@ var FILES_SRC            = './src',
     FILES_ALL_COMPILED   = [FOLDER_TARGET + '/**', '!'+ FOLDER_TARGET + '/.git'],
     FOLDER_CSS_TARGET    = FOLDER_TARGET + '/styles',
     FOLDER_JS_TARGET     = FOLDER_TARGET + '/scripts',
+    FOLDER_FONTS_TARGET  = FOLDER_TARGET + '/fonts',
     FOLDER_IMAGES_TARGET = FOLDER_TARGET + '/images'
     ;
 
@@ -59,6 +63,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 gulp.task('clean',      clean(FOLDER_TARGET));
 gulp.task('server',     startServer(FOLDER_TARGET));
 gulp.task('lint',       lint(FILES_JS, isProduction));
+gulp.task('fonts',      fonts(FILES_FONTS, isProduction, FOLDER_FONTS_TARGET));
 gulp.task('images',     images(FILES_IMAGES, isProduction, FOLDER_IMAGES_TARGET));
 gulp.task('styles',     styles(FILE_LESS_ENTRY, isProduction, FILE_CSS_TARGET, FOLDER_CSS_TARGET));
 gulp.task('static',              compileStatic(FILE_INDEX, isProduction, FOLDER_TARGET));
@@ -66,11 +71,13 @@ gulp.task('static-rev', ['rev'], compileStatic(FILE_INDEX, isProduction, FOLDER_
 gulp.task('scripts',    ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET));
 gulp.task('scripts-w',  ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET, true));
 gulp.task('rev',        ['scripts', 'styles'], revisions(FOLDER_TARGET, isProduction));
-gulp.task('compile',    ['static-rev', 'images']);
+gulp.task('compile',    ['static-rev', 'fonts', 'images']);
 gulp.task('default',    ['compile']);
-gulp.task('watch',      ['scripts-w', 'images', 'styles', 'static', 'server'], function () {
+gulp.task('watch',      ['scripts-w', 'fonts', 'images', 'styles', 'static', 'server'], function () {
   gulp.watch(FILES_HTML,   ['static']);
   gulp.watch(FILES_LESS,   ['styles']);
+  gulp.watch(FILES_CSS,    ['styles']);
+  gulp.watch(FILES_FONTS,  ['fonts']);
   gulp.watch(FILES_IMAGES, ['images']);
 
   livereload.listen();
@@ -116,6 +123,13 @@ function lint (jsFiles, isProduction) {
   };
 }
 
+function fonts (fontFiles, isProduction, targetFolder) {
+  return function () {
+    return gulp.src(fontFiles)
+      .pipe(gulp.dest(targetFolder));
+  };
+}
+
 function images (imageFiles, isProduction, targetFolder) {
   return function () {
     return gulp.src(imageFiles)
@@ -138,7 +152,8 @@ function styles (lessEntryPoint, minify, targetCssFile, targetFolder) {
         noAdvanced: true,
         compatibility: true
       })))
-      .pipe(gulp.dest(targetFolder));
+      .pipe(gulp.dest(targetFolder))
+      .pipe(gulpif(!minify, notify({ title: "Less", message: 'reloaded' })));
   };
 }
 
