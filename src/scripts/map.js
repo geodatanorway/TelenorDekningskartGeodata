@@ -1,5 +1,9 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
+
+var AwesomeMarkers = require('./libs/leaflet.awesome-markers');
+var myLocationMarker = AwesomeMarkers.icon({ markerColor: 'green' });
+
 var layers = [3, 7, 9];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
@@ -10,7 +14,7 @@ var map = L.map('mapDiv', {zoomAnimationThreshold: 8}).setView(trondheim, Initia
 L.esri.basemapLayer('Streets').addTo(map);
 
 map.locate({ setView: true, maxZoom: 13 });
-map.on('locationfound', e => L.marker(e.latlng).addTo(map));
+map.on('locationfound', e => L.marker(e.latlng, { icon: myLocationMarker }).addTo(map));
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
