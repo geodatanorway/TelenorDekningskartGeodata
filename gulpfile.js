@@ -2,11 +2,13 @@ var autoprefix = require('gulp-autoprefixer'),
     browserify = require('browserify'),
     buffer     = require('vinyl-buffer'),
     connect    = require('connect'),
+    cache      = require('gulp-cache'),
     debug      = require('gulp-debug'),
     embedlr    = require('gulp-embedlr'),
     es6ify     = require('es6ify'),
     gulp       = require('gulp'),
     gulpif     = require('gulp-if'),
+    imagemin   = require('gulp-imagemin'),
     jshint     = require('gulp-jshint'),
     less       = require('gulp-less'),
     livereload = require('gulp-livereload'),
@@ -24,23 +26,26 @@ var autoprefix = require('gulp-autoprefixer'),
     watchify   = require('watchify')
     ;
 
-var FILES_SRC          = './src',
-    FOLDER_JS          = FILES_SRC + '/scripts',
-    FOLDER_LESS        = FILES_SRC + '/styles',
-    FILE_INDEX         = FILES_SRC + '/index.html',
-    FILE_JS_ENTRY      = FOLDER_JS + '/app.js',
-    FILE_LESS_ENTRY    = FOLDER_LESS + '/app.less',
-    FILES_HTML         = [FILES_SRC   + '/*.html'],
-    FILES_LESS         = [FOLDER_LESS + '/*.less', FOLDER_LESS + '/**/*.less'],
-    FILES_JS           = [FOLDER_JS   + '/*.js',   FOLDER_JS + '/**/*.js'],
-    FILE_CSS_TARGET    = 'app.css',
-    FILE_JS_TARGET     = 'app.js',
-    FILE_CSS_URL       = 'styles/'  + FILE_CSS_TARGET,
-    FILE_JS_URL        = 'scripts/' + FILE_JS_TARGET,
-    FOLDER_TARGET       = './dist',
-    FOLDER_CSS_TARGET  = FOLDER_TARGET + '/styles',
-    FOLDER_JS_TARGET   = FOLDER_TARGET + '/scripts',
-    FILES_ALL_COMPILED = FOLDER_TARGET + '/**'
+var FILES_SRC            = './src',
+    FOLDER_JS            = FILES_SRC + '/scripts',
+    FOLDER_LESS          = FILES_SRC + '/styles',
+    FOLDER_IMAGES        = FILES_SRC + '/images',
+    FILE_INDEX           = FILES_SRC + '/index.html',
+    FILE_JS_ENTRY        = FOLDER_JS + '/app.js',
+    FILE_LESS_ENTRY      = FOLDER_LESS + '/app.less',
+    FILES_HTML           = [FILES_SRC     + '/*.html'],
+    FILES_LESS           = [FOLDER_LESS   + '/*.less', FOLDER_LESS + '/**/*.less'],
+    FILES_JS             = [FOLDER_JS     + '/*.js',   FOLDER_JS + '/**/*.js'],
+    FILES_IMAGES         = [FOLDER_IMAGES + '/*',      FOLDER_IMAGES + '/**/*'],
+    FILE_CSS_TARGET      = 'app.css',
+    FILE_JS_TARGET       = 'app.js',
+    FILE_CSS_URL         = 'styles/'  + FILE_CSS_TARGET,
+    FILE_JS_URL          = 'scripts/' + FILE_JS_TARGET,
+    FOLDER_TARGET        = './dist',
+    FILES_ALL_COMPILED   = FOLDER_TARGET + '/**',
+    FOLDER_CSS_TARGET    = FOLDER_TARGET + '/styles',
+    FOLDER_JS_TARGET     = FOLDER_TARGET + '/scripts',
+    FOLDER_IMAGES_TARGET = FOLDER_TARGET + '/images'
     ;
 
 var isProduction = (process.env.NODE_ENV === 'production');
@@ -49,6 +54,7 @@ var isProduction = (process.env.NODE_ENV === 'production');
 gulp.task('clean',      clean(FOLDER_TARGET));
 gulp.task('server',     startServer(FOLDER_TARGET));
 gulp.task('lint',       lint(FILES_JS, isProduction));
+gulp.task('images',     images(FILES_IMAGES, isProduction, FOLDER_IMAGES_TARGET));
 gulp.task('styles',     styles(FILE_LESS_ENTRY, isProduction, FILE_CSS_TARGET, FOLDER_CSS_TARGET));
 gulp.task('static',              compileStatic(FILE_INDEX, isProduction, FOLDER_TARGET));
 gulp.task('static-rev', ['rev'], compileStatic(FILE_INDEX, isProduction, FOLDER_TARGET));
@@ -101,6 +107,14 @@ function lint (jsFiles, isProduction) {
       .pipe(jshint('.jshintrc'))
       .pipe(jshint.reporter('jshint-stylish'))
       .pipe(gulpif(!isProduction, jshintNotifyOnError));
+  };
+}
+
+function images (imageFiles, isProduction, targetFolder) {
+  return function () {
+    return gulp.src(imageFiles)
+      .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+      .pipe(gulp.dest(targetFolder));
   };
 }
 
