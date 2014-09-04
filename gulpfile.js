@@ -203,7 +203,7 @@ function scripts (browserifyEntryPoint, minify, jsTargetFile, targetFolder, watc
     if (watch) {
       bundler = watchify(bundler);
     }
-
+    es6ify.traceurOverrides = {experimental: true, blockBinding: true};
     bundler
       // https://github.com/sebastiandeutsch/es6ify-test/blob/master/browserify.js
       .add(browserifyEntryPoint)
