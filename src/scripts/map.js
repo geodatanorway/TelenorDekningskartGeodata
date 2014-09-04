@@ -8,6 +8,9 @@ var CenterZoom = 12;
 var map = L.map('mapDiv').setView(trondheim, InitialZoom);
 L.esri.basemapLayer('Streets').addTo(map);
 
+map.locate({ setView: true });
+map.on('locationfound', e => L.marker(e.latlng).addTo(map));
+
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
