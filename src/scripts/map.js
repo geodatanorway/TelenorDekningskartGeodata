@@ -5,7 +5,7 @@ var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var InitialZoom = 6;
 var CenterZoom = 12;
-var map = L.map('mapDiv').setView(trondheim, InitialZoom);
+var map = L.map('mapDiv').setView(trondheim, InitialZoom, {animate: true});
 L.esri.basemapLayer('Streets').addTo(map);
 
 map.locate({ setView: true, maxZoom: 13 });
@@ -55,7 +55,7 @@ module.exports = _.extend(eventBus, {
   },
 
   centerAt: (lat, lon) => {
-    map.setView(L.latLng(lat, lon), CenterZoom);
+    map.setView(L.latLng(lat, lon), CenterZoom, {animate: true});
   },
 
   setWifiVisibility: (visible) => {
