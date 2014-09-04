@@ -11,3 +11,7 @@
 ## compile
 
     npm run compile
+
+## compile like heroku, locally
+
+    npm run compile-prod
