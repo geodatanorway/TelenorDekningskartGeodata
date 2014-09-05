@@ -15,16 +15,19 @@ ko.pauseableComputed = function(evaluatorFunction, evaluatorFunctionTarget) {
     }, evaluatorFunctionTarget);
 
     //keep track of our current value and set the pause flag to release our actual subscriptions
-    result.pause = function() {
+    result.pause = function(pauseFor) {
         _cachedValue = this();
         _isPaused(true);
+        if (pauseFor) {
+            setTimeout(this.resume, pauseFor);
+        }
     }.bind(result);
 
     //clear the cached value and allow our computed observable to be re-evaluated
     result.resume = function() {
         _cachedValue = "";
         _isPaused(false);
-    }
+    };
 
     return result;
 };

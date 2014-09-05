@@ -21,6 +21,11 @@ class ViewModel {
       }
     });
     this.searchResults = ko.observableArray();
+    this.searchTextHasFocus.subscribe(newValue => {
+      if(newValue === true) {
+        this.searchTextThrottled.resume();
+      }
+    });
 
     this.shouldShowPanel = ko.observable(false);
 
@@ -119,23 +124,19 @@ class ViewModel {
       if (track) {
         self.trackUser(true);
         map.trackUser();
-      }
-      else {
+      } else {
         self.trackUser(false);
         map.stopTrackUser();
       }
     };
 
     this.onSuggestionClicked = (item) => {
+      this.searchTextThrottled.pause();
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
-      this.searchTextThrottled.pause();
     };
 
-    this.searchText.subscribe(() => {
-      this.searchTextThrottled.resume();
-    });
 
     this.clearSearchResults = (event) => {
       this.searchResults.removeAll();
