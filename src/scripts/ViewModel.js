@@ -157,13 +157,20 @@ class ViewModel {
     };
 
     this.onDocumentKeyDown = (vm, e) => {
+      var isCtrlOrAlt = (e.ctrlKey || e.altKey || e.metaKey);
+      if (isCtrlOrAlt) {
+        return true;
+      }
+
       if (self.searchTextHasFocus()) {
         return true;
       }
+
       var key = e.which;
       var isBetweenAtoZ = (key >= 65 && key <= 90);
       var isNorwegianExtraChars = (key === 222) || (key === 186) || (key === 222); // æøå
       var isBackSpace = (key === 8);
+
       if (isBetweenAtoZ || isNorwegianExtraChars) {
         self.searchTextHasFocus(true);
         var lowercase = !e.shiftKey;
