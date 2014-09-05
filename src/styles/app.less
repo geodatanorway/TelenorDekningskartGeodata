@@ -80,6 +80,16 @@ body,
     filter: blur(3px);
 }
 
+.leaflet-top.leaflet-left {
+  top: auto;
+  left: auto;
+  right: 1em;
+  bottom: 60px;
+  .leaflet-control {
+    margin: 0;
+  }
+}
+
 #panel {
     min-width: 300px;
     width: @panelWidth;
@@ -94,7 +104,7 @@ body,
     .searchBarPlaceholder {
         height: 80px;
     }
-    
+
     .dataShown {
         margin-top: 7px;
         margin-left: 5px;
@@ -102,15 +112,15 @@ body,
         color: #000;
         display: inline-block;
     }
-    
+
 
     .settings {
         height: 100px;
-        
+
         .buttonContainer {
             margin-left: 15px;
             float: left;
-            
+
             button {
                 height: 48px;
                 width: 48px;
@@ -130,7 +140,7 @@ body,
     text-align: center;
     height: 41px;
     margin-top: 20px;
-    
+
     .search-wrap {
       .fa-icon(@fa-var-map-marker);
     }
@@ -155,7 +165,7 @@ body,
         right: 0px;
         position: absolute;
         width: 48px;
-        
+
         &:before {
             content: 'Filter';
         }
@@ -225,24 +235,24 @@ body,
     .groups {
         zoom: 0.8;
     }
-    
+
     .group {
         float: none;
         width: 100%;
         clear: both;
         margin:0 0 30px;
     }
-    
+
     .group div {
         display: inline-block;
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     .leaflet-control-zoom {
         display: none;
     }
-    
+
     #searchResults {
         max-height: 300px !important;
         width: 280px !important;
