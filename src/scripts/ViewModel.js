@@ -8,6 +8,7 @@ var geodata = require('./geodata');
 var async = require('./async');
 var ajax = require('./ajax');
 require('./knockout-plugins');
+require('./jquery-plugins');
 
 class ViewModel {
   constructor() {
@@ -21,12 +22,6 @@ class ViewModel {
       }
     });
     this.searchResults = ko.observableArray();
-    this.searchTextHasFocus.subscribe(newValue => {
-      if (newValue === true) {
-        this.searchTextThrottled.resume();
-        this.search();
-      }
-    });
 
     this.shouldShowPanel = ko.observable(false);
 
@@ -53,6 +48,11 @@ class ViewModel {
           break;
       }
     });
+
+    this.onSearchClick = () => {
+        this.searchTextThrottled.resume();
+        this.search();
+    };
 
     this.togglePanelVisibility = function() {
       self.shouldShowPanel(!self.shouldShowPanel());
@@ -92,11 +92,11 @@ class ViewModel {
               self.searchTextHasFocus(true);
               break;
             case 38: // up
-              $(value).prev().focus();
+              $(value).prevWrap().focus();
               break;
             case 40: // down
             case 9: // tab
-              $(value).next().focus();
+              $(value).nextWrap().focus();
               break;
             case 13: // enter
               $(value).click();
@@ -156,10 +156,10 @@ class ViewModel {
       this.searchResults.removeAll();
     };
 
-    this.onKeyDown = function(vm, event) {
+    this.onListKeyDown = function(vm, event) {
       if (event.which === 8) { // backspace
         self.searchTextHasFocus(true);
-      }
+      } 
     };
 
     this.selectFirstResult = () => {
@@ -169,11 +169,12 @@ class ViewModel {
         this.selectFirstWhenAvailable = true;
     };
 
-    this.onKeyPressed = (vm, event) => {
+    this.onSearchKeyDown = (vm, event) => {
       if (event.which === 27) { // escape
         this.clearSearchResults();
-      } else if (event.which === 40 ||  event.which === 9) { // arrow down or tab
+      } else if (event.which === 40 || event.which === 9) { // arrow down or TAB
         this.mapKeys();
+        event.prefentDefault();
       } else if (event.which === 13) { // enter
         this.selectFirstResult();
       } else {
