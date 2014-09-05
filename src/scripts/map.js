@@ -55,7 +55,10 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
+// @torgeir: Fikk denne av Jan Henrik (via Cornelia) på slack?
+const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer";
+// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
+
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
 // var basemap = L.esri.tiledMapLayer(GeodataUrl, {
