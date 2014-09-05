@@ -8,25 +8,25 @@ var geodata = require('./geodata');
 var async = require('./async');
 var ajax = require('./ajax');
 require('./knockout-plugins');
+require('./jquery-plugins');
 
 class ViewModel {
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
-    this.searchTextPausable = ko.pauseableComputed(this.searchText, this);
-    this.searchTextThrottled = ko.pureComputed(this.searchTextPausable).extend({
+    this.searchTextHasFocus = ko.observable(true);
+    this.searchTextThrottled = ko.pauseableComputed(this.searchText).extend({
       rateLimit: {
         timeout: 500,
         method: "notifyWhenChangesStop"
       }
     });
-    this.searchTextHasFocus = ko.observable(true);
     this.searchResults = ko.observableArray();
 
     this.shouldShowPanel = ko.observable(false);
 
     this.canTrackUser = ko.observable(false);
-    map.on('location:found',  () => this.canTrackUser(true));
+    map.on('location:found', () => this.canTrackUser(true));
     map.on('location:denied', () => this.canTrackUser(false));
 
     this.trackUser = ko.observable(false);
@@ -37,20 +37,25 @@ class ViewModel {
     this.outdoors = ko.observable("true");
     this.mode = ko.observable("Dekning");
     this.mode.subscribe(newValue => {
-      switch(newValue){
+      switch (newValue) {
         case "Dekning":
-        map.setWifiVisibility(false);
-        map.setLayers(this.layers());
-        break;
+          map.setWifiVisibility(false);
+          map.setLayers(this.layers());
+          break;
         case "Wifi":
-        map.setWifiVisibility(true);
-        map.setLayers([]);
-        break;
+          map.setWifiVisibility(true);
+          map.setLayers([]);
+          break;
       }
     });
 
+    this.onSearchClick = () => {
+        this.searchTextThrottled.resume();
+        this.search();
+    };
+
     this.togglePanelVisibility = function() {
-        self.shouldShowPanel(!self.shouldShowPanel());
+      self.shouldShowPanel(!self.shouldShowPanel());
     };
 
     this.layers = ko.pureComputed(() => {
@@ -79,20 +84,21 @@ class ViewModel {
 
     this.mapKeys = function() {
       self.searchTextHasFocus(false);
-      $("#searchResults").children().each(function (index, value) {
-        $(value).keydown(function (event) {
+      $("#searchResults").children().each(function(index, value) {
+        $(value).keydown(function(event) {
           switch (event.which) {
             case 27: // esc
               self.clearSearchResults();
               self.searchTextHasFocus(true);
               break;
             case 38: // up
-              $(value).prev().focus();
+              $(value).prevWrap().focus();
               break;
             case 40: // down
-              $(value).next().focus();
+            case 9: // tab
+              $(value).nextWrap().focus();
               break;
-            case 13:
+            case 13: // enter
               $(value).click();
               self.searchTextHasFocus(true);
               self.clearSearchResults();
@@ -105,14 +111,21 @@ class ViewModel {
     };
 
     map.on("loading", () => NProgress.start());
-    map.on("load",    () => NProgress.done());
+    map.on("load", () => NProgress.done());
     map.on('tracking:stop', () => self.trackUser(false));
 
     this.searchTextThrottled.subscribe(newValue => {
-      async(function * () {
-        var rows = yield geodata.autoComplete(newValue);
+      this.search();
+    });
+
+    this.search = async(function * () {
+      var rows = yield geodata.autoComplete(this.searchText());
+      if (rows.length > 0 && self.selectFirstWhenAvailable) {
+        self.selectItem(rows[0]);
+        self.selectFirstWhenAvailable = false;
+      } else {
         self.searchResults(rows);
-      });
+      }
     });
 
     this.onTrackUserClicked = () => {
@@ -120,50 +133,72 @@ class ViewModel {
       if (track) {
         self.trackUser(true);
         map.trackUser();
-      }
-      else {
+      } else {
         self.trackUser(false);
         map.stopTrackUser();
       }
     };
 
-    this.onSuggestionClicked = (item) => {
-      this.searchTextPausable.pause();
+    this.selectItem = (item) => {
+      this.searchTextThrottled.pause();
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
-      this.searchTextPausable.resume();
+      map.setMarker(item.lat, item.lon, "lastSearch");
+    }
+
+    this.onSuggestionClicked = (item) => {
+      this.selectItem(item);
     };
+
 
     this.clearSearchResults = (event) => {
       this.searchResults.removeAll();
     };
 
-    this.onKeyDown = function (vm, event) {
+    this.onListKeyDown = function(vm, event) {
       if (event.which === 8) { // backspace
         self.searchTextHasFocus(true);
-      }
+      } 
     };
 
-    this.onKeyPressed = (vm, event) => {
+    this.selectFirstResult = () => {
+      if (this.searchResults().length > 0)
+        this.selectItem(this.searchResults()[0]);
+      else
+        this.selectFirstWhenAvailable = true;
+    };
+
+    this.onSearchKeyDown = (vm, event) => {
       if (event.which === 27) { // escape
         this.clearSearchResults();
-      }
-      if (event.which === 40) { // arrow down
-          self.mapKeys();
+      } else if (event.which === 40 || event.which === 9) { // arrow down or TAB
+        this.mapKeys();
+        event.prefentDefault();
+      } else if (event.which === 13) { // enter
+        this.selectFirstResult();
+      } else {
+        this.searchTextThrottled.resume();
       }
 
       return true;
     };
 
     this.onDocumentKeyDown = (vm, e) => {
+      var isCtrlOrAlt = (e.ctrlKey || e.altKey || e.metaKey);
+      if (isCtrlOrAlt) {
+        return true;
+      }
+
       if (self.searchTextHasFocus()) {
         return true;
       }
+
       var key = e.which;
       var isBetweenAtoZ = (key >= 65 && key <= 90);
       var isNorwegianExtraChars = (key === 222) || (key === 186) || (key === 222); // æøå
       var isBackSpace = (key === 8);
+
       if (isBetweenAtoZ || isNorwegianExtraChars) {
         self.searchTextHasFocus(true);
         var lowercase = !e.shiftKey;
@@ -172,8 +207,7 @@ class ViewModel {
           character = character.toLowerCase();
         }
         self.searchText(self.searchText() + character);
-      }
-      else if (isBackSpace) {
+      } else if (isBackSpace) {
         self.searchTextHasFocus(true);
         var searchTextMinusLastChar = (self.searchText().substr(0, self.searchText().length - 1));
         self.searchText(searchTextMinusLastChar);

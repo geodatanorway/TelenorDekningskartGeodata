@@ -42,9 +42,13 @@
                 </div>
             </div>
             <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
-                <input tabindex=0 placeholder="Adresse" data-bind="value: searchText, valueUpdate: ['input', 'afterkeydown'], event: { keyup: onKeyPressed }, hasFocus: $root.searchTextHasFocus " />
+                <input tabindex="0" placeholder="Adresse" onclick="this.select();"
+                data-bind="value: searchText, 
+                    valueUpdate: ['input', 'afterkeydown'], 
+                    event: { keydown: onSearchKeyDown, click: onSearchClick }, 
+                    hasFocus: $root.searchTextHasFocus" />
                 <button data-bind="click: togglePanelVisibility"></button>
-                <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onKeyDown }">
+                <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
             </div>
