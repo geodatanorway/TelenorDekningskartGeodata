@@ -13,14 +13,13 @@ class ViewModel {
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
-    this.searchTextPausable = ko.pauseableComputed(this.searchText, this);
-    this.searchTextThrottled = ko.pureComputed(this.searchTextPausable).extend({
+    this.searchTextHasFocus = ko.observable(true);
+    this.searchTextThrottled = ko.pauseableComputed(this.searchText).extend({
       rateLimit: {
         timeout: 500,
         method: "notifyWhenChangesStop"
       }
     });
-    this.searchTextHasFocus = ko.observable(true);
     this.searchResults = ko.observableArray();
 
     this.shouldShowPanel = ko.observable(false);
@@ -128,12 +127,15 @@ class ViewModel {
     };
 
     this.onSuggestionClicked = (item) => {
-      this.searchTextPausable.pause();
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
-      this.searchTextPausable.resume();
+      this.searchTextThrottled.pause();
     };
+
+    this.searchText.subscribe(() => {
+      this.searchTextThrottled.resume();
+    });
 
     this.clearSearchResults = (event) => {
       this.searchResults.removeAll();
