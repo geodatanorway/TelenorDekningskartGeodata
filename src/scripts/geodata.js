@@ -2,12 +2,12 @@ var ajax = require('./ajax');
 var async = require('./async');
 
 var SearchUrl = "http://ws.geodataonline.no/search/geodataservice/autocomplete?token=xWZMDJR2KMEMdOpMzf5nqPnepXvI9dKj-tjPzKd_Trr0WtFM-WNdzJLl4ai__oOA&query=";
+var GeometryUrl = "http://services2.geodataonline.no/arcgis/rest/services/Utilities/Geometry/GeometryServer/project";
 
-    var GeometryUrl = "http://services2.geodataonline.no/arcgis/rest/services/Utilities/Geometry/GeometryServer/project";
 exports.autoComplete = async(function * (query) {
   var results = yield ajax.jsonp(SearchUrl + query);
 
-  var coords = results.data;
+  var coords = results.data || [];
   var suggestions = results.suggestions;
   var types = results.type;
   var joinedPoints = encodeURIComponent(coords.join(",\n"));
