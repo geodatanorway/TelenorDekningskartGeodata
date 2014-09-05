@@ -8,6 +8,7 @@ var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var InitialZoom = 6;
 var CenterZoom = 12;
+var markers = {};
 const AnimateDuration = 0.5;
 
 var map = L.map('mapDiv', {
@@ -16,14 +17,24 @@ var map = L.map('mapDiv', {
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
-    pan: { duration: AnimateDuration },
-    klzoom: { duration: AnimateDuration }
+    pan: {
+      duration: AnimateDuration
+    },
+    zoom: {
+      duration: AnimateDuration
+    }
   });
 
 L.esri.basemapLayer('Streets').addTo(map);
 
-var userLocationMarker, opts = { icon: icons.MyLocation };
-map.locate({ setView: true, maxZoom: 14, enableHighAccuracy: true });
+var userLocationMarker, opts = {
+  icon: icons.MyLocation
+};
+map.locate({
+  setView: true,
+  maxZoom: 14,
+  enableHighAccuracy: true
+});
 map.on('locationfound', e => {
   eventBus.emit('location:found');
   if (userLocationMarker) {
@@ -69,8 +80,10 @@ dekningLayer.addTo(map);
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: GeodataToken,
   where: "1=1",
-  pointToLayer: function (geojson, latlng) {
-    return L.marker(latlng, { icon: icons.Wifi });
+  pointToLayer: function(geojson, latlng) {
+    return L.marker(latlng, {
+      icon: icons.Wifi
+    });
   }
 });
 
@@ -92,7 +105,12 @@ module.exports = _.extend(eventBus, {
 
   trackUser: () => {
     var zoom = map.getZoom();
-    map.locate({ maxZoom: zoom, setView: true, watch: true, enableHighAccuracy: true });
+    map.locate({
+      maxZoom: zoom,
+      setView: true,
+      watch: true,
+      enableHighAccuracy: true
+    });
   },
 
   stopTrackUser: () => {
@@ -102,13 +120,28 @@ module.exports = _.extend(eventBus, {
   centerAt: (lat, lon) => {
     map.setView(L.latLng(lat, lon), CenterZoom, {
       animate: true,
-      pan: { duration: AnimateDuration },
-      zoom: { duration: AnimateDuration }
+      pan: {
+        duration: AnimateDuration
+      },
+      zoom: {
+        duration: AnimateDuration
+      }
     });
   },
 
+  setMarker: (lat, lon, id, options)  => {
+    if (markers[id]) {
+      map.removeLayer(markers[id]);
+      delete markers[id];
+    }
+
+    var marker = L.marker(L.latLng(lat, lon), options);
+    markers[id] = marker;
+    map.addLayer(marker);
+  },
+
   setWifiVisibility: (visible) => {
-    if(visible)
+    if (visible)
       map.addLayer(wifiLayer);
     else
       map.removeLayer(wifiLayer);
