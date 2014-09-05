@@ -142,6 +142,30 @@ class ViewModel {
 
       return true;
     };
+
+    this.onDocumentKeyDown = (vm, e) => {
+      if (self.searchTextHasFocus()) {
+        return true;
+      }
+      var key = e.which;
+      var isBetweenAtoZ = (key >= 65 && key <= 90);
+      var isNorwegianExtraChars = (key === 222) || (key === 186) || (key === 222); // æøå
+      var isBackSpace = (key === 8);
+      if (isBetweenAtoZ || isNorwegianExtraChars) {
+        self.searchTextHasFocus(true);
+        var lowercase = !e.shiftKey;
+        var character = String.fromCharCode(e.which);
+        if (lowercase) {
+          character = character.toLowerCase();
+        }
+        self.searchText(self.searchText() + character);
+      }
+      else if (isBackSpace) {
+        self.searchTextHasFocus(true);
+        var searchTextMinusLastChar = (self.searchText().substr(0, self.searchText().length - 1));
+        self.searchText(searchTextMinusLastChar);
+      }
+    };
   }
 }
 
