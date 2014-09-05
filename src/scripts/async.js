@@ -1,35 +1,27 @@
 module.exports = async;
 
-function async (generator) {
-  var iterator,
-      generatorTakesArgs = generator.length;
-
+function async(generator) {
   // if the generator takes args we return a function,
   // that when called passes its args to the generator
-  if (generatorTakesArgs) {
-    return function () {
-      iterator = generator.apply(this, arguments);
-      return move(iterator, iterator.next());
-    };
-  }
+  return function() {
+    var iterator = generator.apply(this, arguments);
+    return move(iterator.next());
 
-  // just run the generator immediately
-  iterator = generator();
-  return move(iterator, iterator.next());
+    function move(result) {
+      if (result.done) {
+        return result.value;
+      }
 
-  function move (iterator, result) {
-    if (result.done) {
-      return result.value;
+      return result.value.then(
+        function(promiseResult) {
+          return move(iterator.next(promiseResult));
+        },
+        function(promiseError) {
+          return move(iterator.throw(promiseError));
+        }
+      );
     }
-
-    return result.value.then(
-      function (promiseResult) {
-        return move(iterator, iterator.next(promiseResult));
-      },
-      function (promiseError) {
-        return move(iterator, iterator.throw(promiseError));
-      });
-  }
+  };
 }
 
 // var P = require('bluebird');

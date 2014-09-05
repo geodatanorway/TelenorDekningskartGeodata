@@ -22,15 +22,16 @@ class ViewModel {
     });
     this.searchResults = ko.observableArray();
     this.searchTextHasFocus.subscribe(newValue => {
-      if(newValue === true) {
+      if (newValue === true) {
         this.searchTextThrottled.resume();
+        this.search();
       }
     });
 
     this.shouldShowPanel = ko.observable(false);
 
     this.canTrackUser = ko.observable(false);
-    map.on('location:found',  () => this.canTrackUser(true));
+    map.on('location:found', () => this.canTrackUser(true));
     map.on('location:denied', () => this.canTrackUser(false));
 
     this.trackUser = ko.observable(false);
@@ -41,20 +42,20 @@ class ViewModel {
     this.outdoors = ko.observable("true");
     this.mode = ko.observable("Dekning");
     this.mode.subscribe(newValue => {
-      switch(newValue){
+      switch (newValue) {
         case "Dekning":
-        map.setWifiVisibility(false);
-        map.setLayers(this.layers());
-        break;
+          map.setWifiVisibility(false);
+          map.setLayers(this.layers());
+          break;
         case "Wifi":
-        map.setWifiVisibility(true);
-        map.setLayers([]);
-        break;
+          map.setWifiVisibility(true);
+          map.setLayers([]);
+          break;
       }
     });
 
     this.togglePanelVisibility = function() {
-        self.shouldShowPanel(!self.shouldShowPanel());
+      self.shouldShowPanel(!self.shouldShowPanel());
     };
 
     this.layers = ko.pureComputed(() => {
@@ -83,8 +84,8 @@ class ViewModel {
 
     this.mapKeys = function() {
       self.searchTextHasFocus(false);
-      $("#searchResults").children().each(function (index, value) {
-        $(value).keydown(function (event) {
+      $("#searchResults").children().each(function(index, value) {
+        $(value).keydown(function(event) {
           switch (event.which) {
             case 27: // esc
               self.clearSearchResults();
@@ -94,9 +95,10 @@ class ViewModel {
               $(value).prev().focus();
               break;
             case 40: // down
+            case 9: // tab
               $(value).next().focus();
               break;
-            case 13:
+            case 13: // enter
               $(value).click();
               self.searchTextHasFocus(true);
               self.clearSearchResults();
@@ -109,14 +111,21 @@ class ViewModel {
     };
 
     map.on("loading", () => NProgress.start());
-    map.on("load",    () => NProgress.done());
+    map.on("load", () => NProgress.done());
     map.on('tracking:stop', () => self.trackUser(false));
 
     this.searchTextThrottled.subscribe(newValue => {
-      async(function * () {
-        var rows = yield geodata.autoComplete(newValue);
+      this.search();
+    });
+
+    this.search = async(function * () {
+      var rows = yield geodata.autoComplete(this.searchText());
+      if (rows.length > 0 && self.selectFirstWhenAvailable) {
+        self.selectItem(rows[0]);
+        self.selectFirstWhenAvailable = false;
+      } else {
         self.searchResults(rows);
-      });
+      }
     });
 
     this.onTrackUserClicked = () => {
@@ -130,11 +139,15 @@ class ViewModel {
       }
     };
 
-    this.onSuggestionClicked = (item) => {
+    this.selectItem = (item) => {
       this.searchTextThrottled.pause();
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
+    }
+
+    this.onSuggestionClicked = (item) => {
+      this.selectItem(item);
     };
 
 
@@ -142,18 +155,28 @@ class ViewModel {
       this.searchResults.removeAll();
     };
 
-    this.onKeyDown = function (vm, event) {
+    this.onKeyDown = function(vm, event) {
       if (event.which === 8) { // backspace
         self.searchTextHasFocus(true);
       }
     };
 
+    this.selectFirstResult = () => {
+      if (this.searchResults().length > 0)
+        this.selectItem(this.searchResults()[0]);
+      else
+        this.selectFirstWhenAvailable = true;
+    };
+
     this.onKeyPressed = (vm, event) => {
       if (event.which === 27) { // escape
         this.clearSearchResults();
-      }
-      if (event.which === 40) { // arrow down
-          self.mapKeys();
+      } else if (event.which === 40 ||  event.which === 9) { // arrow down or tab
+        this.mapKeys();
+      } else if (event.which === 13) { // enter
+        this.selectFirstResult();
+      } else {
+        this.searchTextThrottled.resume();
       }
 
       return true;
@@ -182,8 +205,7 @@ class ViewModel {
           character = character.toLowerCase();
         }
         self.searchText(self.searchText() + character);
-      }
-      else if (isBackSpace) {
+      } else if (isBackSpace) {
         self.searchTextHasFocus(true);
         var searchTextMinusLastChar = (self.searchText().substr(0, self.searchText().length - 1));
         self.searchText(searchTextMinusLastChar);
