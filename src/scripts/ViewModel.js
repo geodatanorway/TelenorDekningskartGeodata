@@ -28,13 +28,14 @@ class ViewModel {
     this.canTrackUser = ko.observable(false);
     map.on('location:found', () => this.canTrackUser(true));
     map.on('location:denied', () => this.canTrackUser(false));
+    map.on('drag', () => this.shouldShowPanel(false));
 
     this.trackUser = ko.observable(false);
 
-    this.show2g = ko.observable(true);
-    this.show3g = ko.observable(true);
+    this.show2g = ko.observable(false);
+    this.show3g = ko.observable(false);
     this.show4g = ko.observable(true);
-    this.outdoors = ko.observable("true");
+    this.outdoors = ko.observable(true);
     this.mode = ko.observable("Dekning");
     this.mode.subscribe(newValue => {
       switch (newValue) {
@@ -49,6 +50,55 @@ class ViewModel {
       }
     });
 
+    var clearLayers = () => {
+      this.show4g(false);
+      this.show3g(false);
+      this.show2g(false);
+      this.mode("Dekning");
+    };
+
+    this.outdoorsText = ko.pureComputed(() => {
+      return this.outdoors() ? "Ute" : "Inne";
+    });
+
+    this.showWifi = ko.pureComputed(() => this.mode() === 'Wifi');
+    this.onClickShow4g = () => { clearLayers(); this.show4g(true); };
+    this.onClickShow3g = () => { clearLayers(); this.show3g(true); };
+    this.onClickShow2g = () => { clearLayers(); this.show2g(true); };
+    this.onClickShowWifi = () => {
+      clearLayers();
+      this.mode("Wifi");
+    };
+
+    this.buttonText = ko.pureComputed(() => {
+      if (this.show4g()) return "4G";
+      if (this.show3g()) return "3G";
+      if (this.show2g()) return "2G";
+      return "";
+    });
+
+    this.filterCss = ko.pureComputed(() => {
+      var css = [];
+
+      if (self.shouldShowPanel()) {
+        css.push('button--in-panel');
+      }
+      if (this.show4g()) {
+        css.push("button--4g");
+      }
+      if (this.show3g()) {
+        css.push("button--3g");
+      }
+      if (this.show2g()) {
+        css.push("button--2g");
+      }
+      if (this.showWifi()) {
+        css.push('button--wifi');
+      }
+
+      return css.join(" ");
+    });
+
     this.onSearchClick = () => {
         this.searchTextThrottled.resume();
         this.search();
@@ -60,7 +110,7 @@ class ViewModel {
 
     this.layers = ko.pureComputed(() => {
       var layers = [];
-      if (this.outdoors() === "true") {
+      if (this.outdoors()) {
         if (this.show2g())
           layers.push(map.Layers.Out2G);
         if (this.show3g())
@@ -114,9 +164,7 @@ class ViewModel {
     map.on("load", () => NProgress.done());
     map.on('tracking:stop', () => self.trackUser(false));
 
-    this.searchTextThrottled.subscribe(newValue => {
-      this.search();
-    });
+    this.searchTextThrottled.subscribe(newValue => this.search());
 
     this.search = async(function * () {
       var rows = yield geodata.autoComplete(this.searchText());
@@ -145,12 +193,11 @@ class ViewModel {
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
       map.setMarker(item.lat, item.lon, "lastSearch");
-    }
+    };
 
     this.onSuggestionClicked = (item) => {
       this.selectItem(item);
     };
-
 
     this.clearSearchResults = (event) => {
       this.searchResults.removeAll();
@@ -159,7 +206,7 @@ class ViewModel {
     this.onListKeyDown = function(vm, event) {
       if (event.which === 8) { // backspace
         self.searchTextHasFocus(true);
-      } 
+      }
     };
 
     this.selectFirstResult = () => {

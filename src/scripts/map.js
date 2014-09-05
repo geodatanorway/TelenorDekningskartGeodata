@@ -3,7 +3,7 @@ var _ = require('lodash');
 
 var icons = require('./map-icons');
 
-var layers = [3, 7, 9];
+var layers = [3];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var InitialZoom = 6;
@@ -52,6 +52,7 @@ map.on('locationerror', e => {
 });
 map.on('dragstart', () => {
   eventBus.emit('tracking:stop');
+  eventBus.emit('drag');
   map.stopLocate();
 });
 

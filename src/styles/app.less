@@ -14,10 +14,13 @@
 
 @color-primary: #00ace8;
 @color-white: white;
+@color-white-t: rgba(255, 255, 255, 0.8);
 @color-disabled: #aaa;
+@color-text: #333;
 
 @searchBarWidth: 588px;
 @panelWidth: 588px;
+@button-height: 48px;
 
 /* ==========================================================================
    Modules
@@ -40,6 +43,8 @@ body,
     margin: 0;
     height: 100%;
 }
+
+body { font-size: 100%; }
 
 .container {
     width: 100%;
@@ -84,16 +89,29 @@ body,
   top: auto;
   left: auto;
   right: 1em;
-  bottom: 60px;
+  bottom: 5em;
   .leaflet-control {
     margin: 0;
   }
 }
 
+.icon-wifi() {
+  .fa-icon(@fa-var-wifi);
+}
+
+.buttons() {
+  .pointer();
+  &.button--4g   { background-color: darken(rgba(126, 231, 218, 0.8), 20%); }
+  &.button--3g   { background-color: darken(rgba(234, 234, 107, 0.8), 20%); }
+  &.button--2g   { background-color: darken(rgba(149, 234, 107, 0.8), 20%); }
+  &.button--wifi { background-color: @color-primary; .icon-wifi(); }
+}
+
+
 #panel {
-    min-width: 300px;
+    // min-width: 300px;
     width: @panelWidth;
-    min-height: 238px;
+    // min-height: 238px;
     background-color: transparent;
     display: block;
     position: absolute;
@@ -106,8 +124,8 @@ body,
     }
 
     .dataShown {
-        margin-top: 7px;
-        margin-left: 5px;
+        // margin-top: 7px;
+        // margin-left: 5px;
         font-size: 13px;
         color: #000;
         display: inline-block;
@@ -115,15 +133,40 @@ body,
 
 
     .settings {
-        height: 100px;
+        label {
+          line-height: @button-height;
+        }
 
         .buttonContainer {
-            margin-left: 15px;
+            position: relative;
+            margin-left: 10px;
             float: left;
 
+            &.button--selected {
+              button {
+                background-color: transparent;
+              }
+              .buttons();
+              color: @color-white;
+            }
+
             button {
-                height: 48px;
-                width: 48px;
+                padding-top: 0.3em;
+                height: @button-height;
+                width: @button-height;
+                outline: none;
+                border: none;
+                background-color: @color-white-t;
+            }
+
+            &.button--wifi {
+              .icon-wifi();
+            }
+
+            &:before {
+              position: absolute;
+              top: 17px;
+              left: 15px;
             }
         }
     }
@@ -142,57 +185,97 @@ body,
     margin-top: 20px;
 
     .search-wrap {
-      .fa-icon(@fa-var-map-marker);
+      &:before {
+        .fa();
+        content: @fa-var-map-marker;
+
+        position: absolute;
+        z-index: 1;
+        left: 0.7em;
+        line-height: @button-height;
+
+        font-size: 1.5em;
+        color: grey;
+      }
+      &:after {
+        .fa();
+        content: @fa-var-search;
+
+        position: absolute;
+        z-index: 1;
+        right: 2.7em;
+        line-height: @button-height;
+
+        font-size: 1.5em;
+        color: @color-primary;
+      }
     }
 
     input {
-        background-color: #000;
-        outline: none;
-        border: 0;
-        width: 535px;
-        height: 48px;
-        padding-left: 20px;
-        float: left;
+      position: relative;
+      float: left;
+
+      height: @button-height;
+      width: 530px;
+
+      background-color: @color-white;
+      outline: none;
+      padding: 0.2em 2em 0 2.5em;
+      text-overflow: ellipsis;
+      border: 0;
+
     }
 
     button {
-        background-color: @color-primary;
-        color: #fff;
-        outline: none;
-        border: 0;
-        width: 29%;
-        height: 48px;
-        right: 0px;
-        position: absolute;
-        width: 48px;
+      float: right;
+      position: relative;
+      outline: none;
+      border: 0;
+      height: 3em;
+      padding-bottom: 0.5em;
+      width: 3em;
 
-        &:before {
-            content: 'Filter';
-        }
+      .buttons();
+      color: @color-white;
+
+      &:after {
+        content: @fa-var-chevron-down;
+        .fa();
+        font-size: 0.8em;
+        position: absolute;
+        top: 2.3em;
+        left: 0;
+        right: 0;
+        transition: all 0.2s;
+      }
+
+      &.button--in-panel:after {
+        transform: rotate(180deg);
+        top: 2.38em;
+        right: 0.15em;
+      }
     }
 
     #searchResults {
-        width: @panelWidth - 40;
+        width: @panelWidth - 58;
         max-height: 500px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 48px;
+        margin-top: @button-height;
         overflow-y: auto;
         text-align: left;
         top: 30px;
         padding-left: 0px;
         list-style: none;
-        background-color: #333;
+        background-color: @color-white-t;
         li {
             padding: 15px 20px 15px 20px;
-            color: #fff;
+            color: @color-text;
             &:hover {
                 .pointer();
+                background-color: @color-white-t;
             }
-            &:active {
-                background: #00ace8;
-            }
+            &:active,
             &:focus {
+                color: @color-white;
                 background: #00ace8;
             }
         }
@@ -223,13 +306,13 @@ body,
 @media all and (max-width: 550px) {
     #panel {
         width: @panelWidth / 2;
-        margin-left: (-@panelWidth / 4) - 3;
+        margin-left: (-@panelWidth / 4);
     }
     #searchBar {
         width: @searchBarWidth / 2;
         margin-left: -@searchBarWidth / 4;
         input {
-            width: 238px;
+            width: 235px;
         }
     }
     .groups {
@@ -255,6 +338,6 @@ body,
 
     #searchResults {
         max-height: 300px !important;
-        width: 280px !important;
+        width: 235px !important;
     }
 }

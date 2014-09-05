@@ -23,31 +23,34 @@
                 <div class="searchBarPlaceholder"></div>
                 <div class="settings">
                     <div class="" style="float: left;">
-                        <button></button>
+                      <input id="outdoors" type="checkbox" data-bind="checked: outdoors"></input>
+                      <label for="outdoors" data-bind="text: outdoorsText"></label>
                     </div>
                     <div class="" style="float: right;">
-                        <div class="buttonContainer">
-                            <button></button>
+                      <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
+                            <button data-bind="click: onClickShow4g">4G</button>
                         </div>
-                        <div class="buttonContainer">
-                            <button></button>
+                        <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
+                            <button data-bind="click: onClickShow3g">3G</button>
                         </div>
-                        <div class="buttonContainer">
-                            <button></button>
+                        <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
+                            <button data-bind="click: onClickShow2g">2G</button>
                         </div>
-                        <div class="buttonContainer">
-                            <button></button>
+                        <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
+                            <button data-bind="click: onClickShowWifi"></button>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
-                <input tabindex="0" placeholder="Adresse" onclick="this.select();"
-                data-bind="value: searchText, 
-                    valueUpdate: ['input', 'afterkeydown'], 
-                    event: { keydown: onSearchKeyDown, click: onSearchClick }, 
-                    hasFocus: $root.searchTextHasFocus" />
-                <button data-bind="click: togglePanelVisibility"></button>
+                <div class="search-wrap">
+                  <input tabindex="0" placeholder="Adresse" onclick="this.select();"
+                  data-bind="value: searchText,
+                      valueUpdate: ['input', 'afterkeydown'],
+                      event: { keydown: onSearchKeyDown, click: onSearchClick },
+                      hasFocus: $root.searchTextHasFocus" />
+                  <button data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
+                </div>
                 <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
                 </ul>
