@@ -104,6 +104,7 @@ class ViewModel {
 
     map.on("loading", () => NProgress.start());
     map.on("load",    () => NProgress.done());
+    map.on('tracking:stop', () => self.trackUser(false));
 
     this.searchTextThrottled.subscribe(newValue => {
       async(function * () {
@@ -113,8 +114,15 @@ class ViewModel {
     });
 
     this.onTrackUserClicked = () => {
-      self.trackUser(!self.trackUser());
-      map.toggleTrackUser();
+      var track = !self.trackUser();
+      if (track) {
+        self.trackUser(true);
+        map.trackUser();
+      }
+      else {
+        self.trackUser(false);
+        map.stopTrackUser();
+      }
     };
 
     this.onSuggestionClicked = (item) => {

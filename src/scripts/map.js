@@ -39,6 +39,10 @@ map.on('locationerror', e => {
     eventBus.emit('location:denied');
   }
 });
+map.on('dragstart', () => {
+  eventBus.emit('tracking:stop');
+  map.stopLocate();
+});
 
 const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
@@ -70,8 +74,6 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   }
 });
 
-var tracking = false;
-
 module.exports = _.extend(eventBus, {
   Layers: {
     Out2G: 9,
@@ -88,15 +90,13 @@ module.exports = _.extend(eventBus, {
     dekningLayer.setLayers(ids);
   },
 
-  toggleTrackUser: () => {
-    if (!tracking) {
-      var zoom = map.getZoom();
-      map.locate({ maxZoom: zoom, setView: true, watch: true, enableHighAccuracy: true });
-    }
-    else {
-      map.stopLocate();
-    }
-    tracking = !tracking;
+  trackUser: () => {
+    var zoom = map.getZoom();
+    map.locate({ maxZoom: zoom, setView: true, watch: true, enableHighAccuracy: true });
+  },
+
+  stopTrackUser: () => {
+    map.stopLocate();
   },
 
   centerAt: (lat, lon) => {
