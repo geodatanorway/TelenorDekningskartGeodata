@@ -25,6 +25,7 @@
 @import 'mixins/rounded.less';
 @import 'mixins/shadowed.less';
 @import 'mixins/pointer.less';
+@import 'mixins/fa.less';
 
 @import 'modules/track-user';
 
@@ -138,6 +139,10 @@ body,
     text-align: center;
     height: 41px;
     margin-top: 20px;
+
+    .search-wrap {
+      .fa-icon(@fa-var-map-marker);
+    }
 
     &.searchBar--in-panel {
       input,
