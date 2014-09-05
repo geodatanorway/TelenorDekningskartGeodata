@@ -7,18 +7,20 @@ var map = require('./map');
 var geodata = require('./geodata');
 var async = require('./async');
 var ajax = require('./ajax');
+require('./knockout-plugins');
 
 class ViewModel {
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
-    this.searchTextHasFocus = ko.observable(true);
-    this.searchTextThrottled = ko.pureComputed(this.searchText).extend({
+    this.searchTextPausable = ko.pauseableComputed(this.searchText, this);
+    this.searchTextThrottled = ko.pureComputed(this.searchTextPausable).extend({
       rateLimit: {
         timeout: 500,
         method: "notifyWhenChangesStop"
       }
     });
+    this.searchTextHasFocus = ko.observable(true);
     this.searchResults = ko.observableArray();
 
     this.shouldShowPanel = ko.observable(false);
@@ -126,8 +128,11 @@ class ViewModel {
     };
 
     this.onSuggestionClicked = (item) => {
+      this.searchTextPausable.pause();
+      this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
+      this.searchTextPausable.resume();
     };
 
     this.clearSearchResults = (event) => {
