@@ -12,6 +12,7 @@ class ViewModel {
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
+    this.searchTextHasFocus = ko.observable(true);
     this.searchTextThrottled = ko.pureComputed(this.searchText).extend({
       rateLimit: {
         timeout: 500,
@@ -75,21 +76,30 @@ class ViewModel {
     });
 
     this.mapKeys = function() {
-        $("#searchResults").children().each(function( index, value ) {
-            $(value).keydown(function( event ) {
-                if (event.which === 40) {
-                    $(value).next().focus();
-                }
-                if (event.which === 38) {
-                    $(value).prev().focus();
-                }
-                if (event.which === 13) {
-                    $(value).click();
-                }
-            });
+      self.searchTextHasFocus(false);
+      $("#searchResults").children().each(function (index, value) {
+        $(value).keydown(function (event) {
+          switch (event.which) {
+            case 27: // esc
+              self.clearSearchResults();
+              self.searchTextHasFocus(true);
+              break;
+            case 38: // up
+              $(value).prev().focus();
+              break;
+            case 40: // down
+              $(value).next().focus();
+              break;
+            case 13:
+              $(value).click();
+              self.searchTextHasFocus(true);
+              self.clearSearchResults();
+              break;
+          }
         });
+      });
 
-        $("#searchResults").children().first().focus();
+      $("#searchResults").children().first().focus();
     };
 
     map.on("loading", () => NProgress.start());
@@ -116,11 +126,17 @@ class ViewModel {
       this.searchResults.removeAll();
     };
 
+    this.onKeyDown = function (vm, event) {
+      if (event.which === 8) { // backspace
+        self.searchTextHasFocus(true);
+      }
+    };
+
     this.onKeyPressed = (vm, event) => {
       if (event.which === 27) { // escape
         this.clearSearchResults();
       }
-      if (event.which === 40) {
+      if (event.which === 40) { // arrow down
           self.mapKeys();
       }
 
