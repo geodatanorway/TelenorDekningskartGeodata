@@ -21,35 +21,22 @@
             </div>
             <div id="panel" data-bind="visible: shouldShowPanel">
                 <div class="searchBarPlaceholder"></div>
-                <div class="nowShowing">
-                    <label class="showsNow">Viser nå:</label><label class="dataShown">Tale/data, 4G, 3G, 2G, Innendørs</label>
-                </div>
-                <div class="settings groups">
-                    <div class="group">
-                        <div>
-                            <label><input type="radio" name="type" value="Dekning" data-bind="checked: mode">Mobildekning</label>
-                        </div>
-                        <div>
-                            <label><input type="radio" name="type" value="Wifi" data-bind="checked: mode">Trådløs sone</label>
-                        </div>
+                <div class="settings">
+                    <div class="" style="float: left;">
+                        <button></button>
                     </div>
-                    <div class="group" data-bind="visible: mode() == 'Dekning'">
-                        <div>
-                            <label><input type="checkbox" name="dataspeed" value="4G" data-bind="checked: show4g">4G (Inntil 50 Mbit/s)</label>
+                    <div class="" style="float: right;">
+                        <div class="buttonContainer">
+                            <button></button>
                         </div>
-                        <div>
-                            <label><input type="checkbox" name="dataspeed" value="3G" data-bind="checked: show3g">3G</label>
+                        <div class="buttonContainer">
+                            <button></button>
                         </div>
-                        <div>
-                            <label><input type="checkbox" name="dataspeed" value="2G" data-bind="checked: show2g" >2G</label>
+                        <div class="buttonContainer">
+                            <button></button>
                         </div>
-                    </div>
-                    <div class="group" data-bind="visible: mode() == 'Dekning'">
-                        <div>
-                            <label><input type="radio" name="zone" value="true" data-bind="checked: outdoors">Utendørs</label>
-                        </div>
-                        <div>
-                            <label><input type="radio" name="zone" value="false" data-bind="checked: outdoors">Innendørs</label>
+                        <div class="buttonContainer">
+                            <button></button>
                         </div>
                     </div>
                 </div>

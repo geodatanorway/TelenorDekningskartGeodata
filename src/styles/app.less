@@ -83,46 +83,37 @@ body,
     min-width: 300px;
     width: @panelWidth;
     min-height: 238px;
-    background-color: #fff;
+    background-color: transparent;
     display: block;
     position: absolute;
     top: 2%;
     left:50%;
     margin-left: -@panelWidth / 2;
-    .rounded();
-    .shadowed();
 
     .searchBarPlaceholder {
-        height: 65px;
+        height: 80px;
     }
-
-    .nowShowing {
-        height: 35px;
-        border-bottom: 1px solid #ececec;
-
-        .showsNow {
-            margin-top: 7px;
-            margin-left: 18px;
-            font-size: 13px;
-            color: #7c7d7f;
-            display: inline-block;
-        }
-
-        .dataShown {
-            margin-top: 7px;
-            margin-left: 5px;
-            font-size: 13px;
-            color: #000;
-            display: inline-block;
-        }
+    
+    .dataShown {
+        margin-top: 7px;
+        margin-left: 5px;
+        font-size: 13px;
+        color: #000;
+        display: inline-block;
     }
+    
 
     .settings {
         height: 100px;
-
-        .settingsTable {
-            height: 100%;
-            width: 100%;
+        
+        .buttonContainer {
+            margin-left: 15px;
+            float: left;
+            
+            button {
+                height: 48px;
+                width: 48px;
+            }
         }
     }
 }
@@ -139,39 +130,27 @@ body,
     height: 41px;
     margin-top: 20px;
 
-    &.searchBar--in-panel {
-      input,
-      button {
-        .no-shadow();
-      }
-    }
-
     input {
-        background-color: #fff;
-        .rounded();
-        .shadowed();
+        background-color: #000;
         outline: none;
         border: 0;
-        width: 65%;
-        height: 41px;
+        width: 535px;
+        height: 48px;
         padding-left: 20px;
-        left: 15px;
-        position: absolute;
-        border: 1px solid #eee;
+        float: left;
     }
 
     button {
         background-color: @color-primary;
         color: #fff;
-        .rounded();
-        .shadowed();
         outline: none;
         border: 0;
         width: 29%;
-        height: 41px;
-        right: 15px;
+        height: 48px;
+        right: 0px;
         position: absolute;
-
+        width: 48px;
+        
         &:before {
             content: 'Filter';
         }
@@ -183,8 +162,6 @@ body,
         margin-left: auto;
         margin-right: auto;
         margin-top: 48px;
-        .rounded();
-        .shadowed();
         overflow-y: auto;
         text-align: left;
         top: 30px;
@@ -237,7 +214,7 @@ body,
         width: @searchBarWidth / 2;
         margin-left: -@searchBarWidth / 4;
         input {
-            width: 58%;
+            width: 238px;
         }
     }
     .groups {
