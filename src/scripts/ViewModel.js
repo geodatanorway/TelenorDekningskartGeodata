@@ -102,6 +102,7 @@ class ViewModel {
     this.onSearchClick = () => {
         this.searchTextThrottled.resume();
         this.search();
+        this.searchTextHasFocus(true);
     };
 
     this.searchTextHasFocus.subscribe(hasFocus => this.shouldShowPanel(false));
