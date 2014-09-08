@@ -139,7 +139,11 @@ class ViewModel {
     this.searchTextThrottled.subscribe(newValue => this.search());
 
     this.search = async(function * () {
-      var rows = yield geodata.autoComplete(this.searchText());
+      var searchText = this.searchText();
+      if (!searchText) {
+        return;
+      }
+      var rows = yield geodata.autoComplete(searchText);
       if (rows.length > 0 && self.selectFirstWhenAvailable) {
         self.selectItem(rows[0]);
         self.selectFirstWhenAvailable = false;
