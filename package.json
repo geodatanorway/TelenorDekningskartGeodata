@@ -50,7 +50,7 @@
     "lodash": "^2.4.1",
     "nprogress": "^0.1.6",
     "open": "0.0.5",
-    "proj4js": "^10.0.0",
+    "proj4": "^2.2.2",
     "rimraf": "^2.2.8",
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
