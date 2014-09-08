@@ -51,7 +51,6 @@
     "lodash": "^2.4.1",
     "nprogress": "^0.1.6",
     "open": "0.0.5",
-    "proj4leaflet": "^0.7.0",
     "rimraf": "^2.2.8",
     "serve-static": "^1.5.3",
     "vinyl-buffer": "0.0.0",
@@ -67,7 +66,9 @@
   "browserify-shim": {
     "./node_modules/esri-leaflet/dist/esri-leaflet.js": {
       "exports": "L",
-      "depends": ["./node_modules/leaflet/dist/leaflet.js:L"]
+      "depends": [
+        "./node_modules/leaflet/dist/leaflet.js:L"
+      ]
     }
   }
 }
