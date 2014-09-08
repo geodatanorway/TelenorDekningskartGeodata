@@ -14,7 +14,7 @@ class ViewModel {
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
-    this.searchTextHasFocus = ko.observable(true);
+    this.searchTextHasFocus = ko.observable(false);
     this.searchTextThrottled = ko.pauseableComputed(this.searchText).extend({
       rateLimit: {
         timeout: 500,
@@ -104,9 +104,14 @@ class ViewModel {
         this.search();
     };
 
-    this.togglePanelVisibility = function() {
-      self.shouldShowPanel(!self.shouldShowPanel());
+    this.searchTextHasFocus.subscribe(hasFocus => this.shouldShowPanel(false));
+
+    this.clearSearchText = (e) => {
+      this.searchText("");
+      this.searchTextHasFocus(true);
     };
+
+    this.togglePanelVisibility = () => self.shouldShowPanel(!self.shouldShowPanel());
 
     this.layers = ko.pureComputed(() => {
       var layers = [];

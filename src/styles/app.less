@@ -22,6 +22,7 @@
 @searchBarWidth: 588px;
 @panelWidth: 588px;
 @button-height: 48px;
+@button-margin: 10px;
 
 /* ==========================================================================
    Modules
@@ -105,9 +106,7 @@ body { font-size: 100%; }
 }
 
 #panel {
-    // min-width: 300px;
     width: @panelWidth;
-    // min-height: 238px;
     background-color: transparent;
     display: block;
     position: absolute;
@@ -120,8 +119,6 @@ body { font-size: 100%; }
     }
 
     .dataShown {
-        // margin-top: 7px;
-        // margin-left: 5px;
         font-size: 13px;
         color: #000;
         display: inline-block;
@@ -131,26 +128,26 @@ body { font-size: 100%; }
         label {
           line-height: @button-height;
         }
-        
+
         outdoorsContainer {
             position: relative;
             float: left;
         }
-        
+
         .buttonContainer {
             position: relative;
-            margin-left: 10px;
+            margin-left: @button-margin;
             float: left;
 
             &.button--selected {
-              button {
+              .layer-filter {
                 background-color: transparent;
               }
               .buttons();
               color: @color-white;
             }
 
-            button {
+            .layer-filter {
                 height: @button-height;
                 width: @button-height;
                 -webkit-appearance: none;
@@ -191,25 +188,15 @@ body { font-size: 100%; }
     margin-top: 20px;
 
     .search-wrap {
+      .clearfix;
+
       &:before {
-        .fa();
-        content: @fa-var-map-marker;
-
-        position: absolute;
-        z-index: 1;
-        left: 0.7em;
-        line-height: @button-height;
-
-        font-size: 1.5em;
-        color: grey;
-      }
-      &:after {
         .fa();
         content: @fa-var-search;
 
         position: absolute;
         z-index: 1;
-        right: 2.7em;
+        left: 0.45em;
         line-height: @button-height;
 
         font-size: 1.5em;
@@ -231,12 +218,9 @@ body { font-size: 100%; }
       padding: 0.2em 2em 0 2.5em;
       text-overflow: ellipsis;
       border: 0;
-
     }
 
-    button {
-      float: right;
-      position: relative;
+    .button-base() {
       outline: none;
       border: 0;
       height: 3em;
@@ -244,9 +228,24 @@ body { font-size: 100%; }
       padding-bottom: 0.5em;
       width: 3em;
 
+      position: absolute;
+      right: 0;
+    }
+
+    .clear-search {
+      .pointer();
+      .button-base();
+      .fa-icon(@fa-var-close);
+      background-color: @color-white;
+      right: @button-height + @button-margin;
+      line-height: @button-height;
+    }
+
+    .layer-filter {
+      .button-base();
       .buttons();
-      color: @color-white;
       .border();
+      color: @color-white;
 
       &.button--wifi {
         .icon-wifi();
@@ -271,7 +270,7 @@ body { font-size: 100%; }
     }
 
     #searchResults {
-        width: @panelWidth - 58;
+        width: @panelWidth;
         max-height: 500px;
         margin-top: @button-height;
         overflow-y: auto;
@@ -279,7 +278,7 @@ body { font-size: 100%; }
         top: 30px;
         padding-left: 0px;
         list-style: none;
-        background-color: @color-white-t;
+        background-color: @color-white;
         li {
             padding: 15px 20px 15px 20px;
             color: @color-text;
