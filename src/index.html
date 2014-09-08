@@ -23,11 +23,11 @@
                 <div class="searchBarPlaceholder"></div>
                 <div class="settings">
                     <div class="" style="float: left; width: 100px;">
-                        <label class="switch-light switch-candy" onclick="">
+                        <label class="switch-light switch-candy" style="height: 48px; width: 96px;" onclick="">
                             <input id="outdoors" data-bind="checked: outdoors" type="checkbox">
                             <span>
-                                <span>Inne</span>
-                                <span>Ute</span>
+                                <span data-bind="css: { 'outdoors--mode--selected': outdoors() == false }">Inne</span>
+                                <span data-bind="css: { 'outdoors--mode--selected': outdoors() }">Ute</span>
                             </span>
 
                             <a></a>

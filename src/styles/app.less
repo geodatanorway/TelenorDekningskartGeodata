@@ -19,8 +19,8 @@
 @color-disabled: #aaa;
 @color-text: #333;
 
-@searchBarWidth: 588px;
-@panelWidth: 588px;
+@searchBarWidth: 530px;
+@panelWidth: 530px;
 @button-height: 48px;
 
 /* ==========================================================================
@@ -89,33 +89,33 @@ body { font-size: 100%; }
 }
 
 .leaflet-top.leaflet-left {
-  top: auto;
-  left: auto;
-  right: 1em;
-  bottom: 5em;
-  .leaflet-control {
-    margin: 0;
-  }
+    top: auto;
+    left: auto;
+    right: 1em;
+    bottom: 5em;
+    .leaflet-control {
+        margin: 0;
+    }
 }
 
 .leaflet-bar {
-  .no-shadow();
-  a:first-child,
-  a:last-child {
-    .no-rounded();
-  }
+    .no-shadow();
+    a:first-child,
+        a:last-child {
+        .no-rounded();
+    }
 }
 
 .icon-wifi() {
-  .fa-icon(@fa-var-wifi);
+    .fa-icon(@fa-var-wifi);
 }
 
 .buttons() {
-  .pointer();
-  &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
-  &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
-  &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
-  &.button--wifi { background-color: @color-primary; }
+    .pointer();
+    &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
+    &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
+    &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
+    &.button--wifi { background-color: @color-primary; }
 }
 
 #panel {
@@ -143,25 +143,25 @@ body { font-size: 100%; }
 
     .settings {
         label {
-          line-height: @button-height;
+            line-height: @button-height;
         }
-        
+
         outdoorsContainer {
             position: relative;
             float: left;
         }
-        
+
         .buttonContainer {
             position: relative;
             margin-left: 10px;
             float: left;
 
             &.button--selected {
-              button {
-                background-color: transparent;
-              }
-              .buttons();
-              color: @color-white;
+                button {
+                    background-color: transparent;
+                }
+                .buttons();
+                color: @color-white;
             }
 
             button {
@@ -176,17 +176,17 @@ body { font-size: 100%; }
             }
 
             &.button--wifi {
-              &:before {
-                display: block;
-                position: absolute;
-                text-align: center;
-              }
+                &:before {
+                    display: block;
+                    position: absolute;
+                    text-align: center;
+                }
             }
 
             &:before {
-              width: 100%;
-              line-height: @button-height;
-              text-align: center;
+                width: 100%;
+                line-height: @button-height;
+                text-align: center;
             }
         }
     }
@@ -205,83 +205,83 @@ body { font-size: 100%; }
     margin-top: 20px;
 
     .search-wrap {
-      &:before {
-        .fa();
-        content: @fa-var-map-marker;
+        &:before {
+            .fa();
+            content: @fa-var-map-marker;
 
-        position: absolute;
-        z-index: 1;
-        left: 0.7em;
-        line-height: @button-height;
+            position: absolute;
+            z-index: 1;
+            left: 0.7em;
+            line-height: @button-height;
 
-        font-size: 1.5em;
-        color: grey;
-      }
-      &:after {
-        .fa();
-        content: @fa-var-search;
+            font-size: 1.5em;
+            color: grey;
+        }
+        &:after {
+            .fa();
+            content: @fa-var-search;
 
-        position: absolute;
-        z-index: 1;
-        right: 2.7em;
-        line-height: @button-height;
+            position: absolute;
+            z-index: 1;
+            right: 2.7em;
+            line-height: @button-height;
 
-        font-size: 1.5em;
-        color: @color-primary;
-      }
+            font-size: 1.5em;
+            color: @color-primary;
+        }
     }
 
     input {
-      .no-rounded();
-      .border();
-      position: relative;
-      float: left;
+        .no-rounded();
+        .border();
+        position: relative;
+        float: left;
 
-      height: @button-height;
-      width: 530px;
+        height: @button-height;
+        width: 472px;
 
-      background-color: @color-white;
-      outline: none;
-      padding: 0.2em 2em 0 2.5em;
-      text-overflow: ellipsis;
-      border: 0;
+        background-color: @color-white;
+        outline: none;
+        padding: 0.2em 2em 0 2.5em;
+        text-overflow: ellipsis;
+        border: 0;
 
     }
 
     button {
-      float: right;
-      position: relative;
-      outline: none;
-      border: 0;
-      height: 3em;
-      padding: 0;
-      padding-bottom: 0.5em;
-      width: 3em;
+        float: right;
+        position: relative;
+        outline: none;
+        border: 0;
+        height: 3em;
+        padding: 0;
+        padding-bottom: 0.5em;
+        width: 3em;
 
-      .buttons();
-      color: @color-white;
-      .border();
+        .buttons();
+        color: @color-white;
+        .border();
 
-      &.button--wifi {
-        .icon-wifi();
-      }
+        &.button--wifi {
+            .icon-wifi();
+        }
 
-      &:after {
-        content: @fa-var-chevron-down;
-        .fa();
-        font-size: 0.8em;
-        text-align: center;
-        position: absolute;
-        top: 2em;
-        left: 0;
-        right: 0;
-        transition: all 0.2s;
-      }
+        &:after {
+            content: @fa-var-chevron-down;
+            .fa();
+            font-size: 0.8em;
+            text-align: center;
+            position: absolute;
+            top: 2em;
+            left: 0;
+            right: 0;
+            transition: all 0.2s;
+        }
 
-      &.button--in-panel:after {
-        transform: rotate(180deg);
-        top: 2.1em;
-      }
+        &.button--in-panel:after {
+            transform: rotate(180deg);
+            top: 2.1em;
+        }
     }
 
     #searchResults {
@@ -302,7 +302,7 @@ body { font-size: 100%; }
                 background-color: @color-white-t;
             }
             &:active,
-            &:focus {
+                &:focus {
                 color: @color-white;
                 background: #00ace8;
             }
@@ -331,24 +331,67 @@ body { font-size: 100%; }
     margin:0 0 40px;
 }
 
+.switch-candy a {
+    background-color: #0091d2;
+    border: 2px solid #fff;
+    color: #fff;
+    border-radius: 0px;
+}
+
+.outdoors--mode--selected {
+    color: #fff !important;
+}
+
 @media only screen {
     .switch-light {
         margin-left: 0px;
+
+        label {
+            line-height: none;
+        }
+
+        & > span {
+            line-height: 48px;
+            padding-right: 0px;
+        }
+
+        span {
+            color: rgb(34, 34, 34);
+            font-family: arial;
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: normal;
+        }
     }
+
+
+
+    .switch-candy {
+        background-color: #fff;
+        border-radius: 0px;
+    }
+
+
 }
 
-@media all and (max-width: 550px) {
+@media all and (max-width: 530px) {
     #panel {
-        width: @panelWidth / 2;
-        margin-left: (-@panelWidth / 4);
+        width: @panelWidth / 1.8;
+        margin-left: (-@panelWidth / 3.6);
     }
     #searchBar {
-        width: @searchBarWidth / 2;
-        margin-left: -@searchBarWidth / 4;
+        width: @searchBarWidth / 1.8;
+        margin-left: -@searchBarWidth / 3.6;
         input {
             width: 235px;
         }
     }
+    
+    #panel .settings .buttonContainer {
+        margin-left: 0px;
+    }
+    
     .groups {
         zoom: 0.8;
     }
