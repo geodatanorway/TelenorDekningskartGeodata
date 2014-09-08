@@ -6,6 +6,7 @@
 @import "normalize.less";
 @import (less) "libs/nprogress.css";
 @import (less) "libs/leaflet.awesome-markers.css";
+@import 'libs/toggle-switch.less';
 
 
 /* ==========================================================================
@@ -130,7 +131,12 @@ body { font-size: 100%; }
         label {
           line-height: @button-height;
         }
-
+        
+        outdoorsContainer {
+            position: relative;
+            float: left;
+        }
+        
         .buttonContainer {
             position: relative;
             margin-left: 10px;
@@ -309,6 +315,12 @@ body { font-size: 100%; }
     float: left;
     width: 33.3%;
     margin:0 0 40px;
+}
+
+@media only screen {
+    .switch-light {
+        margin-left: 0px;
+    }
 }
 
 @media all and (max-width: 550px) {
