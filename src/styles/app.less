@@ -162,7 +162,6 @@ body { font-size: 100%; }
         width: @button-height;
         -webkit-appearance: none;
         outline: none;
-        border: none;
         padding: 0;
         background-color: @color-white;
         .border();
@@ -216,7 +215,6 @@ body { font-size: 100%; }
 
   .button-base() {
     outline: none;
-    border: 0;
     height: 3em;
     padding: 0;
     padding-bottom: 0.5em;
@@ -276,7 +274,6 @@ body { font-size: 100%; }
     outline: none;
     padding: 0.2em 2em 0 2.6em;
     text-overflow: ellipsis;
-    border: 0;
   }
 
   #searchResults {
@@ -328,7 +325,6 @@ body { font-size: 100%; }
 
 .switch-candy a {
   background-color: #00ace8;
-  border: 2px solid #fff;
   color: #fff;
   border-radius: 0px;
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
@@ -340,7 +336,7 @@ body { font-size: 100%; }
 }
 
 .track-user .track {
-  border: 2px solid #fff;
+  .border();
 }
 
 @media only screen {
