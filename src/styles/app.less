@@ -101,10 +101,10 @@ body { font-size: 100%; }
 
 .buttons() {
   .pointer();
-  &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
-  &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
-  &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
-  &.button--wifi { background-color: @color-primary; .icon-wifi(); }
+  &.button--4g   { background-color: darken(rgba(126, 231, 218, 0.8), 20%); }
+  &.button--3g   { background-color: darken(rgba(234, 234, 107, 0.8), 20%); }
+  &.button--2g   { background-color: darken(rgba(149, 234, 107, 0.8), 20%); }
+  &.button--wifi { background-color: @color-primary; }
 }
 
 
@@ -130,7 +130,6 @@ body { font-size: 100%; }
         color: #000;
         display: inline-block;
     }
-
 
     .settings {
         label {
@@ -242,6 +241,10 @@ body { font-size: 100%; }
 
       .buttons();
       color: @color-white;
+
+      &.button--wifi {
+        .icon-wifi();
+      }
 
       &:after {
         content: @fa-var-chevron-down;
