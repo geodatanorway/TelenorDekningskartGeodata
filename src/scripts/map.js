@@ -48,7 +48,7 @@ var map = L.map('mapDiv', {
     inertiaDeceleration: 3500, // by experimentation..
     continuousWorld: true,
     // crs: crs,
-    // maxZoom: 16
+    maxZoom: 13
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -93,7 +93,8 @@ map.on('dragstart', () => {
 
 // const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer/tile/{z}/{x}/{y}";
 // const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
-const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+// const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
 const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
 
 const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
