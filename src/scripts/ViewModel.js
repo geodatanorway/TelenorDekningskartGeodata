@@ -132,34 +132,6 @@ class ViewModel {
       map.setLayers(newValue);
     });
 
-    this.mapKeys = function() {
-      self.searchTextHasFocus(false);
-      $("#searchResults").children().each(function(index, value) {
-        $(value).keydown(function(event) {
-          switch (event.which) {
-            case 27: // esc
-              self.clearSearchResults();
-              self.searchTextHasFocus(true);
-              break;
-            case 38: // up
-              $(value).prevWrap().focus();
-              break;
-            case 40: // down
-            case 9: // tab
-              $(value).nextWrap().focus();
-              break;
-            case 13: // enter
-              $(value).click();
-              self.searchTextHasFocus(true);
-              self.clearSearchResults();
-              break;
-          }
-        });
-      });
-
-      $("#searchResults").children().first().focus();
-    };
-
     map.on("loading", () => NProgress.start());
     map.on("load", () => NProgress.done());
     map.on('tracking:stop', () => self.trackUser(false));
@@ -220,8 +192,7 @@ class ViewModel {
       if (event.which === 27) { // escape
         this.clearSearchResults();
       } else if (event.which === 40 || event.which === 9) { // arrow down or TAB
-        this.mapKeys();
-        event.prefentDefault();
+        $("#searchResults").children().first().focus();
       } else if (event.which === 13) { // enter
         this.selectFirstResult();
       } else {
@@ -230,6 +201,35 @@ class ViewModel {
 
       return true;
     };
+
+    $("#searchResults").on("keydown", "li", function (e) {
+      self.searchTextHasFocus(false);
+      var $li = $(this);
+      switch (event.which) {
+        case 27: // esc
+          self.clearSearchResults();
+          self.searchTextHasFocus(true);
+          break;
+        case 38: // up
+          $li.prevWrap().focus();
+          break;
+        case 40: // down
+        case 9: // tab
+          if (e.shiftKey) {
+            $li.prevWrap().focus();
+          } else {
+            $li.nextWrap().focus();
+          }
+          break;
+        case 13: // enter
+          $li.click();
+          self.searchTextHasFocus(true);
+          self.clearSearchResults();
+          break;
+      }
+    });
+
+
 
     this.onDocumentKeyDown = (vm, e) => {
       var isCtrlOrAlt = (e.ctrlKey || e.altKey || e.metaKey);
