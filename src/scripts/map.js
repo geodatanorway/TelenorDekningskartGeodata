@@ -56,8 +56,7 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-// @torgeir: Fikk denne av Jan Henrik (via Cornelia) på slack?
-const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer";
+// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer";
 // const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
 
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
