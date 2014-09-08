@@ -6,6 +6,7 @@
 @import "normalize.less";
 @import (less) "libs/nprogress.css";
 @import (less) "libs/leaflet.awesome-markers.css";
+@import 'libs/toggle-switch.less';
 
 
 /* ==========================================================================
@@ -26,6 +27,7 @@
    Modules
    ========================================================================== */
 @import 'mixins/rounded.less';
+@import 'mixins/border.less';
 @import 'mixins/shadowed.less';
 @import 'mixins/pointer.less';
 @import 'mixins/fa.less';
@@ -42,6 +44,7 @@ body,
     padding: 0;
     margin: 0;
     height: 100%;
+    font-family: arial;
 }
 
 body { font-size: 100%; }
@@ -95,6 +98,14 @@ body { font-size: 100%; }
   }
 }
 
+.leaflet-bar {
+  .no-shadow();
+  a:first-child,
+  a:last-child {
+    .no-rounded();
+  }
+}
+
 .icon-wifi() {
   .fa-icon(@fa-var-wifi);
 }
@@ -104,9 +115,8 @@ body { font-size: 100%; }
   &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
   &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
   &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
-  &.button--wifi { background-color: @color-primary; .icon-wifi(); }
+  &.button--wifi { background-color: @color-primary; }
 }
-
 
 #panel {
     // min-width: 300px;
@@ -131,12 +141,16 @@ body { font-size: 100%; }
         display: inline-block;
     }
 
-
     .settings {
         label {
           line-height: @button-height;
         }
-
+        
+        outdoorsContainer {
+            position: relative;
+            float: left;
+        }
+        
         .buttonContainer {
             position: relative;
             margin-left: 10px;
@@ -151,13 +165,14 @@ body { font-size: 100%; }
             }
 
             button {
-                line-height: @button-height;
                 height: @button-height;
                 width: @button-height;
                 -webkit-appearance: none;
                 outline: none;
                 border: none;
-                background-color: @color-white-t;
+                padding: 0;
+                background-color: @color-white;
+                .border();
             }
 
             &.button--wifi {
@@ -217,6 +232,8 @@ body { font-size: 100%; }
     }
 
     input {
+      .no-rounded();
+      .border();
       position: relative;
       float: left;
 
@@ -237,11 +254,17 @@ body { font-size: 100%; }
       outline: none;
       border: 0;
       height: 3em;
+      padding: 0;
       padding-bottom: 0.5em;
       width: 3em;
 
       .buttons();
       color: @color-white;
+      .border();
+
+      &.button--wifi {
+        .icon-wifi();
+      }
 
       &:after {
         content: @fa-var-chevron-down;
@@ -249,7 +272,7 @@ body { font-size: 100%; }
         font-size: 0.8em;
         text-align: center;
         position: absolute;
-        top: 2.3em;
+        top: 2em;
         left: 0;
         right: 0;
         transition: all 0.2s;
@@ -257,7 +280,7 @@ body { font-size: 100%; }
 
       &.button--in-panel:after {
         transform: rotate(180deg);
-        top: 2.38em;
+        top: 2.1em;
       }
     }
 
@@ -306,6 +329,12 @@ body { font-size: 100%; }
     float: left;
     width: 33.3%;
     margin:0 0 40px;
+}
+
+@media only screen {
+    .switch-light {
+        margin-left: 0px;
+    }
 }
 
 @media all and (max-width: 550px) {
