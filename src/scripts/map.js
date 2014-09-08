@@ -11,9 +11,42 @@ var CenterZoom = 12;
 var markers = {};
 const AnimateDuration = 0.5;
 
+
+var crs = new L.Proj.CRS.TMS('EPSG:32633', 
+  '+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+  [-3708422.027733366,
+  3479849.9390820344,
+  4766389.588614912,
+  9997963.943018204], {
+    resolutions: [
+      21674.7100160867,
+      10837.35500804335,
+      5418.677504021675,
+      2709.3387520108377,
+      1354.6693760054188,
+      677.3346880027094,
+      338.6673440013547,
+      169.33367200067735,
+      84.66683600033868,
+      42.33341800016934,
+      21.16670900008467,
+      10.583354500042335,
+      5.291677250021167,
+      2.6458386250105836,
+      1.3229193125052918,
+      0.6614596562526459,
+      0.33072982812632296,
+      0.16536491406316148
+      ]
+  });
+
+
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
-    inertiaDeceleration: 3500 // by experimentation..
+    inertiaDeceleration: 3500, // by experimentation..
+    continuousWorld: true,
+    // crs: crs,
+    // maxZoom: 16
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -25,7 +58,7 @@ var map = L.map('mapDiv', {
     }
   });
 
-L.esri.basemapLayer('Streets').addTo(map);
+// L.esri.basemapLayer('Streets').addTo(map);
 
 var userLocationMarker, opts = {
   icon: icons.MyLocation
@@ -56,16 +89,25 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer";
+// const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer/tile/{z}/{x}/{y}";
 // const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
+const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
 
 const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
-// var basemap = L.esri.tiledMapLayer(GeodataUrl, {
-//   token: GeodataToken,
-//   subdomains: ["s1", "s2", "s3", "s4", "s5"]
-// });
-// basemap.addTo(map);
+
+
+var basemap = L.esri.tiledMapLayer(GeodataUrl, {
+  token: GeodataToken,
+  subdomains: ["s1", "s2", "s3", "s4", "s5"],
+  // tms: true
+});
+basemap.addTo(map);
+
+// var basemap = L.tileLayer(GeodataUrl, {
+//   tms: true,
+//   subdomains: ["s1", "s2", "s3", "s4", "s5"],
+// }).addTo(map);
 
 var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
   opacity: 0.5,
