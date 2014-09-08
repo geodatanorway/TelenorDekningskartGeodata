@@ -55,14 +55,14 @@
             <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
                 <div class="search-wrap">
                     <input tabindex="0"
-                           placeholder="Adresse"
+                           placeholder="Søk"
                            data-bind="
                              value: searchText,
                              valueUpdate: ['input', 'afterkeydown'],
                              event: { keydown: onSearchKeyDown, click: onSearchClick },
                              hasFocus: searchTextHasFocus" />
                     <button class="layer-filter" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
-                    <span class="clear-search" data-bind="visible: searchText().length > 0, event: { mousedown: clearSearchText }">&nbsp;</span>
+                    <span class="clear-search" data-bind="visible: searchText().length > 0, event: { touchstart: clearSearchText, mousedown: clearSearchText }">&nbsp;</span>
                 </div>
                 <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
                     <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
