@@ -7,6 +7,11 @@ function icon (options) {
   return AwesomeMarkers.icon(options);
 }
 
+exports.SearchLocation = icon({
+  markerColor: 'blue',
+  icon: 'circle-o'
+});
+
 exports.MyLocation = icon({
   markerColor: 'green',
   icon: 'circle-o'

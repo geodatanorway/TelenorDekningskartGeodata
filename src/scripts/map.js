@@ -138,11 +138,15 @@ module.exports = _.extend(eventBus, {
     });
   },
 
-  setMarker: (lat, lon, id, options)  => {
+  setMarker: (lat, lon, id)  => {
     if (markers[id]) {
       map.removeLayer(markers[id]);
       delete markers[id];
     }
+
+    var options = {
+      icon: icons.SearchLocation
+    };
 
     var marker = L.marker(L.latLng(lat, lon), options);
     markers[id] = marker;
