@@ -1,5 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
+var L = require('leaflet');
+require('esri-leaflet');
 
 var icons = require('./map-icons');
 
@@ -13,7 +15,9 @@ const AnimateDuration = 0.5;
 
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
-    inertiaDeceleration: 3500 // by experimentation..
+    inertiaDeceleration: 3500, // by experimentation..
+    continuousWorld: true,
+    maxZoom: 13
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -25,7 +29,7 @@ var map = L.map('mapDiv', {
     }
   });
 
-L.esri.basemapLayer('Streets').addTo(map);
+// L.esri.basemapLayer('Streets').addTo(map);
 
 var userLocationMarker, opts = {
   icon: icons.MyLocation
@@ -56,20 +60,23 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheGraatone_32633/MapServer";
-// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/Geocache_UTM33_WGS84/GeocacheGraatone/MapServer";
+// const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
+const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
 
-const GeodataToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
+const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
-// var basemap = L.esri.tiledMapLayer(GeodataUrl, {
-//   token: GeodataToken,
-//   subdomains: ["s1", "s2", "s3", "s4", "s5"]
-// });
-// basemap.addTo(map);
+
+
+var basemap = L.esri.tiledMapLayer(GeodataUrl, {
+  token: GeodataToken,
+  subdomains: ["s1", "s2", "s3", "s4", "s5"],
+});
+basemap.addTo(map);
 
 var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
   opacity: 0.5,
-  token: GeodataToken,
+  token: DekningToken,
   layers: layers,
 });
 dekningLayer.on("loading", event => {
@@ -81,7 +88,7 @@ dekningLayer.on("load", event => {
 dekningLayer.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
-  token: GeodataToken,
+  token: DekningToken,
   where: "1=1",
   pointToLayer: function(geojson, latlng) {
     return L.marker(latlng, {
