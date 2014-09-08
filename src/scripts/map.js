@@ -1,7 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var L = require('leaflet');
-require('esri-leaflet');
+require('./libs/esri-leaflet');
 
 var icons = require('./map-icons');
 
