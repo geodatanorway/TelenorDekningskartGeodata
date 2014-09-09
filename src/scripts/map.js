@@ -101,6 +101,13 @@ function setLayers(ids) {
 var clickCanceled = false;
 
 function showGeocodePopup(latlng) {
+  const MapClickedId = "MapClicked";
+
+  if (markers[MapClickedId]) {
+    map.removeLayer(markers[MapClickedId]);
+    delete markers[MapClickedId];
+    return;
+  }
 
   var location = {
     x: latlng.lng,
@@ -125,7 +132,7 @@ function showGeocodePopup(latlng) {
       popupText += address.Postnummer + " " + address.Poststed;
     }
 
-    setMarker(latlng.lat, latlng.lng, "MapClicked", {
+    setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.ClickLocation
     }).openPopup();
@@ -239,7 +246,7 @@ module.exports = _.extend(eventBus, {
     } else {
       map.removeLayer(wifiLayer);
       map.options.maxZoom = MaxZoom;
-      if(map.getZoom() > MaxZoom)
+      if (map.getZoom() > MaxZoom)
         map.setZoom(MaxZoom);
     }
   }
