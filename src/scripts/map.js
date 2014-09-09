@@ -31,7 +31,6 @@ var map = L.map('mapDiv', {
     }
   });
 
-L.esri.basemapLayer('Streets').addTo(map);
 
 var userLocationMarker, opts = {
   icon: icons.MyLocation
@@ -150,7 +149,9 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
   subdomains: ["s1", "s2", "s3", "s4", "s5"],
 });
 
-// basemap.addTo(map);
+basemap.addTo(map);
+//L.esri.basemapLayer('Streets').addTo(map);
+
 var opacity = 0.25;
 
 function createDekningLayer() {

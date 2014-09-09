@@ -1,7 +1,7 @@
 var _ = require('lodash');
 
 _.mixin({
-  checkNested: function(obj /*, level1, level2, ... levelN*/ ) {
+  checkNested: function(/* obj, level1, level2, ... levelN*/ ) {
     var args = Array.prototype.slice.call(arguments),
       obj = args.shift();
 
