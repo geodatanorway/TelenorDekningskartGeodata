@@ -38,7 +38,7 @@ var userLocationMarker, opts = {
 };
 map.locate({
   setView: true,
-  maxZoom: 14,
+  maxZoom: InitialZoom,
   enableHighAccuracy: true
 });
 map.on('locationfound', e => {
@@ -146,9 +146,10 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 });
 
 // basemap.addTo(map);
+var opacity = 0.25;
 
 var uteDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.3,
+  opacity: opacity,
   token: DekningToken,
   layers: layers,
 });
@@ -160,7 +161,7 @@ uteDekningLayer.on("load", event => {
 });
 
 var inneDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.3,
+  opacity: opacity,
   token: DekningToken,
   layers: [2],
 });
