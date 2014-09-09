@@ -128,6 +128,7 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
   token: GeodataToken,
   subdomains: ["s1", "s2", "s3", "s4", "s5"],
 });
+
 // basemap.addTo(map);
 
 var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
@@ -141,7 +142,21 @@ dekningLayer.on("loading", event => {
 dekningLayer.on("load", event => {
   eventBus.emit("load");
 });
+
+var dekningLayer2 = L.esri.dynamicMapLayer(DekningUrl, {
+  opacity: 0.5,
+  token: DekningToken,
+  layers: layers,
+});
+dekningLayer2.on("loading", event => {
+  eventBus.emit("loading");
+});
+dekningLayer2.on("load", event => {
+  eventBus.emit("load");
+});
+
 dekningLayer.addTo(map);
+dekningLayer2.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: DekningToken,
@@ -170,6 +185,7 @@ module.exports = _.extend(eventBus, {
 
   setLayers: (ids) => {
     dekningLayer.setLayers(ids);
+    dekningLayer2.setLayers(_(ids).map(id => id - 1));
   },
 
   trackUser: () => {

@@ -116,21 +116,13 @@ class ViewModel {
 
     this.layers = ko.pureComputed(() => {
       var layers = [];
-      if (this.outdoors()) {
         if (this.show2g())
           layers.push(map.Layers.Out2G);
         if (this.show3g())
           layers.push(map.Layers.Out3G);
         if (this.show4g())
           layers.push(map.Layers.Out4G);
-      } else {
-        if (this.show2g())
-          layers.push(map.Layers.In2G);
-        if (this.show3g())
-          layers.push(map.Layers.In3G);
-        if (this.show4g())
-          layers.push(map.Layers.In4G);
-      }
+      
       return layers;
     });
 
