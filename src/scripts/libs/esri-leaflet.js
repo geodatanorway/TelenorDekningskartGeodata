@@ -2044,7 +2044,7 @@ L.esri.Layers.TiledMapLayer = L.TileLayer.extend({
 
     // set the urls
     this.url = L.esri.Util.cleanUrl(url);
-    this.tileUrl = L.esri.Util.cleanUrl(url) + 'tile/{z}/{y}/{x}';
+    this.tileUrl = L.esri.Util.cleanUrl(url) + 'tile/{z}/{y}/{x}' + (options.token ? "?token=" + options.token : "");
     this._service = new L.esri.Services.MapService(this.url, options);
     this._service.on('authenticationrequired requeststart requestend requesterror requestsuccess', this._propagateEvent, this);
 
