@@ -12,6 +12,11 @@ exports.SearchLocation = icon({
   icon: 'circle-o'
 });
 
+exports.ClickLocation = icon({
+  markerColor: 'cadetblue',
+  icon: 'circle-o'
+});
+
 exports.MyLocation = icon({
   markerColor: 'green',
   icon: 'circle-o'

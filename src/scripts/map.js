@@ -1,8 +1,10 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 var L = require('./libs/esri-leaflet');
+require('./libs/esri-leaflet-geocoder');
 
 var icons = require('./map-icons');
+require('./lodash-plugins');
 
 var layers = [3];
 var trondheim = L.latLng(63.430494, 10.395056);
@@ -11,6 +13,7 @@ var InitialZoom = 6;
 var CenterZoom = 12;
 var markers = {};
 const AnimateDuration = 0.5;
+
 
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
@@ -28,7 +31,7 @@ var map = L.map('mapDiv', {
     }
   });
 
-// L.esri.basemapLayer('Streets').addTo(map);
+L.esri.basemapLayer('Streets').addTo(map);
 
 var userLocationMarker, opts = {
   icon: icons.MyLocation
@@ -63,15 +66,69 @@ const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WM
 //const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
 const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
 
+const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
+
 const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
 
+
+var geocoding = new L.esri.Services.Geocoding(GeocodeUrl, {
+  token: "YNwBZNct1SXVxPMi7SawmggygE-k2q43VNUgC0gutZyfHgCkezgZ6oPKSILtP1op"
+});
+
+function setMarker(lat, lon, id, options) {
+  if (markers[id]) {
+    map.removeLayer(markers[id]);
+    delete markers[id];
+  }
+
+  options = _.extend({
+    icon: icons.SearchLocation
+  }, options, true);
+
+  var marker = L.marker(L.latLng(lat, lon), options);
+  markers[id] = marker;
+  map.addLayer(marker);
+  marker.bindPopup(options.title);
+  return marker;
+}
+
+map.on("click", e => {
+  var location = {
+    x: e.latlng.lng,
+    y: e.latlng.lat,
+    spatialReference: {
+      wkid: 4326
+    }
+  };
+  var options = {
+    outSR: 3857
+  };
+  
+  geocoding.reverse(location, options, (error, result, response) => {
+
+    var popupText = "";
+    if (error)
+      popupText = "Ingen adresse funnet";
+    else {
+      var address = response.address;
+      if (address.Adresse)
+        popupText += address.Adresse + "<br>";
+      popupText += address.Postnummer + " " + address.Poststed;
+    }
+
+    setMarker(e.latlng.lat, e.latlng.lng, "MapClicked", {
+      title: popupText,
+      icon: icons.ClickLocation
+    }).openPopup();
+  });
+});
 
 var basemap = L.esri.tiledMapLayer(GeodataUrl, {
   token: GeodataToken,
   subdomains: ["s1", "s2", "s3", "s4", "s5"],
 });
-basemap.addTo(map);
+// basemap.addTo(map);
 
 var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
   opacity: 0.5,
@@ -141,21 +198,7 @@ module.exports = _.extend(eventBus, {
     });
   },
 
-  setMarker: (lat, lon, id, options) => {
-    if (markers[id]) {
-      map.removeLayer(markers[id]);
-      delete markers[id];
-    }
-
-    _.extend(options, {
-      icon: icons.SearchLocation
-    }, true);
-
-    var marker = L.marker(L.latLng(lat, lon), options);
-    markers[id] = marker;
-    map.addLayer(marker);
-    marker.bindPopup(options.title);
-  },
+  setMarker: setMarker,
 
   setWifiVisibility: (visible) => {
     if (visible)
