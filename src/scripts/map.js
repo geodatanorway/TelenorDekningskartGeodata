@@ -146,7 +146,7 @@ dekningLayer.on("load", event => {
 var dekningLayer2 = L.esri.dynamicMapLayer(DekningUrl, {
   opacity: 0.5,
   token: DekningToken,
-  layers: layers,
+  layers: [2],
 });
 dekningLayer2.on("loading", event => {
   eventBus.emit("loading");
