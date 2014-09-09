@@ -6,7 +6,7 @@ require('./libs/esri-leaflet-geocoder');
 var icons = require('./map-icons');
 require('./lodash-plugins');
 
-var layers = [3];
+var initialLayers = [3];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var InitialZoom = 6;
@@ -93,6 +93,11 @@ function setMarker(lat, lon, id, options) {
   return marker;
 }
 
+function setLayers(ids) {
+  uteDekningLayer.setLayers(ids);
+  inneDekningLayer.setLayers(_(ids).map(id => id - 1));
+}
+
 var clickCanceled = false;
 
 function showGeocodePopup(latlng) {
@@ -148,29 +153,24 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 // basemap.addTo(map);
 var opacity = 0.25;
 
-var uteDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: opacity,
-  token: DekningToken,
-  layers: layers,
-});
-uteDekningLayer.on("loading", event => {
-  eventBus.emit("loading");
-});
-uteDekningLayer.on("load", event => {
-  eventBus.emit("load");
-});
+function createDekningLayer() {
+  var layer = L.esri.dynamicMapLayer(DekningUrl, {
+    opacity: opacity,
+    token: DekningToken
+  });
+  layer.on("loading", event => {
+    eventBus.emit("loading");
+  });
+  layer.on("load", event => {
+    eventBus.emit("load");
+  });
+  return layer;
+}
 
-var inneDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: opacity,
-  token: DekningToken,
-  layers: [2],
-});
-inneDekningLayer.on("loading", event => {
-  eventBus.emit("loading");
-});
-inneDekningLayer.on("load", event => {
-  eventBus.emit("load");
-});
+var uteDekningLayer = createDekningLayer();
+var inneDekningLayer = createDekningLayer();
+
+setLayers(initialLayers);
 
 uteDekningLayer.addTo(map);
 inneDekningLayer.addTo(map);
@@ -200,10 +200,7 @@ module.exports = _.extend(eventBus, {
     In4GiPhone: 0
   },
 
-  setLayers: (ids) => {
-    uteDekningLayer.setLayers(ids);
-    inneDekningLayer.setLayers(_(ids).map(id => id - 1));
-  },
+  setLayers: setLayers,
 
   trackUser: () => {
     var zoom = map.getZoom();
