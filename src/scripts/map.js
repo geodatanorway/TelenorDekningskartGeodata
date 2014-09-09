@@ -6,20 +6,21 @@ require('./libs/esri-leaflet-geocoder');
 var icons = require('./map-icons');
 require('./lodash-plugins');
 
-var layers = [3];
+const InitialZoom = 6;
+const CenterZoom = 12;
+const MaxZoom = 14;
+const AnimateDuration = 0.5;
+var initialLayers = [3];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
-var InitialZoom = 6;
-var CenterZoom = 12;
 var markers = {};
-const AnimateDuration = 0.5;
 
 
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
     inertiaDeceleration: 3500, // by experimentation..
     continuousWorld: true,
-    maxZoom: 13
+    maxZoom: MaxZoom
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -31,14 +32,13 @@ var map = L.map('mapDiv', {
     }
   });
 
-L.esri.basemapLayer('Streets').addTo(map);
 
 var userLocationMarker, opts = {
   icon: icons.MyLocation
 };
 map.locate({
   setView: true,
-  maxZoom: 14,
+  maxZoom: InitialZoom,
   enableHighAccuracy: true
 });
 map.on('locationfound', e => {
@@ -62,8 +62,8 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
-//const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
+//const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
 const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
 
 const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
@@ -93,9 +93,41 @@ function setMarker(lat, lon, id, options) {
   return marker;
 }
 
+function setLayers(ids) {  
+  if (ids.length === 0) {
+        uteDekningLayer.setLayers([]);
+        inneDekningLayer.setLayers([]);
+        return;
+    }
+
+    if (ids[0].outside === true && ids[0].inside === true) {
+        uteDekningLayer.setLayers([ids[0].id]);
+        
+        var id = ids[0].id - 1
+        inneDekningLayer.setLayers([id]);
+    }
+    
+    if (ids[0].inside === true && ids[0].outside === false) {
+        uteDekningLayer.setLayers([]);
+        var id = ids[0].id - 1
+        inneDekningLayer.setLayers([id]);
+    }
+    if (ids[0].inside === false && ids[0].outside === true){
+        inneDekningLayer.setLayers([]);
+        uteDekningLayer.setLayers([ids[0].id]);
+    }
+}
+
 var clickCanceled = false;
 
 function showGeocodePopup(latlng) {
+  const MapClickedId = "MapClicked";
+
+  if (markers[MapClickedId]) {
+    map.removeLayer(markers[MapClickedId]);
+    delete markers[MapClickedId];
+    return;
+  }
 
   var location = {
     x: latlng.lng,
@@ -120,7 +152,7 @@ function showGeocodePopup(latlng) {
       popupText += address.Postnummer + " " + address.Poststed;
     }
 
-    setMarker(latlng.lat, latlng.lng, "MapClicked", {
+    setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.ClickLocation
     }).openPopup();
@@ -145,34 +177,32 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
   subdomains: ["s1", "s2", "s3", "s4", "s5"],
 });
 
-// basemap.addTo(map);
+basemap.addTo(map);
+//L.esri.basemapLayer('Streets').addTo(map);
 
-var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.5,
-  token: DekningToken,
-  layers: layers,
-});
-dekningLayer.on("loading", event => {
-  eventBus.emit("loading");
-});
-dekningLayer.on("load", event => {
-  eventBus.emit("load");
-});
+var opacity = 0.25;
 
-var dekningLayer2 = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.5,
-  token: DekningToken,
-  layers: [2],
-});
-dekningLayer2.on("loading", event => {
-  eventBus.emit("loading");
-});
-dekningLayer2.on("load", event => {
-  eventBus.emit("load");
-});
+function createDekningLayer() {
+  var layer = L.esri.dynamicMapLayer(DekningUrl, {
+    opacity: opacity,
+    token: DekningToken
+  });
+  layer.on("loading", event => {
+    eventBus.emit("loading");
+  });
+  layer.on("load", event => {
+    eventBus.emit("load");
+  });
+  return layer;
+}
 
-dekningLayer.addTo(map);
-dekningLayer2.addTo(map);
+var uteDekningLayer = createDekningLayer();
+var inneDekningLayer = createDekningLayer();
+
+setLayers(initialLayers);
+
+uteDekningLayer.addTo(map);
+inneDekningLayer.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: DekningToken,
@@ -199,30 +229,7 @@ module.exports = _.extend(eventBus, {
     In4GiPhone: 0
   },
 
-  setLayers: (ids) => {  
-    if (ids.length === 0) {
-        dekningLayer.setLayers([]);
-        dekningLayer2.setLayers([]);
-        return;
-    }
-
-    if (ids[0].outside === true && ids[0].inside === true) {
-        dekningLayer.setLayers([ids[0].id]);
-        
-        var id = ids[0].id - 1
-        dekningLayer2.setLayers([id]);
-    }
-    
-    if (ids[0].inside === true && ids[0].outside === false) {
-        dekningLayer.setLayers([]);
-        var id = ids[0].id - 1
-        dekningLayer2.setLayers([id]);
-    }
-    if (ids[0].inside === false && ids[0].outside === true){
-        dekningLayer2.setLayers([]);
-        dekningLayer.setLayers([ids[0].id]);
-    }
-  },
+  setLayers: setLayers,
 
   trackUser: () => {
     var zoom = map.getZoom();
@@ -253,10 +260,15 @@ module.exports = _.extend(eventBus, {
   setMarker: setMarker,
 
   setWifiVisibility: (visible) => {
-    if (visible)
+    if (visible) {
       map.addLayer(wifiLayer);
-    else
+      map.options.maxZoom = 18;
+    } else {
       map.removeLayer(wifiLayer);
+      map.options.maxZoom = MaxZoom;
+      if (map.getZoom() > MaxZoom)
+        map.setZoom(MaxZoom);
+    }
   }
 
 });
