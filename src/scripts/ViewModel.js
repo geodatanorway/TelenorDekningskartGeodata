@@ -174,7 +174,7 @@ class ViewModel {
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
-      map.setMarker(item.lat, item.lon, "lastSearch");
+      map.setMarker(item.lat, item.lon, "lastSearch", {title: item.suggestion});
     };
 
     this.onSuggestionClicked = (item) => {

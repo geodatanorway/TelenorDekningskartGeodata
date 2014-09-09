@@ -95,6 +95,9 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
     });
   }
 });
+wifiLayer.bindPopup(features => {
+  return features.properties.NAVN_WEB;
+});
 
 module.exports = _.extend(eventBus, {
   Layers: {
@@ -138,19 +141,20 @@ module.exports = _.extend(eventBus, {
     });
   },
 
-  setMarker: (lat, lon, id)  => {
+  setMarker: (lat, lon, id, options) => {
     if (markers[id]) {
       map.removeLayer(markers[id]);
       delete markers[id];
     }
 
-    var options = {
+    _.extend(options, {
       icon: icons.SearchLocation
-    };
+    }, true);
 
     var marker = L.marker(L.latLng(lat, lon), options);
     markers[id] = marker;
     map.addLayer(marker);
+    marker.bindPopup(options.title);
   },
 
   setWifiVisibility: (visible) => {
