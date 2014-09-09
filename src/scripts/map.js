@@ -6,11 +6,25 @@ require('./libs/esri-leaflet-geocoder');
 var icons = require('./map-icons');
 require('./lodash-plugins');
 
+const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+// const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
+const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
+
+const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
+const GeocodeToken = "YNwBZNct1SXVxPMi7SawmggygE-k2q43VNUgC0gutZyfHgCkezgZ6oPKSILtP1op";
+
+const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
+const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
+
 const InitialZoom = 6;
 const CenterZoom = 12;
 const MaxZoom = 14;
 const AnimateDuration = 0.5;
-var initialLayers = [{ id: 3, outside: true, inside: true }];
+var initialLayers = [{
+  id: 3,
+  outside: true,
+  inside: true
+}];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var markers = {};
@@ -62,18 +76,9 @@ map.on('dragstart', () => {
   map.stopLocate();
 });
 
-//const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
-const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
-const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
-
-const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
-
-const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
-const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
-
 
 var geocoding = new L.esri.Services.Geocoding(GeocodeUrl, {
-  token: "YNwBZNct1SXVxPMi7SawmggygE-k2q43VNUgC0gutZyfHgCkezgZ6oPKSILtP1op"
+  token: GeocodeToken
 });
 
 function setMarker(lat, lon, id, options) {
@@ -93,29 +98,19 @@ function setMarker(lat, lon, id, options) {
   return marker;
 }
 
-function setLayers(ids) {  
-  if (ids.length === 0) {
-        uteDekningLayer.setLayers([]);
-        inneDekningLayer.setLayers([]);
-        return;
-    }
+function setLayers(layers) {
+  var insideIds = [], outsideIds = [];
 
-    if (ids[0].outside === true && ids[0].inside === true) {
-        uteDekningLayer.setLayers([ids[0].id]);
-        
-        var id = ids[0].id - 1
-        inneDekningLayer.setLayers([id]);
-    }
-    
-    if (ids[0].inside === true && ids[0].outside === false) {
-        uteDekningLayer.setLayers([]);
-        var id = ids[0].id - 1
-        inneDekningLayer.setLayers([id]);
-    }
-    if (ids[0].inside === false && ids[0].outside === true){
-        inneDekningLayer.setLayers([]);
-        uteDekningLayer.setLayers([ids[0].id]);
-    }
+  for (var i = 0; i < layers.length; i++) {
+    var layer = layers[i];
+    if(layer.outside)
+      outsideIds.push(layer.id);
+    if(layer.inside)
+      insideIds.push(layer.id - 1);
+  }
+
+  inneDekningLayer.setLayers(insideIds);
+  uteDekningLayer.setLayers(outsideIds);
 }
 
 var clickCanceled = false;
