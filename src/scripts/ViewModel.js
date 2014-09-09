@@ -35,6 +35,8 @@ class ViewModel {
     this.show2g = ko.observable(false);
     this.show3g = ko.observable(false);
     this.show4g = ko.observable(true);
+    this.showOutside = ko.observable(true);
+    this.showInside = ko.observable(true);
     this.outdoors = ko.observable(true);
     this.mode = ko.observable("Dekning");
     this.mode.subscribe(newValue => {
@@ -65,11 +67,31 @@ class ViewModel {
     this.onClickShow4g = () => { clearLayers(); this.show4g(true); };
     this.onClickShow3g = () => { clearLayers(); this.show3g(true); };
     this.onClickShow2g = () => { clearLayers(); this.show2g(true); };
+    this.onClickShowInside = () => { this.toggleInside(); };
+    this.onClickShowOutside = () => { this.toggleOutside(); };
     this.onClickShowWifi = () => {
       clearLayers();
       this.mode("Wifi");
     };
-
+    
+    this.toggleInside = function() {
+        if (this.showInside()){
+            this.showInside(false);
+        }
+        else {
+            this.showInside(true);
+        }     
+    };
+    
+    this.toggleOutside = function() {
+        if (this.showOutside()){
+            this.showOutside(false);
+        }
+        else {
+            this.showOutside(true);
+        }     
+    };
+    
     this.buttonText = ko.pureComputed(() => {
       if (this.show4g()) return "4G";
       if (this.show3g()) return "3G";
@@ -116,18 +138,40 @@ class ViewModel {
 
     this.layers = ko.pureComputed(() => {
       var layers = [];
-        if (this.show2g())
-          layers.push(map.Layers.Out2G);
-        if (this.show3g())
-          layers.push(map.Layers.Out3G);
-        if (this.show4g())
-          layers.push(map.Layers.Out4G);
+      
+      if ((this.showOutside() === false) && (this.showInside() === false)) {
+        return layers;
+      }
+      
+      if (this.show2g()) {
+        layers.push({
+            id: map.Layers.Out2G,
+            outside: this.showOutside(),
+            inside: this.showInside()
+        });
+      }
+      
+      if (this.show3g()) {
+        layers.push({
+            id: map.Layers.Out3G,
+            outside: this.showOutside(),
+            inside: this.showInside()
+        });
+      }
+      
+      if (this.show4g()) {
+        layers.push({
+            id: map.Layers.Out4G,
+            outside: this.showOutside(),
+            inside: this.showInside()
+        });
+      }
       
       return layers;
     });
 
     this.layers.subscribe(newValue => {
-      map.setLayers(newValue);
+        map.setLayers(newValue);
     });
 
     map.on("loading", () => NProgress.start());

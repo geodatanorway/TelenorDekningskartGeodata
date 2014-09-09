@@ -141,12 +141,45 @@ body { font-size: 100%; }
         label {
             line-height: @button-height;
         }
-
-        outdoorsContainer {
+        
+        .leftButtonContainer {
             position: relative;
+            margin-right: @button-margin;
             float: left;
-        }
 
+            &.button--selected {
+                .layer-filter {
+                    background-color: #00ace8;
+                }
+                .buttons();
+                color: @color-white;
+            }
+
+            .layer-filter {
+                height: @button-height;
+                width: @button-height;
+                -webkit-appearance: none;
+                outline: none;
+                padding: 0;
+                background-color: @color-white;
+                .border();
+            }
+
+            &.button--wifi {
+                &:before {
+                    display: block;
+                    position: absolute;
+                    text-align: center;
+                }
+            }
+
+            &:before {
+                width: 100%;
+                line-height: @button-height;
+                text-align: center;
+            }
+        }
+        
         .buttonContainer {
             position: relative;
             margin-left: @button-margin;

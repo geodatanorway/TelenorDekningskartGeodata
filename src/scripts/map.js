@@ -199,9 +199,29 @@ module.exports = _.extend(eventBus, {
     In4GiPhone: 0
   },
 
-  setLayers: (ids) => {
-    dekningLayer.setLayers(ids);
-    dekningLayer2.setLayers(_(ids).map(id => id - 1));
+  setLayers: (ids) => {  
+    if (ids.length === 0) {
+        dekningLayer.setLayers([]);
+        dekningLayer2.setLayers([]);
+        return;
+    }
+
+    if (ids[0].outside === true && ids[0].inside === true) {
+        dekningLayer.setLayers([ids[0].id]);
+        
+        var id = ids[0].id - 1
+        dekningLayer2.setLayers([id]);
+    }
+    
+    if (ids[0].inside === true && ids[0].outside === false) {
+        dekningLayer.setLayers([]);
+        var id = ids[0].id - 1
+        dekningLayer2.setLayers([id]);
+    }
+    if (ids[0].inside === false && ids[0].outside === true){
+        dekningLayer2.setLayers([]);
+        dekningLayer.setLayers([ids[0].id]);
+    }
   },
 
   trackUser: () => {

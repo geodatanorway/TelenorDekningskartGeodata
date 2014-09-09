@@ -22,8 +22,14 @@
             <div id="panel" data-bind="visible: shouldShowPanel">
                 <div class="searchBarPlaceholder"></div>
                 <div class="settings">
-                    <div class="" style="float: left; width: 100px;">
-                        <label class="switch-light switch-candy" style="height: 48px; width: 96px;" onclick="">
+                    <div class="" style="float: left; width: 120px;">
+                        <div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }">
+                            <button class="layer-filter" data-bind="click: onClickShowInside">Inne</button>
+                        </div>
+                        <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }">
+                            <button class="layer-filter" data-bind="click: onClickShowOutside">Ute</button>
+                        </div>
+                        <!--<label class="switch-light switch-candy" style="height: 48px; width: 96px;" onclick="">
                             <input id="outdoors" data-bind="checked: outdoors" type="checkbox">
                             <span>
                                 <span data-bind="css: { 'outdoors--mode--selected': outdoors() == false }">Inne</span>
@@ -31,7 +37,7 @@
                             </span>
 
                             <a></a>
-                        </label>
+                        </label>-->
 
                         <!--<input id="outdoors" type="checkbox" data-bind="checked: outdoors"></input>
                         <label for="outdoors" data-bind="text: outdoorsText"></label>-->
