@@ -6,20 +6,21 @@ require('./libs/esri-leaflet-geocoder');
 var icons = require('./map-icons');
 require('./lodash-plugins');
 
+const InitialZoom = 6;
+const CenterZoom = 12;
+const MaxZoom = 14;
+const AnimateDuration = 0.5;
 var initialLayers = [3];
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
-var InitialZoom = 6;
-var CenterZoom = 12;
 var markers = {};
-const AnimateDuration = 0.5;
 
 
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
     inertiaDeceleration: 3500, // by experimentation..
     continuousWorld: true,
-    maxZoom: 13
+    maxZoom: MaxZoom
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -232,10 +233,15 @@ module.exports = _.extend(eventBus, {
   setMarker: setMarker,
 
   setWifiVisibility: (visible) => {
-    if (visible)
+    if (visible) {
       map.addLayer(wifiLayer);
-    else
+      map.options.maxZoom = 18;
+    } else {
       map.removeLayer(wifiLayer);
+      map.options.maxZoom = MaxZoom;
+      if(map.getZoom() > MaxZoom)
+        map.setZoom(MaxZoom);
+    }
   }
 
 });
