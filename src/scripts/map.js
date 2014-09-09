@@ -147,32 +147,32 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 
 // basemap.addTo(map);
 
-var dekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.5,
+var uteDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
+  opacity: 0.3,
   token: DekningToken,
   layers: layers,
 });
-dekningLayer.on("loading", event => {
+uteDekningLayer.on("loading", event => {
   eventBus.emit("loading");
 });
-dekningLayer.on("load", event => {
+uteDekningLayer.on("load", event => {
   eventBus.emit("load");
 });
 
-var dekningLayer2 = L.esri.dynamicMapLayer(DekningUrl, {
-  opacity: 0.5,
+var inneDekningLayer = L.esri.dynamicMapLayer(DekningUrl, {
+  opacity: 0.3,
   token: DekningToken,
   layers: [2],
 });
-dekningLayer2.on("loading", event => {
+inneDekningLayer.on("loading", event => {
   eventBus.emit("loading");
 });
-dekningLayer2.on("load", event => {
+inneDekningLayer.on("load", event => {
   eventBus.emit("load");
 });
 
-dekningLayer.addTo(map);
-dekningLayer2.addTo(map);
+uteDekningLayer.addTo(map);
+inneDekningLayer.addTo(map);
 
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: DekningToken,
@@ -200,8 +200,8 @@ module.exports = _.extend(eventBus, {
   },
 
   setLayers: (ids) => {
-    dekningLayer.setLayers(ids);
-    dekningLayer2.setLayers(_(ids).map(id => id - 1));
+    uteDekningLayer.setLayers(ids);
+    inneDekningLayer.setLayers(_(ids).map(id => id - 1));
   },
 
   trackUser: () => {
