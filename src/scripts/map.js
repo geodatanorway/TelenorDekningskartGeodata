@@ -93,10 +93,13 @@ function setMarker(lat, lon, id, options) {
   return marker;
 }
 
-map.on("click", e => {
+var clickCanceled = false;
+
+function showGeocodePopup(latlng) {
+
   var location = {
-    x: e.latlng.lng,
-    y: e.latlng.lat,
+    x: latlng.lng,
+    y: latlng.lat,
     spatialReference: {
       wkid: 4326
     }
@@ -104,7 +107,7 @@ map.on("click", e => {
   var options = {
     outSR: 3857
   };
-  
+
   geocoding.reverse(location, options, (error, result, response) => {
 
     var popupText = "";
@@ -117,11 +120,24 @@ map.on("click", e => {
       popupText += address.Postnummer + " " + address.Poststed;
     }
 
-    setMarker(e.latlng.lat, e.latlng.lng, "MapClicked", {
+    setMarker(latlng.lat, latlng.lng, "MapClicked", {
       title: popupText,
       icon: icons.ClickLocation
     }).openPopup();
   });
+}
+
+map.on("click", e => {
+  clickCanceled = false;
+  setTimeout(() => {
+    if (!clickCanceled) {
+      showGeocodePopup(e.latlng);
+    }
+  }, 250);
+});
+
+map.on("dblclick", e => {
+  clickCanceled = true;
 });
 
 var basemap = L.esri.tiledMapLayer(GeodataUrl, {
