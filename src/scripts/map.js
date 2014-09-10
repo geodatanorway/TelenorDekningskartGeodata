@@ -114,7 +114,7 @@ function setLayers(layers) {
       insideIds.push(layer - 1);
   }
 
-  if(layers.inside != layers.outside){
+  if(layers.inside !== layers.outside){
     setLayerOpacity(SingleOpacity);
   } else {
     setLayerOpacity(Opacity);

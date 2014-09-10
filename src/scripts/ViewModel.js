@@ -71,11 +71,10 @@ class ViewModel {
         
         if (mode === "Wifi") {
             this.mode("Dekning");
-        }
-        else {
+        } else {
             this.mode("Wifi");
         }
-    }
+    };
     
     this.buttonText = ko.pureComputed(() => {
       if (this.show4g()) return "4G";
