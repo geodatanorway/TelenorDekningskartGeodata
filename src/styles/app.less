@@ -86,7 +86,7 @@ body { font-size: 100%; }
 }
 
 img.leaflet-image-layer {
-  filter: contrast(500%) brightness(0.5);
+  filter: contrast(500%) brightness(0.8);
 }
 
 .leaflet-top.leaflet-left {
@@ -97,13 +97,13 @@ img.leaflet-image-layer {
   .leaflet-control {
     margin: 0;
     .border();
-  }
+}
 }
 
 .leaflet-bar {
     .no-shadow();
     a:first-child,
-        a:last-child {
+    a:last-child {
         .no-rounded();
     }
 }
@@ -114,9 +114,9 @@ img.leaflet-image-layer {
 
 .buttons() {
     .pointer();
-    &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
-    &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
     &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
+    &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
+    &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
     &.button--wifi { background-color: @color-primary; }
 }
 
@@ -147,40 +147,12 @@ img.leaflet-image-layer {
         }
         
         .leftButtonContainer {
-            position: relative;
+            .buttonContainer;
             margin-right: @button-margin;
-            float: left;
+            margin-left: 0;
 
-            &.button--selected {
-                .layer-filter {
-                    background-color: #00ace8;
-                }
-                .buttons();
-                color: @color-white;
-            }
-
-            .layer-filter {
-                height: @button-height;
-                width: @button-height;
-                -webkit-appearance: none;
-                outline: none;
-                padding: 0;
-                background-color: @color-white;
-                .border();
-            }
-
-            &.button--wifi {
-                &:before {
-                    display: block;
-                    position: absolute;
-                    text-align: center;
-                }
-            }
-
-            &:before {
-                width: 100%;
-                line-height: @button-height;
-                text-align: center;
+            &.button--selected .layer-filter {
+                background-color: #00ace8;
             }
         }
         
@@ -188,6 +160,10 @@ img.leaflet-image-layer {
             position: relative;
             margin-left: @button-margin;
             float: left;
+
+            input {
+                display: none;
+            }
 
             &.button--selected {
                 .layer-filter {
@@ -204,21 +180,15 @@ img.leaflet-image-layer {
                 outline: none;
                 padding: 0;
                 background-color: @color-white;
+                display: inline-block;
+                text-align: center;
+                .pointer();
                 .border();
             }
 
-            &.button--wifi {
-                &:before {
-                    display: block;
-                    position: absolute;
-                    text-align: center;
-                }
-            }
-
-            &:before {
-                width: 100%;
-                line-height: @button-height;
-                text-align: center;
+            .fa-wifi {
+                position: relative;
+                top: 16px;
             }
         }
     }
@@ -337,7 +307,7 @@ img.leaflet-image-layer {
                 background-color: @color-white-t;
             }
             &:active,
-                &:focus {
+            &:focus {
                 color: @color-white;
                 background: #00ace8;
             }

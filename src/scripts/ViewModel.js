@@ -36,47 +36,22 @@ class ViewModel {
     this.show3g = ko.observable(false);
     this.show4g = ko.observable(true);
     this.showOutside = ko.observable(true);
-    this.showInside = ko.observable(true);
-    this.outdoors = ko.observable(true);
-    this.mode = ko.observable("Dekning");
-    this.mode.subscribe(newValue => {
-      switch (newValue) {
-        case "Dekning":
-          map.setWifiVisibility(false);
-          map.setLayers(this.layers());
-          break;
-        case "Wifi":
-          map.setWifiVisibility(true);
-          map.setLayers(this.layers());
-          break;
-      }
+    this.showInside = ko.observable(false);
+    this.showWifi = ko.observable(false);
+
+    this.showWifi.subscribe(newValue => {
+      map.setWifiVisibility(newValue);
     });
 
-    this.outdoorsText = ko.pureComputed(() => {
-      return this.outdoors() ? "Ute" : "Inne";
+    this.showOutside.subscribe(outside => {
+      this.showInside(!outside);
+    });
+    this.showInside.subscribe(inside => {
+      this.showOutside(!inside);
     });
 
-    this.showWifi = ko.pureComputed(() => this.mode() === 'Wifi');
-    this.onClickShow4g = () => { this.show4g(!this.show4g()); };
-    this.onClickShow3g = () => { this.show3g(!this.show3g()); };
-    this.onClickShow2g = () => { this.show2g(!this.show2g()); };
-    this.onClickShowInside = () => { this.showInside(!this.showInside()); };
-    this.onClickShowOutside = () => { this.showOutside(!this.showOutside()); };
-    this.onClickShowWifi = () => {
-      this.toggleWifi();
-    };
-    
-    this.toggleWifi = function() {
-        var mode = this.mode();
-        
-        if (mode === "Wifi") {
-            this.mode("Dekning");
-        } else {
-            this.mode("Wifi");
-        }
-    };
-    
     this.buttonText = ko.pureComputed(() => {
+      if (this.showWifi()) return "";
       if (this.show4g()) return "4G";
       if (this.show3g()) return "3G";
       if (this.show2g()) return "2G";
@@ -89,26 +64,27 @@ class ViewModel {
       if (self.shouldShowPanel()) {
         css.push('button--in-panel');
       }
-      if (this.show4g()) {
-        css.push("button--4g");
-      }
-      if (this.show3g()) {
-        css.push("button--3g");
-      }
-      if (this.show2g()) {
-        css.push("button--2g");
-      }
       if (this.showWifi()) {
         css.push('button--wifi');
+      } else {
+        if (this.show4g()) {
+          css.push("button--4g");
+        }
+        if (this.show3g()) {
+          css.push("button--3g");
+        }
+        if (this.show2g()) {
+          css.push("button--2g");
+        }
       }
 
       return css.join(" ");
     });
 
     this.onSearchClick = () => {
-        this.searchTextThrottled.resume();
-        this.search();
-        this.searchTextHasFocus(true);
+      this.searchTextThrottled.resume();
+      this.search();
+      this.searchTextHasFocus(true);
     };
 
     this.searchTextHasFocus.subscribe(hasFocus => this.shouldShowPanel(false));
@@ -124,27 +100,27 @@ class ViewModel {
       var layers = [];
       layers.outside = this.showOutside();
       layers.inside = this.showInside();
-      if ((this.showOutside() === false) && (this.showInside() === false)) {
+      if ((this.showOutside() === false) && (this.showInside() === false) || this.showWifi() === true) {
         return layers;
       }
-      
+
       if (this.show2g()) {
         layers.push(map.Layers.Out2G);
       }
-      
+
       if (this.show3g()) {
         layers.push(map.Layers.Out3G);
       }
-      
+
       if (this.show4g()) {
         layers.push(map.Layers.Out4G);
       }
-      
+
       return layers;
     });
 
     this.layers.subscribe(newValue => {
-        map.setLayers(newValue);
+      map.setLayers(newValue);
     });
 
     map.on("loading", () => NProgress.start());
@@ -183,7 +159,9 @@ class ViewModel {
       this.searchText(item.suggestion);
       map.centerAt(item.lat, item.lon);
       this.clearSearchResults();
-      map.setMarker(item.lat, item.lon, "lastSearch", {title: item.suggestion});
+      map.setMarker(item.lat, item.lon, "lastSearch", {
+        title: item.suggestion
+      });
     };
 
     this.onSuggestionClicked = (item) => {
@@ -221,7 +199,7 @@ class ViewModel {
       return true;
     };
 
-    $("#searchResults").on("keydown", "li", function (e) {
+    $("#searchResults").on("keydown", "li", function(e) {
       self.searchTextHasFocus(false);
       var $li = $(this);
       switch (event.which) {

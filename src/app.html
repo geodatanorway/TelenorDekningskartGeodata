@@ -7,25 +7,31 @@
         <div class="searchBarPlaceholder"></div>
         <div class="settings">
             <div class="" style="float: left; width: 120px;">
-                <div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }">
-                    <button class="layer-filter" data-bind="click: onClickShowInside">Inne</button>
+                <div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
+                    <label for="showInside" class="layer-filter">Inne</label>
+                    <input type="radio" id="showInside" data-bind="checked: showInside">
                 </div>
-                <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }">
-                    <button class="layer-filter" data-bind="click: onClickShowOutside">Ute</button>
+                <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }, visible: !(showWifi())">
+                    <label for="showOutside" class="layer-filter">Ute</label>
+                    <input type="radio" id="showOutside" data-bind="checked: showOutside">
                 </div>
             </div>
             <div class="" style="float: right;">
-                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
-                    <button class="layer-filter" data-bind="click: onClickShow4g">4G</button>
+                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }, visible: !(showWifi())">
+                    <label for="show4g" class="layer-filter">4G</label>
+                    <input type="checkbox" id="show4g" data-bind="checked: show4g">
+                </div> 
+                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }, visible: !(showWifi())">
+                    <label for="show3g" class="layer-filter">3G</label>
+                    <input type="checkbox" id="show3g" data-bind="checked: show3g">
                 </div>
-                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
-                    <button class="layer-filter" data-bind="click: onClickShow3g">3G</button>
-                </div>
-                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
-                    <button class="layer-filter" data-bind="click: onClickShow2g">2G</button>
+                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }, visible: !(showWifi())">
+                    <label for="show2g" class="layer-filter">2G</label>
+                    <input type="checkbox" id="show2g" data-bind="checked: show2g">
                 </div>
                 <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
-                    <button class="layer-filter" data-bind="click: onClickShowWifi"><i class="fa fa-wifi"></i></button>
+                    <label for="showWifi" class="layer-filter"><i class="fa fa-wifi"></i></label>
+                    <input type="checkbox" id="showWifi" data-bind="checked: showWifi">
                 </div>
             </div>
         </div>
