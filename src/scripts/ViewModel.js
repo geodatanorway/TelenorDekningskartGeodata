@@ -47,50 +47,35 @@ class ViewModel {
           break;
         case "Wifi":
           map.setWifiVisibility(true);
-          map.setLayers([]);
+          map.setLayers(this.layers());
           break;
       }
     });
-
-    var clearLayers = () => {
-      this.show4g(false);
-      this.show3g(false);
-      this.show2g(false);
-      this.mode("Dekning");
-    };
 
     this.outdoorsText = ko.pureComputed(() => {
       return this.outdoors() ? "Ute" : "Inne";
     });
 
     this.showWifi = ko.pureComputed(() => this.mode() === 'Wifi');
-    this.onClickShow4g = () => { clearLayers(); this.show4g(true); };
-    this.onClickShow3g = () => { clearLayers(); this.show3g(true); };
-    this.onClickShow2g = () => { clearLayers(); this.show2g(true); };
-    this.onClickShowInside = () => { this.toggleInside(); };
-    this.onClickShowOutside = () => { this.toggleOutside(); };
+    this.onClickShow4g = () => { this.show4g(!this.show4g()); };
+    this.onClickShow3g = () => { this.show3g(!this.show3g()); };
+    this.onClickShow2g = () => { this.show2g(!this.show2g()); };
+    this.onClickShowInside = () => { this.showInside(!this.showInside()); };
+    this.onClickShowOutside = () => { this.showOutside(!this.showOutside()); };
     this.onClickShowWifi = () => {
-      clearLayers();
-      this.mode("Wifi");
+      this.toggleWifi();
     };
     
-    this.toggleInside = function() {
-        if (this.showInside()){
-            this.showInside(false);
+    this.toggleWifi = function() {
+        var mode = this.mode();
+        
+        if (mode === "Wifi") {
+            this.mode("Dekning");
         }
         else {
-            this.showInside(true);
-        }     
-    };
-    
-    this.toggleOutside = function() {
-        if (this.showOutside()){
-            this.showOutside(false);
+            this.mode("Wifi");
         }
-        else {
-            this.showOutside(true);
-        }     
-    };
+    }
     
     this.buttonText = ko.pureComputed(() => {
       if (this.show4g()) return "4G";
