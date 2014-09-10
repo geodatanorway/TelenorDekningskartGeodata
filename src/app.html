@@ -49,17 +49,8 @@
     <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }">
         <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
     </div>
-    <script type="text/javascript"> 
-        var $buoop = {vs:{i:9,f:20,o:12.1,s:5.1}}; 
-        $buoop.ol = window.onload; 
-        window.onload=function(){ 
-         try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
-         var e = document.createElement("script"); 
-         e.setAttribute("type", "text/javascript"); 
-         e.setAttribute("src", "//browser-update.org/update.js"); 
-         document.body.appendChild(e);
-         throw { name: 'BrowserIncompatibilityException', message: 'Not supported browser' };
-        } 
-    </script> 
+    <!--[if lt IE 9]>
+        <script> alert("Your browser currently does not support this page. Please upgrade."); </script>
+    <![endif]-->
     <script src="<%= appJs %>"></script>
 </div>
