@@ -10,11 +10,9 @@
 }
 
 .fa-icon(@content) {
-  pointer-events: none;
   .fa;
   &:before {
     content: @content;
-    pointer-events: none; 
   }
 }
 
