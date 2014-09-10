@@ -1,0 +1,53 @@
+<div class="container">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="<%= appCss %>" />
+    <div id="mapDiv">
+    </div>
+    <div id="panel" data-bind="visible: shouldShowPanel">
+        <div class="searchBarPlaceholder"></div>
+        <div class="settings">
+            <div class="" style="float: left; width: 120px;">
+                <div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }">
+                    <button class="layer-filter" data-bind="click: onClickShowInside">Inne</button>
+                </div>
+                <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }">
+                    <button class="layer-filter" data-bind="click: onClickShowOutside">Ute</button>
+                </div>
+            </div>
+            <div class="" style="float: right;">
+                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
+                    <button class="layer-filter" data-bind="click: onClickShow4g">4G</button>
+                </div>
+                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
+                    <button class="layer-filter" data-bind="click: onClickShow3g">3G</button>
+                </div>
+                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
+                    <button class="layer-filter" data-bind="click: onClickShow2g">2G</button>
+                </div>
+                <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
+                    <button class="layer-filter" data-bind="click: onClickShowWifi"><i class="fa fa-wifi"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
+        <div class="search-wrap">
+            <input tabindex="0"
+            placeholder="Søk"
+            data-bind="
+            value: searchText,
+            valueUpdate: ['input', 'afterkeydown'],
+            event: { keydown: onSearchKeyDown, click: onSearchClick },
+            hasFocus: searchTextHasFocus" />
+            <button class="layer-filter" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
+            <span class="clear-search" data-bind="visible: searchText().length > 0, event: { touchstart: clearSearchText, mousedown: clearSearchText }">&nbsp;</span>
+        </div>
+        <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
+            <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
+        </ul>
+    </div>
+    <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }">
+        <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
+    </div>
+    <script src="<%= appJs %>"></script>
+</div>
