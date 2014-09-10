@@ -301,7 +301,7 @@ img.leaflet-image-layer {
     }
 
     #searchResults {
-        width: @panelWidth;
+        width: 472px;
         max-height: 500px;
         margin-top: @button-height;
         overflow-y: auto;
@@ -310,6 +310,11 @@ img.leaflet-image-layer {
         padding-left: 0px;
         list-style: none;
         background-color: @color-white;
+        border-bottom: 1px solid #bbb;
+        border-top: 0px solid #bbb;
+        border-left: 1px solid #bbb;
+        border-right: 1px solid #bbb;
+        
         li {
             padding: 15px 20px 15px 20px;
             color: @color-text;
@@ -324,6 +329,15 @@ img.leaflet-image-layer {
             }
         }
     }
+}
+
+.leftContainer {
+    float: left; 
+    width: 120px;
+}
+
+.rightContainer {
+    float: right;
 }
 
 .groups {
@@ -444,5 +458,12 @@ img.leaflet-image-layer {
         margin-left: 0px;
         margin-bottom: 10px;
         float: none;
+        transform: scaleY(-1);
+    }
+    
+    .rightContainer {
+        transform: scaleY(-1);
+        margin-top: -10px;
+        width: 48px;
     }
 }
