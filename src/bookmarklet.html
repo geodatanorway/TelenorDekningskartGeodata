@@ -1,0 +1,11 @@
+<a href="javascript:(function(){var leScript=document.createElement('script');leScript.setAttribute('src','http://telenor-dekning.herokuapp.com/bootstrap.js?v='+(new Date()).getMilliseconds());document.getElementById('content').appendChild(leScript);})();">Bookmarklet</a>
+
+<div id="content"></div>
+
+<script>
+function test(){
+  var leScript = document.createElement('script');
+  leScript.setAttribute('src','http://telenor-dekning.herokuapp.com/bootstrap.js?v='+(new Date()).getMilliseconds());
+  document.getElementById('content').appendChild(leScript);
+}
+</script>

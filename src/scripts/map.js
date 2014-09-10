@@ -20,11 +20,11 @@ const InitialZoom = 6;
 const CenterZoom = 12;
 const MaxZoom = 14;
 const AnimateDuration = 0.5;
-var initialLayers = [{
-  id: 3,
-  outside: true,
-  inside: true
-}];
+const Opacity = 0.3;
+const SingleOpacity = 0.5;
+var initialLayers = [3];
+initialLayers.outside = true;
+initialLayers.inside = true;
 var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var markers = {};
@@ -98,15 +98,26 @@ function setMarker(lat, lon, id, options) {
   return marker;
 }
 
+function setLayerOpacity (opacity) {
+  inneDekningLayer.options.opacity = opacity;
+  uteDekningLayer.options.opacity = opacity;
+}
+
 function setLayers(layers) {
   var insideIds = [], outsideIds = [];
 
   for (var i = 0; i < layers.length; i++) {
     var layer = layers[i];
-    if(layer.outside)
-      outsideIds.push(layer.id);
-    if(layer.inside)
-      insideIds.push(layer.id - 1);
+    if(layers.outside)
+      outsideIds.push(layer);
+    if(layers.inside)
+      insideIds.push(layer - 1);
+  }
+
+  if(layers.inside != layers.outside){
+    setLayerOpacity(SingleOpacity);
+  } else {
+    setLayerOpacity(Opacity);
   }
 
   inneDekningLayer.setLayers(insideIds);
@@ -175,11 +186,10 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 basemap.addTo(map);
 //L.esri.basemapLayer('Streets').addTo(map);
 
-var opacity = 0.25;
 
 function createDekningLayer() {
   var layer = L.esri.dynamicMapLayer(DekningUrl, {
-    opacity: opacity,
+    opacity: Opacity,
     token: DekningToken
   });
   layer.on("loading", event => {
@@ -216,12 +226,7 @@ module.exports = _.extend(eventBus, {
   Layers: {
     Out2G: 9,
     Out3G: 7,
-    Out4G: 3,
-    Out4GiPhone: 1,
-    In2G: 8,
-    In3G: 6,
-    In4G: 2,
-    In4GiPhone: 0
+    Out4G: 3
   },
 
   setLayers: setLayers,
