@@ -123,33 +123,22 @@ class ViewModel {
 
     this.layers = ko.pureComputed(() => {
       var layers = [];
-      
+      layers.outside = this.showOutside();
+      layers.inside = this.showInside();
       if ((this.showOutside() === false) && (this.showInside() === false)) {
         return layers;
       }
       
       if (this.show2g()) {
-        layers.push({
-            id: map.Layers.Out2G,
-            outside: this.showOutside(),
-            inside: this.showInside()
-        });
+        layers.push(map.Layers.Out2G);
       }
       
       if (this.show3g()) {
-        layers.push({
-            id: map.Layers.Out3G,
-            outside: this.showOutside(),
-            inside: this.showInside()
-        });
+        layers.push(map.Layers.Out3G);
       }
       
       if (this.show4g()) {
-        layers.push({
-            id: map.Layers.Out4G,
-            outside: this.showOutside(),
-            inside: this.showInside()
-        });
+        layers.push(map.Layers.Out4G);
       }
       
       return layers;
