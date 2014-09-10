@@ -176,17 +176,20 @@ img.leaflet-image-layer {
                 .border();
             }
             i.fa-wifi {
-                pointer-events: none;
                 position: relative;
                 top: 16px;
-
-                &:before {
-                    pointer-events: none;
-                }
             }
         }
     }
 }
+
+.no-pointer-events {
+    pointer-events: none;
+    &:before {
+        pointer-events: none;
+    }
+}
+
 #searchBar {
     position: absolute;
     top: 0%;

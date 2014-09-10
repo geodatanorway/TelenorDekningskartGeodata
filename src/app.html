@@ -30,7 +30,7 @@
                     <input type="checkbox" id="show2g" data-bind="checked: show2g">
                 </div>
                 <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
-                    <label for="showWifi" class="layer-filter"><i class="fa fa-wifi"></i></label>
+                    <label for="showWifi" class="layer-filter"><i class="fa fa-wifi no-pointer-events"></i></label>
                     <input type="checkbox" id="showWifi" data-bind="checked: showWifi">
                 </div>
             </div>
@@ -45,7 +45,7 @@
             valueUpdate: ['input', 'afterkeydown'],
             event: { keydown: onSearchKeyDown, click: onSearchClick },
             hasFocus: searchTextHasFocus" />
-            <button class="layer-filter" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
+            <button class="layer-filter no-pointer-events" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
             <span class="clear-search" data-bind="visible: searchText().length > 0, event: { touchstart: clearSearchText, mousedown: clearSearchText }">&nbsp;</span>
         </div>
         <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
@@ -53,7 +53,7 @@
         </ul>
     </div>
     <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }">
-        <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
+        <i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
     </div>
     <!--[if lt IE 9]>
         <script> alert("Your browser currently does not support this page. Please upgrade."); </script>
