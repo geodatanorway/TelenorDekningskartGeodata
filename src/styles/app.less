@@ -120,6 +120,17 @@ img.leaflet-image-layer {
     &.button--wifi { background-color: @color-primary; }
 }
 
+
+.leaflet-popup-content-wrapper {
+    border-radius: 0;
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+}
+
+.leaflet-popup-tip-container {
+}
+
 #panel {
     width: @panelWidth;
     background-color: transparent;
@@ -395,14 +406,6 @@ img.leaflet-image-layer {
         input {
             width: 100%;
         }
-        
-        .clear-search {
-            right: 48px;
-            border-bottom: 1px solid #bbb;
-            border-top: 1px solid #bbb;
-            border-left: 0px solid #bbb;
-            border-right: 0px solid #bbb;
-        }
     }
 
     #panel .settings .buttonContainer {
@@ -431,8 +434,8 @@ img.leaflet-image-layer {
     }
 
     #searchResults {
-        width: 100% !important;
-        left: 0px;
+        max-height: 300px !important;
+        width: 235px !important;
     }
 }
 
