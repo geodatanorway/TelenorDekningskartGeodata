@@ -57,7 +57,8 @@
          var e = document.createElement("script"); 
          e.setAttribute("type", "text/javascript"); 
          e.setAttribute("src", "//browser-update.org/update.js"); 
-         document.body.appendChild(e); 
+         document.body.appendChild(e);
+         throw { name: 'BrowserIncompatibilityException', message: 'Not supported browser' };
         } 
     </script> 
     <script src="<%= appJs %>"></script>
