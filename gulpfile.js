@@ -47,6 +47,7 @@ var FILES_SRC = './src',
   FILES_FONTS = [FOLDER_FONTS + '/*'],
   FILE_CSS_TARGET = 'app.css',
   FILE_JS_TARGET = 'app.js',
+  FILE_HTML_TARGET = 'app.html',
   FILE_CSS_URL = 'styles/' + FILE_CSS_TARGET,
   FILE_JS_URL = 'scripts/' + FILE_JS_TARGET,
   FOLDER_TARGET = './dist',
@@ -206,7 +207,7 @@ function compileStatic(indexFile, minify, targetFolder) {
       .pipe(gulpif(!minify, embedlr()))
       .pipe(template({
         appCss: minify ? manifest[FILE_CSS_TARGET] : FILE_CSS_URL,
-        appJs: minify ? manifest[FILE_JS_TARGET] : FILE_JS_URL,
+        appJs: minify ? manifest[FILE_JS_TARGET] : FILE_JS_URL
       }))
       .pipe(gulpif(minify, minhtml({
         // https://github.com/jonschlinkert/gulp-htmlmin

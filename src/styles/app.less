@@ -175,9 +175,14 @@ img.leaflet-image-layer {
                 .pointer();
                 .border();
             }
-            .fa-wifi {
+            i.fa-wifi {
+                pointer-events: none;
                 position: relative;
                 top: 16px;
+
+                &:before {
+                    pointer-events: none;
+                }
             }
         }
     }
