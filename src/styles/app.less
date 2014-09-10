@@ -7,8 +7,6 @@ Imports
 @import (less) "libs/nprogress.css";
 @import (less) "libs/leaflet.awesome-markers.css";
 @import 'libs/toggle-switch.less';
-
-
 /* ==========================================================================
 Variables
 ========================================================================== */
@@ -18,12 +16,10 @@ Variables
 @color-white-t: rgba(255, 255, 255, 0.8);
 @color-disabled: #aaa;
 @color-text: #333;
-
 @searchBarWidth: 530px;
 @panelWidth: 530px;
 @button-height: 48px;
 @button-margin: 10px;
-
 /* ==========================================================================
 Modules
 ========================================================================== */
@@ -32,24 +28,20 @@ Modules
 @import 'mixins/shadowed.less';
 @import 'mixins/pointer.less';
 @import 'mixins/fa.less';
-
 @import 'modules/track-user';
-
 /* ==========================================================================
 Selectors
 ========================================================================== */
 
-html,
-body,
-#mapDiv {
+html, body, #mapDiv {
     padding: 0;
     margin: 0;
     height: 100%;
     font-family: arial;
 }
-
-body { font-size: 100%; }
-
+body {
+    font-size: 100%;
+}
 .container {
     width: 100%;
     height: 100%;
@@ -57,7 +49,6 @@ body { font-size: 100%; }
     position: relative;
     background-color: #fff;
 }
-
 #loading {
     @width: 50px;
     @height: @width;
@@ -68,114 +59,100 @@ body { font-size: 100%; }
     margin-left: -@width / 2;
     margin-top: -@width / 2;
 }
-
 #map {
     text-align: center;
     width: 100%;
     height: 100% !important;
 }
-
 .grayscale {
     filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
     filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
-
 .leaflet-tile-pane img {
     .grayscale;
 }
-
 img.leaflet-image-layer {
-  filter: contrast(500%) brightness(0.8);
+    filter: contrast(500%) brightness(0.8);
 }
-
 .leaflet-top.leaflet-left {
-  top: auto;
-  left: auto;
-  right: 1em;
-  bottom: 5em;
-  .leaflet-control {
-    margin: 0;
-    .border();
+    top: auto;
+    left: auto;
+    right: 1em;
+    bottom: 5em;
+    .leaflet-control {
+        margin: 0;
+        .border();
+    }
 }
-}
-
 .leaflet-bar {
     .no-shadow();
-    a:first-child,
-    a:last-child {
+    a:first-child, a:last-child {
         .no-rounded();
     }
 }
-
 .icon-wifi() {
     .fa-icon(@fa-var-wifi);
 }
-
 .buttons() {
     .pointer();
-    &.button--2g   { background-color: darken(rgba(149, 234, 107, 1), 20%); }
-    &.button--3g   { background-color: darken(rgba(234, 234, 107, 1), 20%); }
-    &.button--4g   { background-color: darken(rgba(126, 231, 218, 1), 20%); }
-    &.button--wifi { background-color: @color-primary; }
+    &.button--2g {
+        background-color: darken(rgba(149, 234, 107, 1), 20%);
+    }
+    &.button--3g {
+        background-color: darken(rgba(234, 234, 107, 1), 20%);
+    }
+    &.button--4g {
+        background-color: darken(rgba(126, 231, 218, 1), 20%);
+    }
+    &.button--wifi {
+        background-color: @color-primary;
+    }
 }
-
-
 .leaflet-popup-content-wrapper {
     border-radius: 0;
 }
-
 .leaflet-popup-content-wrapper .leaflet-popup-content {
 }
-
 .leaflet-popup-tip-container {
 }
-
 #panel {
     width: @panelWidth;
     background-color: transparent;
     display: block;
     position: absolute;
     top: 0%;
-    left:50%;
+    left: 50%;
     margin-left: -@panelWidth / 2;
     pointer-events: none;
-
     .searchBarPlaceholder {
         height: 80px;
     }
-
     .dataShown {
         font-size: 13px;
         color: #000;
         display: inline-block;
     }
-
     .settings {
-        pointer-events: all; 
+        pointer-events: all;
         label {
             line-height: @button-height;
         }
-        
         .leftButtonContainer {
             .buttonContainer;
             margin-right: @button-margin;
             margin-left: 0;
-
             &.button--selected .layer-filter {
                 background-color: #00ace8;
             }
         }
-        
         .buttonContainer {
             position: relative;
             margin-left: @button-margin;
             float: left;
-
             input {
                 display: none;
             }
-
             &.button--selected {
                 .layer-filter {
                     background-color: transparent;
@@ -183,7 +160,6 @@ img.leaflet-image-layer {
                 .buttons();
                 color: @color-white;
             }
-
             .layer-filter {
                 height: @button-height;
                 width: @button-height;
@@ -196,7 +172,6 @@ img.leaflet-image-layer {
                 .pointer();
                 .border();
             }
-
             .fa-wifi {
                 position: relative;
                 top: 16px;
@@ -204,8 +179,6 @@ img.leaflet-image-layer {
         }
     }
 }
-
-
 #searchBar {
     position: absolute;
     top: 0%;
@@ -216,35 +189,28 @@ img.leaflet-image-layer {
     text-align: center;
     height: 41px;
     margin-top: 16px;
-
     .search-wrap {
         .clearfix;
-
         &:before {
             .fa();
             content: @fa-var-search;
-
             position: absolute;
             z-index: 1;
             left: 0.45em;
             line-height: @button-height;
-
             font-size: 1.5em;
             color: @color-primary;
         }
     }
-
     .button-base() {
         outline: none;
         height: 3em;
         padding: 0;
         padding-bottom: 0.5em;
         width: 3em;
-
         position: absolute;
         right: 0;
     }
-
     .clear-search {
         .pointer();
         .button-base();
@@ -255,17 +221,14 @@ img.leaflet-image-layer {
         .border();
         border-left: none;
     }
-
     .layer-filter {
         .button-base();
         .buttons();
         .border();
         color: @color-white;
-
         &.button--wifi {
             .icon-wifi();
         }
-
         &:after {
             content: @fa-var-chevron-down;
             .fa();
@@ -277,29 +240,24 @@ img.leaflet-image-layer {
             right: 0;
             transition: all 0.2s;
         }
-
         &.button--in-panel:after {
             transform: rotate(180deg);
             top: 2.1em;
         }
     }
-
     input {
         .no-rounded();
         .border();
         position: relative;
         float: left;
-
         height: @button-height;
         width: 472px;
-
         background-color: @color-white;
         -webkit-appearance: none;
         outline: none;
         padding: 0.2em 2em 0 2.6em;
         text-overflow: ellipsis;
     }
-
     #searchResults {
         width: 472px;
         max-height: 500px;
@@ -314,7 +272,6 @@ img.leaflet-image-layer {
         border-top: 0px solid #bbb;
         border-left: 1px solid #bbb;
         border-right: 1px solid #bbb;
-        
         li {
             padding: 15px 20px 15px 20px;
             color: @color-text;
@@ -322,45 +279,36 @@ img.leaflet-image-layer {
                 .pointer();
                 background-color: @color-white-t;
             }
-            &:active,
-            &:focus {
+            &:active, &:focus {
                 color: @color-white;
                 background: #00ace8;
             }
         }
     }
 }
-
 .leftContainer {
-    float: left; 
+    float: left;
     width: 120px;
 }
-
 .rightContainer {
     float: right;
 }
-
 .groups {
     padding: 10px;
     zoom: 1;
 }
-
-.groups:before,
-.groups:after {
+.groups:before, .groups:after {
     content: ' ';
     display: table;
 }
-
 .groups:after {
     clear: both;
 }
-
 .group {
     float: left;
     width: 33.3%;
-    margin:0 0 40px;
+    margin: 0 0 40px;
 }
-
 .switch-candy a {
     background-color: #00ace8;
     color: #fff;
@@ -368,28 +316,22 @@ img.leaflet-image-layer {
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
 }
-
 .outdoors--mode--selected {
     color: #fff !important;
 }
-
 .track-user .track {
     .border();
 }
-
 @media only screen {
     .switch-light {
         margin-left: 0px;
-
         label {
             line-height: none;
         }
-
         & > span {
             line-height: 48px;
             padding-right: 0px;
         }
-
         span {
             color: rgb(34, 34, 34);
             font-family: arial;
@@ -399,14 +341,12 @@ img.leaflet-image-layer {
             font-weight: normal;
         }
     }
-
     .switch-candy {
         background-color: #fff;
         border-radius: 0px;
     }
 }
-
-@media all and (max-width: 530px) {
+@media all and (max-width:530px) {
     #panel {
         width: 90%;
         margin-left: 5%;
@@ -416,51 +356,42 @@ img.leaflet-image-layer {
         width: 90%;
         margin-left: 5%;
         left: 0px;
-
         input {
             width: 100%;
         }
     }
-
     #panel .settings .buttonContainer {
         margin-left: 10px;
     }
-
     .groups {
         zoom: 0.8;
     }
-
     .group {
         float: none;
         width: 100%;
         clear: both;
-        margin:0 0 30px;
+        margin: 0 0 30px;
     }
-
     .group div {
         display: inline-block;
         margin-left: auto;
         margin-right: auto;
     }
-
     .leaflet-control-zoom {
         display: none;
     }
-
     #searchResults {
         max-height: 300px !important;
         width: 235px !important;
     }
 }
-
-@media all and (max-width: 430px) {
+@media all and (max-width:430px) {
     #panel .settings .buttonContainer {
         margin-left: 0px;
         margin-bottom: 10px;
         float: none;
         transform: scaleY(-1);
     }
-    
     .rightContainer {
         transform: scaleY(-1);
         margin-top: -10px;
