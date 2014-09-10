@@ -76,17 +76,11 @@
                 <i class="track fa fa-compass" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
             </div>
         </div>
-        <script type="text/javascript"> 
-            var $buoop = {vs:{i:9,f:20,o:12.1,s:5.1}}; 
-            $buoop.ol = window.onload; 
-            window.onload=function(){ 
-             try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
-             var e = document.createElement("script"); 
-             e.setAttribute("type", "text/javascript"); 
-             e.setAttribute("src", "//browser-update.org/update.js"); 
-             document.body.appendChild(e); 
-            } 
-        </script> 
+        <script>
+        var content = document.getElementById("content");
+        var wrapper = document.createElement("object");
+        content.innerHTML = "<object type='text/html' data='app.html' style='width: 100%; height: 100%'></object>";
+        </script>
         <script src="<%= appJs %>"></script>
         <div id="content" style="width: 100%; height: 100%"></div>
 
