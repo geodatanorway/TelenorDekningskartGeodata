@@ -1,11 +1,12 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
+var Bluebird = require('bluebird');
+var NProgress = require('nprogress');
 require('leaflet');
 require('./libs/esri-leaflet');
 require('./libs/esri-leaflet-geocoder');
 
 var icons = require('./map-icons');
-require('./lodash-plugins');
 
 // const GeodataUrl = "http://services.geodataonline.no/arcgis/rest/services/temp/GeocacheBasis_3857/MapServer";
 const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
@@ -23,6 +24,7 @@ const MaxZoom = 14;
 const AnimateDuration = 0.5;
 const Opacity = 0.3;
 const SingleOpacity = 0.5;
+const MapClickedId = "MapClicked";
 var initialLayers = [3];
 initialLayers.outside = true;
 initialLayers.inside = false;
@@ -30,6 +32,8 @@ var trondheim = L.latLng(63.430494, 10.395056);
 var eventBus = new EventEmitter();
 var markers = {};
 
+Bluebird.promisifyAll(L.esri.Tasks.IdentifyFeatures.prototype);
+Bluebird.longStackTraces();
 
 var map = L.map('mapDiv', {
     zoomAnimationThreshold: 8,
@@ -84,11 +88,15 @@ var geocoding = new L.esri.Services.Geocoding(GeocodeUrl, {
   token: GeocodeToken
 });
 
-function setMarker(lat, lon, id, options) {
-  if (markers[id]) {
+function deleteMarker(id) {
+    if (markers[id]) {
     map.removeLayer(markers[id]);
     delete markers[id];
   }
+}
+
+function setMarker(lat, lon, id, options, popupOptions) {
+  deleteMarker(id);
 
   options = _.extend({
     icon: icons.SearchLocation
@@ -97,27 +105,30 @@ function setMarker(lat, lon, id, options) {
   var marker = L.marker(L.latLng(lat, lon), options);
   markers[id] = marker;
   map.addLayer(marker);
-  marker.bindPopup(options.title);
+  popupOptions = popupOptions || {};
+  var popup = L.popup(popupOptions).setContent(options.title);
+  marker.bindPopup(popup);
   return marker;
 }
 
-function setLayerOpacity (opacity) {
+function setLayerOpacity(opacity) {
   inneDekningLayer.options.opacity = opacity;
   uteDekningLayer.options.opacity = opacity;
 }
 
 function setLayers(layers) {
-  var insideIds = [], outsideIds = [];
+  var insideIds = [],
+    outsideIds = [];
 
   for (var i = 0; i < layers.length; i++) {
     var layer = layers[i];
-    if(layers.outside)
+    if (layers.outside)
       outsideIds.push(layer);
-    if(layers.inside)
+    if (layers.inside)
       insideIds.push(layer - 1);
   }
 
-  if(layers.inside !== layers.outside){
+  if (layers.inside !== layers.outside) {
     setLayerOpacity(SingleOpacity);
   } else {
     setLayerOpacity(Opacity);
@@ -129,15 +140,38 @@ function setLayers(layers) {
 
 var clickCanceled = false;
 
-function showGeocodePopup(latlng) {
-  const MapClickedId = "MapClicked";
+function reverseLookupAsync(location, options) {
+  return new Promise((resolve, reject) => {
+    geocoding.reverse(location, options, (error, result, response) => {
+      var popupText = "";
+      if (error)
+        popupText = "Ingen adresse funnet";
+      else {
+        var address = response.address;
+        if (address.Adresse)
+          popupText += address.Adresse + "<br>";
+        popupText += address.Postnummer + " " + address.Poststed;
+      }
+      resolve(popupText);
+    });
+  });
+}
 
-  if (markers[MapClickedId]) {
-    map.removeLayer(markers[MapClickedId]);
-    delete markers[MapClickedId];
-    return;
+function getLayerName(layerId) {
+  switch (layerId) {
+    case 2: return "4G innendørs";
+    case 3: return "4G utendørs";
+    case 6: return "3G innendørs";
+    case 7: return "3G utendørs";
+    case 8: return "2G innendørs";
+    case 9: return "2G utendørs";
+    default: return "Ukjent";
   }
+}
 
+function showGeocodePopup(latlng) {
+  deleteMarker(MapClickedId);
+  NProgress.start();
   var location = {
     x: latlng.lng,
     y: latlng.lat,
@@ -149,21 +183,30 @@ function showGeocodePopup(latlng) {
     outSR: 3857
   };
 
-  geocoding.reverse(location, options, (error, result, response) => {
+  var reverseLookup = reverseLookupAsync(location, options);
 
-    var popupText = "";
-    if (error)
-      popupText = "Ingen adresse funnet";
-    else {
-      var address = response.address;
-      if (address.Adresse)
-        popupText += address.Adresse + "<br>";
-      popupText += address.Postnummer + " " + address.Poststed;
-    }
+  var identify = L.esri.Tasks.identifyFeatures(DekningUrl)
+    .on(map)
+    .token(DekningToken)
+    .at(latlng)
+    .layers('all:2,3,6,7,8,9')
+    .runAsync()
+    .spread((featureCollection, response) => {
+      return _.zip(featureCollection.features, response.results).map((results) => {
+        var feature = results[0];
+        var point = results[1];
+        return getLayerName(point.layerId) + ": " + (point.attributes.DB_LEVEL || point.attributes["Pixel Value"] || "Ingen dekning") + " dB";
+      }).join("<br>");
+    }, error => "Ingen signalinformasjon funnet");
 
+  Bluebird.join(reverseLookup, identify, (lookupInfo, signalInfo) => {
+    NProgress.done();
+    var popupText = lookupInfo + "<br><br>" + signalInfo;
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.ClickLocation
+    }, {
+      closeButton: false
     }).openPopup();
   });
 }
@@ -187,8 +230,6 @@ var basemap = L.esri.tiledMapLayer(GeodataUrl, {
 });
 
 basemap.addTo(map);
-//L.esri.basemapLayer('Streets').addTo(map);
-
 
 function createDekningLayer() {
   var layer = L.esri.dynamicMapLayer(DekningUrl, {
@@ -216,7 +257,7 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: DekningToken,
   where: "1=1",
   useCors: false,
-  pointToLayer: function(geojson, latlng) {
+  pointToLayer: (geojson, latlng) => {
     return L.marker(latlng, {
       icon: icons.Wifi
     });
@@ -226,6 +267,14 @@ wifiLayer.bindPopup(features => {
   return features.properties.NAVN_WEB;
 });
 
+function hidePopup() {
+  if (markers[MapClickedId]) {
+    map.removeLayer(markers[MapClickedId]);
+    delete markers[MapClickedId];
+  }
+}
+
+// Extend EventBus so we can both subscribe to events and perform additional methods.
 module.exports = _.extend(eventBus, {
   Layers: {
     Out2G: 9,
@@ -260,6 +309,8 @@ module.exports = _.extend(eventBus, {
       }
     });
   },
+
+  hidePopup: hidePopup,
 
   setMarker: setMarker,
 

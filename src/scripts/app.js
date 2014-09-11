@@ -23,4 +23,8 @@ $(document).on("click", e => {
   }
 });
 
+$(".leaflet-container").on("click", ".leaflet-popup", e => {
+  map.hidePopup(); // Hides the "tap map to show info" popup and marker. Hacky because we find no way to link marker to popup.
+});
+
 ko.applyBindings(viewModel);
