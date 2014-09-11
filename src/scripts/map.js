@@ -195,7 +195,8 @@ function showGeocodePopup(latlng) {
       return _.zip(featureCollection.features, response.results).map((results) => {
         var feature = results[0];
         var point = results[1];
-        return getLayerName(point.layerId) + ": " + (point.attributes.DB_LEVEL || point.attributes["Pixel Value"] || "Ingen dekning") + " dB";
+        var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
+        return getLayerName(point.layerId) + ": " + (db ? db + " dB" : "Ingen dekning");
       }).join("<br>");
     }, error => "Ingen signalinformasjon funnet");
 
