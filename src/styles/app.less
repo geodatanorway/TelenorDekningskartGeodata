@@ -128,6 +128,7 @@ img.leaflet-image-layer {
     left: 50%;
     margin-left: -@panelWidth / 2;
     pointer-events: none;
+    -ms-touch-action: none;
     .searchBarPlaceholder {
         height: 80px;
     }
@@ -176,6 +177,7 @@ img.leaflet-image-layer {
                 .border();
             }
             i.fa-wifi {
+                -ms-touch-action: none;
                 pointer-events: none;
                 position: relative;
                 top: 16px;
@@ -186,6 +188,7 @@ img.leaflet-image-layer {
 
 .no-pointer-events {
     &:before {
+        -ms-touch-action: none;
         pointer-events: none;
     }
 }
