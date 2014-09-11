@@ -65,17 +65,6 @@
     ]
   },
   "browserify-shim": {
-    "./src/scripts/libs/esri-leaflet.js": {
-      "exports": "L",
-      "depends": [
-        "./node_modules/leaflet/dist/leaflet.js:L"
-      ]
-    },
-    "./src/scripts/libs/esri-leaflet-geocoder.js": {
-      "exports": "L",
-      "depends": [
-        "./node_modules/leaflet/dist/leaflet.js:L"
-      ]
-    }
+ 
   }
 }

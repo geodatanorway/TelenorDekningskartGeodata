@@ -1,7 +1,8 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
-var L = require('./libs/esri-leaflet');
-L = require('./libs/esri-leaflet-geocoder');
+require('leaflet');
+require('./libs/esri-leaflet');
+require('./libs/esri-leaflet-geocoder');
 
 var icons = require('./map-icons');
 require('./lodash-plugins');
