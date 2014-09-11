@@ -37,7 +37,7 @@ var map = L.map('mapDiv', {
     continuousWorld: true,
     maxZoom: MaxZoom,
     minZoom: 4,
-    maxBounds: [[56, -4],[72, 40]]
+    maxBounds: [[56, -4],[82, 40]]
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
