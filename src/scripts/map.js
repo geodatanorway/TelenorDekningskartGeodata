@@ -212,6 +212,7 @@ inneDekningLayer.addTo(map);
 var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   token: DekningToken,
   where: "1=1",
+  useCors: false,
   pointToLayer: function(geojson, latlng) {
     return L.marker(latlng, {
       icon: icons.Wifi
