@@ -52,8 +52,8 @@
             <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
         </ul>
     </div>
-    <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }">
-        <i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }, click: $root.onTrackUserClicked"></i>
+    <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, click: $root.onTrackUserClicked">
+        <i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>
     </div>
     <!--[if lt IE 9]>
         <script> alert("Your browser currently does not support this page. Please upgrade."); </script>
