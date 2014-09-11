@@ -214,8 +214,11 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   where: "1=1",
   useCors: false,
   pointToLayer: function(geojson, latlng) {
-    return L.marker(latlng, {
+    /*return L.marker(latlng, {
       icon: icons.Wifi
+    });*/
+      return L.circleMarker(latlng, 10, {
+      color: "#2D84C8"
     });
   }
 });
@@ -271,5 +274,4 @@ module.exports = _.extend(eventBus, {
         map.setZoom(MaxZoom);
     }
   }
-
 });
