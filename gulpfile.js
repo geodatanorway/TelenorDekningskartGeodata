@@ -24,6 +24,7 @@ try {
     sourcemaps = require('gulp-sourcemaps'),
     template = require('gulp-template'),
     uglify = require('gulp-uglify'),
+    fileinclude = require('gulp-file-include'),
     watchify = require('watchify');
 } catch (e) {
   console.error('Some packages are missing, you need to:\n  npm install');
@@ -204,6 +205,7 @@ function compileStatic(indexFile, minify, targetFolder) {
     }
 
     return gulp.src(indexFile)
+      .pipe(fileinclude())
       .pipe(gulpif(!minify, embedlr()))
       .pipe(template({
         appCss: minify ? manifest[FILE_CSS_TARGET] : FILE_CSS_URL,
