@@ -42,6 +42,7 @@ body,
     height: 100%;
     font-family: arial;
     -ms-touch-action: none;
+    touch-action: none;
 }
 body {
     font-size: 100%;
@@ -131,6 +132,7 @@ img.leaflet-image-layer {
     margin-left: -@panelWidth / 2;
     pointer-events: none;
     -ms-touch-action: none;
+    touch-action: none;
     .searchBarPlaceholder {
         height: 80px;
     }
@@ -180,6 +182,7 @@ img.leaflet-image-layer {
             }
             i.fa-wifi {
                 -ms-touch-action: none;
+                touch-action: none;
                 pointer-events: none;
                 position: relative;
                 top: 16px;
@@ -190,8 +193,10 @@ img.leaflet-image-layer {
 
 .no-pointer-events {
     -ms-touch-action: none;
+    touch-action: none;
     &:before {
         -ms-touch-action: none;
+        touch-action: none;
         pointer-events: none;
     }
 }
