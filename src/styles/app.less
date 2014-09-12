@@ -16,6 +16,8 @@ Variables
 @color-white-t: rgba(255, 255, 255, 0.6);
 @color-disabled: #aaa;
 @color-text: #999;
+@color-text-dark: #333;
+@color-light-gray: #ddd;
 @searchBarWidth: 530px;
 @panelWidth: 530px;
 @button-height: 48px;
@@ -292,21 +294,21 @@ img.leaflet-image-layer {
         top: 30px;
         padding-left: 0px;
         list-style: none;
-        background-color: @color-white;
         border-bottom: 1px solid #bbb;
         border-top: 0px solid #bbb;
         border-left: 1px solid #bbb;
         border-right: 1px solid #bbb;
         li {
+            background-color: @color-white;
             padding: 15px 20px 15px 20px;
-            color: @color-text;
+            color: @color-text-dark;
             &:hover {
                 .pointer();
-                background-color: @color-white-t;
+                background-color: @color-light-gray;
             }
             &:active, &:focus {
                 color: @color-white;
-                background: #00ace8;
+                background: @color-primary;
             }
         }
     }
