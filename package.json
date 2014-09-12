@@ -9,7 +9,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "node server",
-    "postinstall": "npm run compile",
+    "postinstall": "npm run bundle",
     "clean": "./node_modules/.bin/gulp clean",
     "compile": "npm run clean && ./node_modules/.bin/gulp default",
     "bundle": "npm run compile && ./node_modules/.bin/gulp bundle",
