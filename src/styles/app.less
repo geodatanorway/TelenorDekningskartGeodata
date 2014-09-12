@@ -384,13 +384,13 @@ img.leaflet-image-layer {
 @media only screen {
     .switch-light {
         margin-left: 0px;
-        height: 48px;
+        height: @button-height - 2px /* 1px border top/bottom */;
         .rounded();
         label {
             line-height: none;
         }
         & > span {
-            line-height: 48px;
+            line-height: @button-height - 2px /* 1px border top/bottom */;
             padding-right: 0px;
         }
         span {
