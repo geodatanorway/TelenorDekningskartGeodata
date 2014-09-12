@@ -25,7 +25,8 @@ try {
     template = require('gulp-template'),
     uglify = require('gulp-uglify'),
     fileinclude = require('gulp-file-include'),
-    watchify = require('watchify');
+    watchify = require('watchify'),
+    zip = require('gulp-zip');
 } catch (e) {
   console.error('Some packages are missing, you need to:\n  npm install');
   process.exit(1);
@@ -75,6 +76,7 @@ gulp.task('scripts-w', ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TA
 gulp.task('rev', ['scripts', 'styles'], revisions(FOLDER_TARGET, isProduction));
 gulp.task('compile', ['static-rev', 'fonts', 'images']);
 gulp.task('default', ['compile']);
+gulp.task('bundle', ['compile'], bundle(FILES_ALL_COMPILED, FOLDER_TARGET));
 gulp.task('watch', ['scripts-w', 'fonts', 'images', 'styles', 'static', 'server'], function() {
   gulp.watch(FILES_HTML, ['static']);
   gulp.watch(FILES_LESS, ['styles']);
@@ -280,5 +282,13 @@ function handleErrors(description) {
       message: "<%= error.message %>"
     }).apply(this, args);
     this.emit('end'); // Keep gulp from hanging on this task
+  };
+}
+
+function bundle (allFiles, targetFolder) {
+  return function () {
+    return gulp.src(allFiles)
+      .pipe(zip("app.zip"))
+      .pipe(gulp.dest(targetFolder));
   };
 }
