@@ -33,13 +33,16 @@
 .track-user {
   transition: all 1s;
   opacity: 0;
+  height: @button-height;
+  width: @button-height;
+  .border();
   &.track-user--visible {
     opacity: 1;
   }
   .track {
     background-color: @color-white;
     color: @color-disabled;
-    padding: 0.2em 0.3em;
+    padding: 7px 10px 7px 9px;
     font-size: 2em;
     .pointer();
   }

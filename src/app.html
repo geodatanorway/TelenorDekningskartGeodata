@@ -66,16 +66,18 @@
         </ul>
     </div>
 
-    <div class="bottom-left-buttons">        
-        <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, click: $root.onTrackUserClicked">
+    <div class="bottom-left-buttons" style="display: none" data-bind="visible: true">        
+        <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, visible: $root.canTrackUser, click: $root.onTrackUserClicked">
             <i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>
         </div>
-        <div class="legend" data-bind="visible: !showWifi()">
-            <span class="text" data-bind="visible: showOutside()">Utendørs</span>
-            <span class="text" data-bind="visible: showInside()">Innendørs</span>
+        <div class="legend">
+            <span class="text" data-bind="visible: showOutside() && !showWifi()">Utendørs</span>
+            <span class="text" data-bind="visible: showInside() && !showWifi()">Innendørs</span>
+            <span class="text" data-bind="visible: showWifi()">Trådløspunkt</span>
             <span class="layer color4g" data-bind="visible: show4g">4G</span>
             <span class="layer color3g" data-bind="visible: show3g">3G</span>
             <span class="layer color2g" data-bind="visible: show2g">2G</span>
+            <span class="layer colorWifi" data-bind="visible: showWifi">&nbsp;<i class="fa fa-wifi"></i>&nbsp;</span>
         </div>
     </div>
     <!--[if lt IE 9]>

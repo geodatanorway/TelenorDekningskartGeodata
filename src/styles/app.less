@@ -87,9 +87,8 @@ img.leaflet-image-layer {
 }
 .leaflet-top.leaflet-left {
     top: auto;
-    left: auto;
-    right: 1em;
-    bottom: 5em;
+    left: 16px;
+    bottom: 80px;
     .leaflet-control {
         margin: 0;
         .border();
@@ -113,22 +112,22 @@ img.leaflet-image-layer {
 .color4g {
     background-color: #7aa0c7;
 }
+.colorWifi {
+    background-color: #137cc5;
+}
 .buttons() {
     .pointer();
     &.button--2g {
-        //background-color: darken(rgba(149, 234, 107, 1), 20%);
         .color2g;
     }
     &.button--3g {
-        //background-color: darken(rgba(234, 234, 107, 1), 20%);
         .color3g;
     }
     &.button--4g {
-        //background-color: darken(rgba(126, 231, 218, 1), 20%);
         .color4g;
     }
     &.button--wifi {
-        background-color: #137cc5;
+        .colorWifi;
     }
 }
 .leaflet-popup-content-wrapper {
@@ -362,13 +361,11 @@ img.leaflet-image-layer {
     color: #fff;
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
-    border-radius: 2px; // not .rounded() since it needs 2px to look perfect
+    border-radius: 2px;
+    // not .rounded() since it needs 2px to look perfect
 }
 .outdoors--mode--selected {
     color: #fff !important;
-}
-.track-user .track {
-    .border();
 }
 .track-user {
     -ms-touch-action: none;
@@ -378,11 +375,9 @@ img.leaflet-image-layer {
         touch-action: none;
     }
 }
-
 .switch-light span span {
     .telenor-font();
 }
-
 @media only screen {
     .switch-light {
         margin-left: 0px;
