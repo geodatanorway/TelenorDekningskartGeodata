@@ -168,19 +168,21 @@ function getLayerName(layerId) {
 }
 
 var thresholds = {
-  "2G": { high: -78, low: -94 },
-  "3G": { high: -94, low: -99 },
-  "4G": { high: -100, low: -110 },
+  "2G": { high: -78, low: -91, minimal: -94 },
+  "3G": { high: -94, low: -96, minimal: -99 },
+  "4G": { high: -100, low: -107, minimal: -110 },
 };
 
 function getDekning(db, threshold){
   if(!db || db === 0)
     return "Ingen dekning";
-  if(db > threshold.high)
+  if(db >= threshold.high)
     return "Meget god";
-  if(db > threshold.low)
-    return "Normal";
-  return "Minimal";
+  if(db >= threshold.low)
+    return "God";
+  if(db >= threshold.minimal)
+    return "Minimal";
+  return "Ingen dekning";
 }
 
 function getForventetDekning(db2g, db3g, db4g) {
