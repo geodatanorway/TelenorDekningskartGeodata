@@ -226,7 +226,8 @@ function showGeocodePopup(latlng) {
 
   Bluebird.join(reverseLookup, identify, (lookupInfo, signalInfo) => {
     NProgress.done();
-    var popupText = (lookupInfo ? lookupInfo + "<br><br>" : "") + signalInfo;
+    var popupText = (lookupInfo ? lookupInfo + "<br><br>" : "") + "Forventet dekning:<br>" + signalInfo +
+      "<br><br><a href='http://www.telenor.no/privat/mobil/mobiltjenester/datapakker/'>Kjøp mer data eller hastighet</a>";
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.ClickLocation
