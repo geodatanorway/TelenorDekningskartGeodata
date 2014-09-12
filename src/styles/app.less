@@ -26,11 +26,12 @@ Variables
 /* ==========================================================================
 Modules
 ========================================================================== */
-@import 'mixins/rounded.less';
-@import 'mixins/border.less';
-@import 'mixins/shadowed.less';
-@import 'mixins/pointer.less';
+@import 'mixins/rounded';
+@import 'mixins/border';
+@import 'mixins/shadowed';
+@import 'mixins/pointer';
 @import 'mixins/fa.less';
+@import 'mixins/transition-color';
 @import 'modules/track-user';
 /* ==========================================================================
 Selectors
@@ -174,6 +175,7 @@ img.leaflet-image-layer {
             }
         }
         .buttonContainer {
+            .transition-color();
             position: relative;
             margin-left: @button-margin;
             float: left;
@@ -409,7 +411,7 @@ img.leaflet-image-layer {
         background: @color-white-t;
         span {
             color: @color-text;
-            transition: color 0.5s;
+            .transition-color();
             .switched-on {
                 color: white;
             }
