@@ -23,7 +23,7 @@ class ViewModel {
     });
     this.searchResults = ko.observableArray();
 
-    this.shouldShowPanel = ko.observable(false);
+    this.shouldShowPanel = ko.observable(true);
 
     this.canTrackUser = ko.observable(false);
     map.on('location:found', () => this.canTrackUser(true));
