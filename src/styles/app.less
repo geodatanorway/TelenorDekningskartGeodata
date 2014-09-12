@@ -13,7 +13,7 @@ Variables
 
 @color-primary: #00ace8;
 @color-white: white;
-@color-white-t: rgba(255, 255, 255, 0.6);
+@color-white-t: rgba(255, 255, 255, 1);
 @color-disabled: #aaa;
 @color-text: #999;
 @color-text-dark: #333;
@@ -279,7 +279,7 @@ img.leaflet-image-layer {
         }
     }
     input {
-        .no-rounded();
+        .rounded();
         .border();
         position: relative;
         float: left;
@@ -351,11 +351,13 @@ img.leaflet-image-layer {
 .switch-candy a {
     background-color: #137cc5;
     color: #fff;
-    border-radius: 0px;
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     border-radius: 2px; // not .rounded() since it needs 2px to look perfect
-    opacity: 0.8;
+}
+
+.switch-candy {
+    opacity: 0.93;
 }
 .outdoors--mode--selected {
     color: #fff !important;
