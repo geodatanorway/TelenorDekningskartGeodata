@@ -19,6 +19,7 @@ Variables
 @color-text: #555;
 @color-text-dark: #333;
 @color-light-gray: #ddd;
+@color-border: #eee;
 @searchBarWidth: 530px;
 @panelWidth: 530px;
 @button-height: 48px;
@@ -88,7 +89,7 @@ img.leaflet-image-layer {
 }
 .leaflet-top.leaflet-left {
     top: auto;
-    left: 16px;
+    left: 8px;
     bottom: 80px;
     .leaflet-control {
         margin: 0;
@@ -153,7 +154,7 @@ img.leaflet-image-layer {
     z-index: 49;
     color: @color-text;
     .searchBarPlaceholder {
-        height: 80px;
+        height: 66px;
     }
     .dataShown {
         font-size: 13px;
@@ -229,7 +230,7 @@ img.leaflet-image-layer {
     width: @searchBarWidth;
     text-align: center;
     height: 41px;
-    margin-top: 16px;
+    margin-top: 0.5em;
     .search-wrap {
         .clearfix;
         &:before {
@@ -310,10 +311,10 @@ img.leaflet-image-layer {
         top: 30px;
         padding-left: 0px;
         list-style: none;
-        border-bottom: 1px solid #bbb;
-        border-top: 0px solid #bbb;
-        border-left: 1px solid #bbb;
-        border-right: 1px solid #bbb;
+        border-bottom: 1px solid @color-border;
+        border-top: 0px solid @color-border;
+        border-left: 1px solid @color-border;
+        border-right: 1px solid @color-border;
         li {
             background-color: @color-white;
             padding: 15px 20px 15px 20px;
