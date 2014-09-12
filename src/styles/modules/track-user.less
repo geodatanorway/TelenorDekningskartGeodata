@@ -7,9 +7,10 @@
   & > div {
     float: left;
     margin-right: 1em;
+    .rounded();
+    .border();
   }
   .legend {
-    .border();
     color: @color-text;
     height: @button-height;
     background: @color-white;
@@ -35,7 +36,6 @@
   opacity: 0;
   height: @button-height;
   width: @button-height;
-  .border();
   &.track-user--visible {
     opacity: 1;
   }
