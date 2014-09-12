@@ -69,15 +69,15 @@ gulp.task('fonts', fonts(FILES_FONTS, isProduction, FOLDER_FONTS_TARGET));
 gulp.task('images', images(FILES_IMAGES, isProduction, FOLDER_IMAGES_TARGET));
 gulp.task('styles', styles(FILE_LESS_ENTRY, isProduction, FILE_CSS_TARGET, FOLDER_CSS_TARGET));
 gulp.task('bootstrap', bootstrap(FILE_BOOTSTRAP, isProduction, FOLDER_TARGET));
-gulp.task('static', ['bootstrap'], compileStatic(FILES_HTML, isProduction, FOLDER_TARGET));
-gulp.task('static-rev', ['bootstrap', 'rev'], compileStatic(FILES_HTML, isProduction, FOLDER_TARGET));
+gulp.task('static', compileStatic(FILES_HTML, isProduction, FOLDER_TARGET));
+gulp.task('static-rev', ['rev'], compileStatic(FILES_HTML, isProduction, FOLDER_TARGET));
 gulp.task('scripts', ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET));
 gulp.task('scripts-w', ['lint'], scripts(FILE_JS_ENTRY, isProduction, FILE_JS_TARGET, FOLDER_JS_TARGET, true));
 gulp.task('rev', ['scripts', 'styles'], revisions(FOLDER_TARGET, isProduction));
-gulp.task('compile', ['static-rev', 'fonts', 'images']);
+gulp.task('compile', ['bootstrap', 'static-rev', 'fonts', 'images']);
 gulp.task('default', ['compile']);
 gulp.task('bundle', ['compile'], bundle(FILES_ALL_COMPILED, FOLDER_TARGET));
-gulp.task('watch', ['scripts-w', 'fonts', 'images', 'styles', 'static', 'server'], function() {
+gulp.task('watch', ['scripts-w', 'fonts', 'images', 'styles', 'bootstrap', 'static', 'server'], function() {
   gulp.watch(FILES_HTML, ['static']);
   gulp.watch(FILES_LESS, ['styles']);
   gulp.watch(FILES_CSS, ['styles']);

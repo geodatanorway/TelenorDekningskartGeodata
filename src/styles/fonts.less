@@ -1,0 +1,18 @@
+@font-path: "../fonts";
+
+.font-src(@font-name) {
+  src: url("@{font-path}/@{font-name}.eot?#iefix") format('eot'),
+       url("@{font-path}/@{font-name}.woff") format('woff'),
+       url("@{font-path}/@{font-name}.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: "Telenor Light";
+  .font-src("telenor-light");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.telenor-font() {
+  font-family: "Telenor Light";
+}
