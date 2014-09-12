@@ -51,19 +51,21 @@ class ViewModel {
     });
 
     this.buttonText = ko.pureComputed(() => {
-      if (this.showWifi()) return "";
-      if (this.show4g()) return "4G";
-      if (this.show3g()) return "3G";
-      if (this.show2g()) return "2G";
+      //if (this.showWifi()) return "";
+      //if (this.show4g()) return "4G";
+      //if (this.show3g()) return "3G";
+      //if (this.show2g()) return "2G";
       return "";
     });
 
     this.filterCss = ko.pureComputed(() => {
       var css = [];
-
+      
+      
       if (self.shouldShowPanel()) {
         css.push('button--in-panel');
       }
+      /*
       if (this.showWifi()) {
         css.push('button--wifi');
       } else {
@@ -77,7 +79,7 @@ class ViewModel {
           css.push("button--2g");
         }
       }
-
+      */
       return css.join(" ");
     });
 
