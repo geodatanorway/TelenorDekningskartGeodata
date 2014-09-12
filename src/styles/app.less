@@ -14,9 +14,9 @@ Variables
 
 @color-primary: #00ace8;
 @color-white: white;
-@color-white-t: rgba(255, 255, 255, 0.6);
+@color-white-t: rgba(255, 255, 255, 0.7);
 @color-disabled: #aaa;
-@color-text: #999;
+@color-text: #555;
 @color-text-dark: #333;
 @color-light-gray: #ddd;
 @searchBarWidth: 530px;
@@ -105,7 +105,7 @@ img.leaflet-image-layer {
     .fa-icon(@fa-var-wifi);
 }
 .color2g {
-    background-color: #aef3a4;
+    background-color: #9ee394;
 }
 .color3g {
     background-color: #7dc47b;
@@ -178,7 +178,6 @@ img.leaflet-image-layer {
             position: relative;
             margin-left: @button-margin;
             float: left;
-            opacity: 0.93;
             .rounded();
             input {
                 display: none;
@@ -269,7 +268,6 @@ img.leaflet-image-layer {
         .rounded();
         color: @color-white;
         background-color: #137cc5;
-        opacity: 0.8;
         &.button--wifi {
             .icon-wifi();
         }
@@ -365,7 +363,6 @@ img.leaflet-image-layer {
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     border-radius: 2px; // not .rounded() since it needs 2px to look perfect
-    opacity: 0.8;
 }
 .outdoors--mode--selected {
     color: #fff !important;
