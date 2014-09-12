@@ -1,7 +1,6 @@
 /* ==========================================================================
 Imports
 ========================================================================== */
-@import 'fonts';
 @import 'globals';
 @import '../../node_modules/font-awesome/less/font-awesome';
 @import "normalize.less";
@@ -41,6 +40,7 @@ html, body, #mapDiv {
     padding: 0;
     margin: 0;
     height: 100%;
+    font-family: arial;
     -ms-touch-action: none;
     touch-action: none;
 }
@@ -48,7 +48,6 @@ a {
     outline: 0;
 }
 body {
-    .telenor-font();
     font-size: 100%;
 }
 .container {
@@ -132,7 +131,6 @@ img.leaflet-image-layer {
     }
 }
 .leaflet-popup-content-wrapper {
-    .telenor-font();
     border-radius: 0;
 }
 .leaflet-popup-content-wrapper .leaflet-popup-content {
@@ -179,6 +177,7 @@ img.leaflet-image-layer {
             margin-left: @button-margin;
             float: left;
             .rounded();
+            opacity: 0.93;
             input {
                 display: none;
             }
@@ -380,11 +379,6 @@ img.leaflet-image-layer {
         touch-action: none;
     }
 }
-
-.switch-light span span {
-    .telenor-font();
-}
-
 @media only screen {
     .switch-light {
         margin-left: 0px;
