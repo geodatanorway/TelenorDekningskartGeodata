@@ -8,27 +8,14 @@
             <div class="searchBarPlaceholder"></div>
             <div class="settings">
                 <div class="leftContainer" data-bind="visible: !showWifi()">
-                    <!--<div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
-                        <label for="showInside" class="layer-filter">Inne</label>
-                        <input type="radio" id="showInside" data-bind="checked: showInside">
-                    </div>
-                    <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }, visible: !(showWifi())">
-                        <label for="showOutside" class="layer-filter">Ute</label>
-                        <input type="radio" id="showOutside" data-bind="checked: showOutside">
-                    </div>-->
-        
-                    <!-- test -->
-        
                     <label class="switch-light switch-candy">
                         <input type="checkbox" data-bind="checked: showInside">
                         <span>
                             <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
                             <span data-bind="css: { 'switched-on': showInside }">Inne</span>
-                        </span>
-        
+                        </span>        
                         <a></a>
-                    </label>
-        
+                    </label>        
                 </div>
                 <div class="rightContainer">
                     <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
