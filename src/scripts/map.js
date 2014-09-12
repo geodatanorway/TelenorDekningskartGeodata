@@ -15,7 +15,7 @@ const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WM
 const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
 const GeocodeToken = "YNwBZNct1SXVxPMi7SawmggygE-k2q43VNUgC0gutZyfHgCkezgZ6oPKSILtP1op";
 
-const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap2/MapServer";
+const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap_beck/MapServer";
 const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 
 const InitialZoom = 6;
@@ -41,7 +41,7 @@ var map = L.map('mapDiv', {
     continuousWorld: true,
     maxZoom: MaxZoom,
     minZoom: 4,
-    maxBounds: [[56, -4],[82, 40]]
+    maxBounds: [[46, -18],[82, 46]]
   })
   .setView(trondheim, InitialZoom, {
     animate: true,
@@ -144,9 +144,7 @@ function reverseLookupAsync(location, options) {
   return new Promise((resolve, reject) => {
     geocoding.reverse(location, options, (error, result, response) => {
       var popupText = "";
-      if (error)
-        popupText = "Ingen adresse funnet";
-      else {
+      if (!error) {
         var address = response.address;
         if (address.Adresse)
           popupText += address.Adresse + "<br>";
@@ -160,13 +158,36 @@ function reverseLookupAsync(location, options) {
 function getLayerName(layerId) {
   switch (layerId) {
     case 2: return "4G innendørs";
-    case 3: return "4G utendørs";
+    case 3: return "4G";
     case 6: return "3G innendørs";
-    case 7: return "3G utendørs";
+    case 7: return "3G";
     case 8: return "2G innendørs";
-    case 9: return "2G utendørs";
+    case 9: return "2G";
     default: return "Ukjent";
   }
+}
+
+var thresholds = {
+  "2G": { high: -78, low: -94 },
+  "3G": { high: -94, low: -99 },
+  "4G": { high: -100, low: -110 },
+};
+
+function getDekning(db, threshold){
+  if(!db || db === 0)
+    return "Ingen dekning";
+  if(db > threshold.high)
+    return "Meget god";
+  if(db > threshold.low)
+    return "Normal";
+  return "Minimal";
+}
+
+function getForventetDekning(db2g, db3g, db4g) {
+  var dekning4G = getDekning(db4g, thresholds["4G"]);
+  var dekning3G = getDekning(db3g, thresholds["3G"]);
+  var dekning2G = getDekning(db2g, thresholds["2G"]);
+  return [dekning4G, dekning3G, dekning2G].join("<br>");
 }
 
 function showGeocodePopup(latlng) {
@@ -189,20 +210,21 @@ function showGeocodePopup(latlng) {
     .on(map)
     .token(DekningToken)
     .at(latlng)
-    .layers('all:2,3,6,7,8,9')
+    .layers('all:3,7,9')
     .runAsync()
     .spread((featureCollection, response) => {
       return _.zip(featureCollection.features, response.results).map((results) => {
         var feature = results[0];
         var point = results[1];
         var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
-        return getLayerName(point.layerId) + ": " + (db ? db + " dB" : "Ingen dekning");
+        var layerName = getLayerName(point.layerId);
+        return layerName + ": " + getDekning(db, thresholds[layerName]);
       }).join("<br>");
     }, error => "Ingen signalinformasjon funnet");
 
   Bluebird.join(reverseLookup, identify, (lookupInfo, signalInfo) => {
     NProgress.done();
-    var popupText = lookupInfo + "<br><br>" + signalInfo;
+    var popupText = (lookupInfo ? lookupInfo + "<br><br>" : "") + signalInfo;
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.ClickLocation
