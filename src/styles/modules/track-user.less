@@ -1,14 +1,41 @@
-.track-user {
+.bottom-left-buttons {
   position: absolute;
   bottom: 1em;
   left: 1em;
-
+  display: inline-block;
+  float: left;
+  & > div {
+    float: left;
+    margin-right: 1em;
+  }
+  .legend {
+    .border();
+    color: @color-text;
+    height: @button-height;
+    background: @color-white;
+    line-height: @button-height;
+    @padding: 10px;
+    padding-left: @padding;
+    padding-right: @padding;
+    vertical-align: middle;
+  
+    .text {
+      margin-right: 5px;
+    }
+    .layer {
+      color: @color-white;
+      padding: 5px 3px;
+      .rounded();
+      text-shadow: @color-text 1px 1px;
+    }
+  }
+}
+.track-user {
   transition: all 1s;
   opacity: 0;
   &.track-user--visible {
     opacity: 1;
   }
-
   .track {
     background-color: @color-white;
     color: @color-disabled;
@@ -16,7 +43,6 @@
     font-size: 2em;
     .pointer();
   }
-
   .track--selected {
     background-color: @color-primary;
     color: @color-white;

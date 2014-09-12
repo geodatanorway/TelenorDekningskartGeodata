@@ -14,7 +14,7 @@ Variables
 
 @color-primary: #00ace8;
 @color-white: white;
-@color-white-t: rgba(255, 255, 255, 1);
+@color-white-t: rgba(255, 255, 255, 0.6);
 @color-disabled: #aaa;
 @color-text: #999;
 @color-text-dark: #333;
@@ -104,19 +104,28 @@ img.leaflet-image-layer {
 .icon-wifi() {
     .fa-icon(@fa-var-wifi);
 }
+.color2g {
+    background-color: #aef3a4;
+}
+.color3g {
+    background-color: #7dc47b;
+}
+.color4g {
+    background-color: #7aa0c7;
+}
 .buttons() {
     .pointer();
     &.button--2g {
         //background-color: darken(rgba(149, 234, 107, 1), 20%);
-        background-color: #aef3a4;
+        .color2g;
     }
     &.button--3g {
         //background-color: darken(rgba(234, 234, 107, 1), 20%);
-        background-color: #7dc47b;
+        .color3g;
     }
     &.button--4g {
         //background-color: darken(rgba(126, 231, 218, 1), 20%);
-        background-color: #7aa0c7;
+        .color4g;
     }
     &.button--wifi {
         background-color: #137cc5;
@@ -356,10 +365,7 @@ img.leaflet-image-layer {
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     border-radius: 2px; // not .rounded() since it needs 2px to look perfect
-}
-
-.switch-candy {
-    opacity: 0.93;
+    opacity: 0.8;
 }
 .outdoors--mode--selected {
     color: #fff !important;
@@ -406,7 +412,8 @@ img.leaflet-image-layer {
         }
     }
     .switch-candy {
-        border-radius: 2px; // not .rounded() since it needs 2px to look perfect
+        border-radius: 2px;
+        // not .rounded() since it needs 2px to look perfect
         background: @color-white-t;
         span {
             color: @color-text;
