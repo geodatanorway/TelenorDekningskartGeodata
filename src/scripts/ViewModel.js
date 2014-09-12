@@ -28,7 +28,6 @@ class ViewModel {
     this.canTrackUser = ko.observable(false);
     map.on('location:found', () => this.canTrackUser(true));
     map.on('location:denied', () => this.canTrackUser(false));
-    //map.on('drag', () => this.shouldShowPanel(false));
 
     this.trackUser = ko.observable(false);
 
@@ -43,8 +42,8 @@ class ViewModel {
     this.show3g.subscribe(hideWifi);
     this.show4g.subscribe(hideWifi);
 
-    function hideWifi(newValue){
-      if(newValue)
+    function hideWifi(newValue) {
+      if (newValue)
         self.showWifi(false);
     }
 
@@ -65,35 +64,15 @@ class ViewModel {
     });
 
     this.buttonText = ko.pureComputed(() => {
-      //if (this.showWifi()) return "";
-      //if (this.show4g()) return "4G";
-      //if (this.show3g()) return "3G";
-      //if (this.show2g()) return "2G";
       return "";
     });
 
     this.filterCss = ko.pureComputed(() => {
       var css = [];
 
-
       if (self.shouldShowPanel()) {
         css.push('button--in-panel');
       }
-      /*
-      if (this.showWifi()) {
-        css.push('button--wifi');
-      } else {
-        if (this.show4g()) {
-          css.push("button--4g");
-        }
-        if (this.show3g()) {
-          css.push("button--3g");
-        }
-        if (this.show2g()) {
-          css.push("button--2g");
-        }
-      }
-      */
       return css.join(" ");
     });
 
@@ -241,8 +220,6 @@ class ViewModel {
           break;
       }
     });
-
-
 
     this.onDocumentKeyDown = (vm, e) => {
       var isCtrlOrAlt = (e.ctrlKey || e.altKey || e.metaKey);
