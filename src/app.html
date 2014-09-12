@@ -21,8 +21,8 @@
                 <label class="switch-light switch-candy" onclick="" data-bind="visible: !(showWifi())">
                     <input type="checkbox" data-bind="checked: showInside">
                     <span>
-                        <span>Ute</span>
-                        <span>Inne</span>
+                        <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
+                        <span data-bind="css: { 'switched-on': showInside }">Inne</span>
                     </span>
 
                     <a></a>
