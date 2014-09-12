@@ -28,7 +28,7 @@ class ViewModel {
     this.canTrackUser = ko.observable(false);
     map.on('location:found', () => this.canTrackUser(true));
     map.on('location:denied', () => this.canTrackUser(false));
-    map.on('drag', () => this.shouldShowPanel(false));
+    //map.on('drag', () => this.shouldShowPanel(false));
 
     this.trackUser = ko.observable(false);
 

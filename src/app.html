@@ -7,14 +7,27 @@
         <div class="searchBarPlaceholder"></div>
         <div class="settings">
             <div class="leftContainer">
-                <div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
+                <!--<div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
                     <label for="showInside" class="layer-filter">Inne</label>
                     <input type="radio" id="showInside" data-bind="checked: showInside">
                 </div>
                 <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }, visible: !(showWifi())">
                     <label for="showOutside" class="layer-filter">Ute</label>
                     <input type="radio" id="showOutside" data-bind="checked: showOutside">
-                </div>
+                </div>-->
+
+                <!-- test -->
+
+                <label class="switch-light switch-candy" onclick="">
+                    <input type="checkbox" data-bind="checked: showInside">
+                    <span>
+                        <span>Ute</span>
+                        <span>Inne</span>
+                    </span>
+
+                    <a></a>
+                </label>
+
             </div>
             <div class="rightContainer">
                 <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }, visible: !(showWifi())">
@@ -39,8 +52,8 @@
     <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
         <div class="search-wrap">
             <input tabindex="0"
-            placeholder="Søk"
-            data-bind="
+                   placeholder="Søk"
+                   data-bind="
             value: searchText,
             valueUpdate: ['input', 'afterkeydown'],
             event: { keydown: onSearchKeyDown, click: onSearchClick },
