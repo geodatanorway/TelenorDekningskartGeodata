@@ -107,18 +107,18 @@ img.leaflet-image-layer {
     .pointer();
     &.button--2g {
         //background-color: darken(rgba(149, 234, 107, 1), 20%);
-        background-color: rgb(116, 255, 97);
+        background-color: #aef3a4;
     }
     &.button--3g {
         //background-color: darken(rgba(234, 234, 107, 1), 20%);
-        background-color: rgb(18, 160, 15);
+        background-color: #7dc47b;
     }
     &.button--4g {
         //background-color: darken(rgba(126, 231, 218, 1), 20%);
-        background-color: rgb(1, 76, 154);
+        background-color: #7aa0c7;
     }
     &.button--wifi {
-        background-color: @color-primary;
+        background-color: #137cc5;
     }
 }
 .leaflet-popup-content-wrapper {
@@ -167,6 +167,8 @@ img.leaflet-image-layer {
             position: relative;
             margin-left: @button-margin;
             float: left;
+            .rounded();
+            opacity: 0.93;
             input {
                 display: none;
             }
@@ -188,6 +190,7 @@ img.leaflet-image-layer {
                 text-align: center;
                 .pointer();
                 .border();
+                .rounded();
             }
             i.fa-wifi {
                 -ms-touch-action: none;
@@ -252,7 +255,10 @@ img.leaflet-image-layer {
         .button-base();
         .buttons();
         .border();
+        .rounded();
         color: @color-white;
+        background-color: #137cc5;
+        opacity: 0.8;
         &.button--wifi {
             .icon-wifi();
         }
@@ -317,6 +323,7 @@ img.leaflet-image-layer {
     float: left;
     width: 120px;
     .border();
+    .rounded();
     a {
         border: none;
         outline: 0;
@@ -342,11 +349,13 @@ img.leaflet-image-layer {
     margin: 0 0 40px;
 }
 .switch-candy a {
-    background-color: rgb(1, 76, 154);
+    background-color: #137cc5;
     color: #fff;
     border-radius: 0px;
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
+    border-radius: 2px; // not .rounded() since it needs 2px to look perfect
+    opacity: 0.8;
 }
 .outdoors--mode--selected {
     color: #fff !important;
@@ -366,6 +375,7 @@ img.leaflet-image-layer {
     .switch-light {
         margin-left: 0px;
         height: 48px;
+        .rounded();
         label {
             line-height: none;
         }
@@ -387,7 +397,7 @@ img.leaflet-image-layer {
         }
     }
     .switch-candy {
-        border-radius: 0px;
+        border-radius: 2px; // not .rounded() since it needs 2px to look perfect
         background: @color-white-t;
         span {
             color: @color-text;
