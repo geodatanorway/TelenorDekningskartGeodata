@@ -39,7 +39,21 @@ class ViewModel {
     this.showInside = ko.observable(false);
     this.showWifi = ko.observable(false);
 
+    this.show2g.subscribe(hideWifi);
+    this.show3g.subscribe(hideWifi);
+    this.show4g.subscribe(hideWifi);
+
+    function hideWifi(newValue){
+      if(newValue)
+        self.showWifi(false);
+    }
+
     this.showWifi.subscribe(newValue => {
+      if (newValue) {
+        this.show2g(false);
+        this.show3g(false);
+        this.show4g(false);
+      }
       map.setWifiVisibility(newValue);
     });
 
@@ -60,8 +74,8 @@ class ViewModel {
 
     this.filterCss = ko.pureComputed(() => {
       var css = [];
-      
-      
+
+
       if (self.shouldShowPanel()) {
         css.push('button--in-panel');
       }

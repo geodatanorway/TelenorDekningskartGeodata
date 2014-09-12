@@ -6,7 +6,7 @@
     <div id="panel" data-bind="visible: shouldShowPanel">
         <div class="searchBarPlaceholder"></div>
         <div class="settings">
-            <div class="leftContainer">
+            <div class="leftContainer" data-bind="visible: !showWifi()">
                 <!--<div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
                     <label for="showInside" class="layer-filter">Inne</label>
                     <input type="radio" id="showInside" data-bind="checked: showInside">
@@ -18,7 +18,7 @@
 
                 <!-- test -->
 
-                <label class="switch-light switch-candy" onclick="" data-bind="visible: !(showWifi())">
+                <label class="switch-light switch-candy">
                     <input type="checkbox" data-bind="checked: showInside">
                     <span>
                         <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
@@ -30,15 +30,15 @@
 
             </div>
             <div class="rightContainer">
-                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }, visible: !(showWifi())">
+                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
                     <label for="show4g" class="layer-filter">4G</label>
                     <input type="checkbox" id="show4g" data-bind="checked: show4g">
                 </div> 
-                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }, visible: !(showWifi())">
+                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
                     <label for="show3g" class="layer-filter">3G</label>
                     <input type="checkbox" id="show3g" data-bind="checked: show3g">
                 </div>
-                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }, visible: !(showWifi())">
+                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
                     <label for="show2g" class="layer-filter">2G</label>
                     <input type="checkbox" id="show2g" data-bind="checked: show2g">
                 </div>
