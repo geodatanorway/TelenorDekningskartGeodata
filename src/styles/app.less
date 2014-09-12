@@ -421,13 +421,17 @@ img.leaflet-image-layer {
 }
 @media all and (max-width:530px) {
     #panel {
-        width: 90%;
-        margin-left: 5%;
+        width: 95%;
+        width: ~"calc(100% - 1em)"; //fallback
+        margin-left: 0.5em;
+        margin-right: 0.5em;
         left: 0px;
     }
     #searchBar {
-        width: 90%;
-        margin-left: 5%;
+        width: 95%;
+        width: ~"calc(100% - 1em)"; //fallback
+        margin-left: 0.5em;
+        margin-right: 0.5em;
         left: 0px;
         input {
             width: 100%;

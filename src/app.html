@@ -3,67 +3,69 @@
     <link rel="stylesheet" type="text/css" href="<%= appCss %>" />
     <div id="mapDiv">
     </div>
-    <div id="panel" data-bind="visible: shouldShowPanel">
-        <div class="searchBarPlaceholder"></div>
-        <div class="settings">
-            <div class="leftContainer" data-bind="visible: !showWifi()">
-                <!--<div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
-                    <label for="showInside" class="layer-filter">Inne</label>
-                    <input type="radio" id="showInside" data-bind="checked: showInside">
+    <div id="top-wrapper">
+        <div id="panel" data-bind="visible: shouldShowPanel">
+            <div class="searchBarPlaceholder"></div>
+            <div class="settings">
+                <div class="leftContainer" data-bind="visible: !showWifi()">
+                    <!--<div class="leftButtonContainer button--inne" data-bind="css: { 'button--selected': showInside }, visible: !(showWifi())">
+                        <label for="showInside" class="layer-filter">Inne</label>
+                        <input type="radio" id="showInside" data-bind="checked: showInside">
+                    </div>
+                    <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }, visible: !(showWifi())">
+                        <label for="showOutside" class="layer-filter">Ute</label>
+                        <input type="radio" id="showOutside" data-bind="checked: showOutside">
+                    </div>-->
+        
+                    <!-- test -->
+        
+                    <label class="switch-light switch-candy">
+                        <input type="checkbox" data-bind="checked: showInside">
+                        <span>
+                            <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
+                            <span data-bind="css: { 'switched-on': showInside }">Inne</span>
+                        </span>
+        
+                        <a></a>
+                    </label>
+        
                 </div>
-                <div class="leftButtonContainer button--ute" data-bind="css: { 'button--selected': showOutside }, visible: !(showWifi())">
-                    <label for="showOutside" class="layer-filter">Ute</label>
-                    <input type="radio" id="showOutside" data-bind="checked: showOutside">
-                </div>-->
-
-                <!-- test -->
-
-                <label class="switch-light switch-candy">
-                    <input type="checkbox" data-bind="checked: showInside">
-                    <span>
-                        <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
-                        <span data-bind="css: { 'switched-on': showInside }">Inne</span>
-                    </span>
-
-                    <a></a>
-                </label>
-
-            </div>
-            <div class="rightContainer">
-                <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
-                    <label for="show4g" class="layer-filter">4G</label>
-                    <input type="checkbox" id="show4g" data-bind="checked: show4g">
-                </div> 
-                <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
-                    <label for="show3g" class="layer-filter">3G</label>
-                    <input type="checkbox" id="show3g" data-bind="checked: show3g">
-                </div>
-                <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
-                    <label for="show2g" class="layer-filter">2G</label>
-                    <input type="checkbox" id="show2g" data-bind="checked: show2g">
-                </div>
-                <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
-                    <label for="showWifi" class="layer-filter"><i class="fa fa-wifi no-pointer-events"></i></label>
-                    <input type="checkbox" id="showWifi" data-bind="checked: showWifi">
+                <div class="rightContainer">
+                    <div class="buttonContainer button--4g" data-bind="css: { 'button--selected': show4g }">
+                        <label for="show4g" class="layer-filter">4G</label>
+                        <input type="checkbox" id="show4g" data-bind="checked: show4g">
+                    </div> 
+                    <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
+                        <label for="show3g" class="layer-filter">3G</label>
+                        <input type="checkbox" id="show3g" data-bind="checked: show3g">
+                    </div>
+                    <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
+                        <label for="show2g" class="layer-filter">2G</label>
+                        <input type="checkbox" id="show2g" data-bind="checked: show2g">
+                    </div>
+                    <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
+                        <label for="showWifi" class="layer-filter"><i class="fa fa-wifi no-pointer-events"></i></label>
+                        <input type="checkbox" id="showWifi" data-bind="checked: showWifi">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
-        <div class="search-wrap">
-            <input tabindex="0"
-                   placeholder="Søk"
-                   data-bind="
-            value: searchText,
-            valueUpdate: ['input', 'afterkeydown'],
-            event: { keydown: onSearchKeyDown, click: onSearchClick },
-            hasFocus: searchTextHasFocus" />
-            <button class="layer-filter no-pointer-events" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
-            <span class="clear-search" data-bind="visible: searchText().length > 0, event: { touchstart: clearSearchText, mousedown: clearSearchText }">&nbsp;</span>
+        <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
+            <div class="search-wrap">
+                <input tabindex="0"
+                       placeholder="Søk"
+                       data-bind="
+                value: searchText,
+                valueUpdate: ['input', 'afterkeydown'],
+                event: { keydown: onSearchKeyDown, click: onSearchClick },
+                hasFocus: searchTextHasFocus" />
+                <button class="layer-filter no-pointer-events" data-bind="click: togglePanelVisibility, css: filterCss, text: buttonText"></button>
+                <span class="clear-search" data-bind="visible: searchText().length > 0, event: { touchstart: clearSearchText, mousedown: clearSearchText }">&nbsp;</span>
+            </div>
+            <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
+                <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
+            </ul>
         </div>
-        <ul id="searchResults" tabindex="0" data-bind="foreach: searchResults, visible: searchResults().length > 0, event: { keydown: onListKeyDown }">
-            <li tabindex="-1" data-bind="text: suggestion, click: $root.onSuggestionClicked"></li>
-        </ul>
     </div>
 
     <div class="bottom-left-buttons" style="display: none" data-bind="visible: true">        
