@@ -90,10 +90,14 @@ img.leaflet-image-layer {
 .leaflet-top.leaflet-left {
     top: auto;
     left: 8px;
-    bottom: 80px;
+    bottom: 64px;
     .leaflet-control {
         margin: 0;
         .border();
+        .rounded();
+        a, a:hover {
+        color: @color-text;
+        }
     }
 }
 .leaflet-bar {
