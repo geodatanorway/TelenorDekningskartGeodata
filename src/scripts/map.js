@@ -58,11 +58,11 @@ var map = L.map('mapDiv', {
   });
 
 var userLocationIcon = L.icon({
-    iconUrl: '../images/marker-blue.png',
-    iconSize: [48, 48], // size of the icon
+    iconUrl: '../images/circle-blue.png',
+    iconSize: [98, 98], // size of the icon
 });
 
-var userLocationIcon = L.icon({
+var placeLocationIcon = L.icon({
     iconUrl: '../images/marker-blue.png',
     iconSize: [48, 48], // size of the icon
 });
@@ -123,7 +123,7 @@ function setMarker(lat, lon, id, options, popupOptions) {
   deleteMarker(id);
 
   options = _.extend({
-    icon: userLocationIcon
+    icon: placeLocationIcon
   }, options, true);
 
   var marker = L.marker(L.latLng(lat, lon), options);
