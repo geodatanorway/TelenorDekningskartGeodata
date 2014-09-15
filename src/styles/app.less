@@ -270,7 +270,7 @@ img.leaflet-image-layer {
     .layer-filter {
         .button-base();
         .buttons();
-        .border();
+        border: 0px solid;
         .rounded();
         color: @color-white;
         background-color: #137cc5;
@@ -337,7 +337,7 @@ img.leaflet-image-layer {
 .leftContainer {
     float: left;
     width: 120px;
-    .border();
+    //.border();
     .rounded();
     a {
         border: none;
@@ -383,7 +383,9 @@ img.leaflet-image-layer {
     }
 }
 .switch-light span span {
-    .telenor-font();
+    //.telenor-font();
+    font-family: Helvetica;
+    font-weight: 100;
 }
 
 .location-image {
