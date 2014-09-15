@@ -180,11 +180,11 @@ var thresholds = {
 function getDekning(db, threshold){
   if(!db || db === 0)
     return "Ingen dekning";
-  if(db >= threshold.high)
+  if(db > threshold.high)
     return "Meget god";
-  if(db >= threshold.low)
+  if(db > threshold.low)
     return "God";
-  if(db >= threshold.minimal)
+  if(db > threshold.minimal)
     return "Minimal";
   return "Ingen dekning";
 }
