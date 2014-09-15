@@ -7,7 +7,6 @@ require('./libs/esri-leaflet');
 require('./libs/esri-leaflet-geocoder');
 
 var icons = require('./map-icons');
-// var ajaxIntercept = require('./ajax-intercept');
 
 // const GeodataToken = "pfXkUmlA3PLW3haAGWG5vwGW69TFhN3k1ISHYSpTZhhMFWsPpE76xOqMKG5uYw_U";
 // const GeodataToken = "w_ii1TYVrGk9QDpnCyqCjQutVr0KaHT6OhKK32vZejId0sTlR7wjVxNwlzsGzspo_fFiRzj2BCehUc-PmEWlRg..";

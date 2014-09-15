@@ -23,7 +23,7 @@ class ViewModel {
     });
     this.searchResults = ko.observableArray();
 
-    this.shouldShowPanel = ko.observable(true);
+    this.showPanel = ko.observable(true);
 
     this.canTrackUser = ko.observable(false);
     map.on('location:found', () => this.canTrackUser(true));
@@ -70,7 +70,7 @@ class ViewModel {
     this.filterCss = ko.pureComputed(() => {
       var css = [];
 
-      if (self.shouldShowPanel()) {
+      if (self.showPanel()) {
         css.push('button--in-panel');
       }
       return css.join(" ");
@@ -82,14 +82,14 @@ class ViewModel {
       this.searchTextHasFocus(true);
     };
 
-    this.searchTextHasFocus.subscribe(hasFocus => this.shouldShowPanel(false));
+    this.searchTextHasFocus.subscribe(hasFocus => this.showPanel(false));
 
     this.clearSearchText = (e) => {
       this.searchText("");
       this.searchTextHasFocus(true);
     };
 
-    this.togglePanelVisibility = () => self.shouldShowPanel(!self.shouldShowPanel());
+    this.togglePanelVisibility = () => self.showPanel(!self.showPanel());
 
     this.layers = ko.pureComputed(() => {
       var layers = [];

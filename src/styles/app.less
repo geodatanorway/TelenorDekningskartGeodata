@@ -90,7 +90,7 @@ img.leaflet-image-layer {
 .leaflet-top.leaflet-left {
     top: auto;
     left: 8px;
-    bottom: 64px;
+    bottom: 63px;
     .leaflet-control {
         margin: 0;
         .border();
@@ -442,6 +442,10 @@ img.leaflet-image-layer {
     background-repeat: no-repeat;
 }
 
+.legend {
+    .pointer();
+}
+
 @media only screen {
     .switch-light {
         margin-left: 0px;
@@ -468,6 +472,7 @@ img.leaflet-image-layer {
         }
     }
     .switch-candy {
+        .pointer();
         border-radius: 2px;
         // not .rounded() since it needs 2px to look perfect
         background: @color-white-t;
@@ -477,6 +482,10 @@ img.leaflet-image-layer {
             .switched-on {
                 color: white;
             }
+        }
+
+        input {
+            display: none;
         }
     }
 }

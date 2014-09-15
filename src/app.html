@@ -4,7 +4,7 @@
     <div id="mapDiv">
     </div>
     <div id="top-wrapper">
-        <div id="panel" data-bind="visible: shouldShowPanel">
+        <div id="panel" data-bind="visible: showPanel">
             <div class="searchBarPlaceholder"></div>
             <div class="settings">
                 <div class="leftContainer" data-bind="visible: !showWifi()">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
+        <div id="searchBar" data-bind="css: { 'searchBar--in-panel': showPanel }">
             <div class="search-wrap">
                 <div class="search-icon"></div>
                 <input tabindex="0"
@@ -61,7 +61,7 @@
             <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
             <!--<i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>-->
         </div>
-        <div class="legend">
+        <div class="legend" data-bind="visible: !showPanel(), click: togglePanelVisibility">
             <div class="text" data-bind="visible: showOutside() && !showWifi()">Utendørs</div>
             <div class="text" data-bind="visible: showInside() && !showWifi()">Innendørs</div>
             <div class="text" data-bind="visible: showWifi()">Trådløspunkt</div>
