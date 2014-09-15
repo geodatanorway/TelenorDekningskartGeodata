@@ -237,7 +237,7 @@ img.leaflet-image-layer {
     margin-top: 0.5em;
     .search-wrap {
         .clearfix;
-        &:before {
+        /*&:before {
             .fa();
             content: @fa-var-search;
             position: absolute;
@@ -246,7 +246,7 @@ img.leaflet-image-layer {
             line-height: @button-height;
             font-size: 1.5em;
             color: @color-primary;
-        }
+        }*/
     }
     .button-base() {
         outline: none;
@@ -385,6 +385,55 @@ img.leaflet-image-layer {
 .switch-light span span {
     .telenor-font();
 }
+
+.location-image {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-image: url("../images/location-blue.png");
+    background-size: contain;
+    background-color: white;
+    border-radius: 2px;
+    // not .rounded() since it needs 2px to look perfect
+}
+
+.wifi-image {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-image: url("../images/wifi-gray.png");
+    background-size: contain;
+    background-color: transparent;
+    border-radius: 2px;
+    // not .rounded() since it needs 2px to look perfect
+}
+
+.wifi-image-small {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-image: url("../images/wifi-white.png");
+    background-size: contain;
+    background-color: transparent;
+    border-radius: 2px;
+    // not .rounded() since it needs 2px to look perfect
+}
+
+.wifi--button--selected {
+    background-image: url("../images/wifi-white.png");
+    background-color: #137cc5;
+}
+
+.search-icon {
+    background-image: url("../images/search-blue.png");
+    height: 40px;
+    width: 46px;
+    position: absolute;
+    z-index: 100;
+    background-size: contain;
+    top: 4px;
+}
+
 @media only screen {
     .switch-light {
         margin-left: 0px;

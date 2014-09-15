@@ -30,8 +30,8 @@
                         <label for="show2g" class="layer-filter">2G</label>
                         <input type="checkbox" id="show2g" data-bind="checked: show2g">
                     </div>
-                    <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
-                        <label for="showWifi" class="layer-filter"><i class="fa fa-wifi no-pointer-events"></i></label>
+                    <div class="buttonContainer button--wifi">
+                        <label for="showWifi" class="layer-filter"><div class="wifi-image" data-bind="css: { 'wifi--button--selected': showWifi }"></div></label>
                         <input type="checkbox" id="showWifi" data-bind="checked: showWifi">
                     </div>
                 </div>
@@ -39,6 +39,7 @@
         </div>
         <div id="searchBar" data-bind="css: { 'searchBar--in-panel': shouldShowPanel }">
             <div class="search-wrap">
+                <div class="search-icon"></div>
                 <input tabindex="0"
                        placeholder="Søk"
                        data-bind="
@@ -57,16 +58,17 @@
 
     <div class="bottom-left-buttons" style="display: none" data-bind="visible: true">        
         <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, visible: $root.canTrackUser, click: $root.onTrackUserClicked">
-            <i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>
+            <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
+            <!--<i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>-->
         </div>
         <div class="legend">
-            <span class="text" data-bind="visible: showOutside() && !showWifi()">Utendørs</span>
-            <span class="text" data-bind="visible: showInside() && !showWifi()">Innendørs</span>
-            <span class="text" data-bind="visible: showWifi()">Trådløspunkt</span>
-            <span class="layer color4g" data-bind="visible: show4g">4G</span>
-            <span class="layer color3g" data-bind="visible: show3g">3G</span>
-            <span class="layer color2g" data-bind="visible: show2g">2G</span>
-            <span class="layer colorWifi" data-bind="visible: showWifi">&nbsp;<i class="fa fa-wifi"></i>&nbsp;</span>
+            <div class="text" data-bind="visible: showOutside() && !showWifi()">Utendørs</div>
+            <div class="text" data-bind="visible: showInside() && !showWifi()">Innendørs</div>
+            <div class="text" data-bind="visible: showWifi()">Trådløspunkt</div>
+            <div class="layer color4g" data-bind="visible: show4g">4G</div>
+            <div class="layer color3g" data-bind="visible: show3g">3G</div>
+            <div class="layer color2g" data-bind="visible: show2g">2G</div>
+            <div class="layer colorWifi" data-bind="visible: showWifi"><div class="wifi-image-small"></div></div>
         </div>
     </div>
     <!--[if lt IE 9]>

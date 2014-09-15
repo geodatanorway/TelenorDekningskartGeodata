@@ -14,20 +14,28 @@
     color: @color-text;
     height: @button-height;
     background: @color-white;
-    line-height: @button-height;
+    line-height: 46px;
     @padding: 10px;
     padding-left: @padding;
-    padding-right: @padding;
+    padding-right: 5px;
     vertical-align: middle;
-  
+    
     .text {
       margin-right: 5px;
+      float: left;
     }
     .layer {
       color: @color-white;
       padding: 5px;
       .rounded();
-      text-shadow: @color-text 1px 1px;
+      //text-shadow: @color-text 1px 1px;
+      float: left;
+      height: 40px;
+      width: 40px;
+      margin-top: 3px;
+      margin-left: 4px;
+      line-height: 33px;
+      text-align: center;
     }
   }
 }
@@ -48,7 +56,7 @@
     .pointer();
   }
   .track--selected {
-    background-color: @color-primary;
-    color: @color-white;
+    background-color: #137cc5;
+    background-image: url("../images/location-white.png");
   }
 }
