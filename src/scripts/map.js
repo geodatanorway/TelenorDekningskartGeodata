@@ -254,8 +254,6 @@ function showGeocodePopup(latlng) {
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: clickLocationIcon
-    }, {
-      closeButton: false
     }).openPopup();
   });
 }
