@@ -395,6 +395,7 @@ img.leaflet-image-layer {
     background-color: white;
     border-radius: 2px;
     // not .rounded() since it needs 2px to look perfect
+    background-repeat: no-repeat;
 }
 
 .wifi-image {
@@ -407,6 +408,7 @@ img.leaflet-image-layer {
     border-radius: 2px;
     // not .rounded() since it needs 2px to look perfect
     pointer-events: none;
+    background-repeat: no-repeat;
 }
 
 .wifi-image-small {
@@ -423,16 +425,19 @@ img.leaflet-image-layer {
 .wifi--button--selected {
     background-image: url("../images/wifi-white.png");
     background-color: #137cc5;
+    background-repeat: no-repeat;
 }
 
 .search-icon {
     background-image: url("../images/search-blue.png");
-    height: 40px;
+    height: 34px;
     width: 46px;
     position: absolute;
     z-index: 100;
     background-size: contain;
-    top: 4px;
+    top: 7px;
+    left: 3px;
+    background-repeat: no-repeat;
 }
 
 @media only screen {

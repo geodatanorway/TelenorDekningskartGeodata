@@ -57,10 +57,30 @@ var map = L.map('mapDiv', {
     }
   });
 
+var userLocationIcon = L.icon({
+    iconUrl: '../images/marker-blue.png',
+    iconSize: [48, 48], // size of the icon
+});
+
+var userLocationIcon = L.icon({
+    iconUrl: '../images/marker-blue.png',
+    iconSize: [48, 48], // size of the icon
+});
+
+var clickLocationIcon = L.icon({
+    iconUrl: '../images/marker-blue.png',
+    iconSize: [48, 48], // size of the icon
+});
+
+var wifiLocationIcon = L.icon({
+    iconUrl: '../images/wifi-marker-blue.png',
+    iconSize: [48, 48], // size of the icon
+});
 
 var userLocationMarker, opts = {
-  icon: icons.MyLocation
+  icon: userLocationIcon
 };
+
 map.locate({
   setView: true,
   maxZoom: InitialZoom,
@@ -103,7 +123,7 @@ function setMarker(lat, lon, id, options, popupOptions) {
   deleteMarker(id);
 
   options = _.extend({
-    icon: icons.SearchLocation
+    icon: userLocationIcon
   }, options, true);
 
   var marker = L.marker(L.latLng(lat, lon), options);
@@ -234,7 +254,7 @@ function showGeocodePopup(latlng) {
       "<br><br><a href='http://www.telenor.no/privat/mobil/mobiltjenester/datapakker/' target='_blank'>Kjøp mer data eller hastighet</a>";
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
-      icon: icons.ClickLocation
+      icon: clickLocationIcon
     }, {
       closeButton: false
     }).openPopup();
@@ -289,7 +309,7 @@ var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
   useCors: false,
   pointToLayer: (geojson, latlng) => {
     return L.marker(latlng, {
-      icon: icons.Wifi
+      icon: wifiLocationIcon
     });
   }
 });
