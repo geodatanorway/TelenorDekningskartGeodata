@@ -67,7 +67,7 @@ var placeLocationIcon = L.icon({
 });
 
 var clickLocationIcon = L.icon({
-    iconUrl: '../images/marker-blue.png',
+    iconUrl: '../images/marker-white.png',
     iconSize: [48, 48], // size of the icon
 });
 
