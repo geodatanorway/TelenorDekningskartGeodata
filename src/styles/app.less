@@ -91,12 +91,17 @@ img.leaflet-image-layer {
     top: auto;
     left: 8px;
     bottom: 63px;
+    .rounded();
     .leaflet-control {
         margin: 0;
         .border();
         .rounded();
+        overflow: hidden;
         a, a:hover {
             color: @color-text;
+            width: 46px;
+            height: 46px;
+            line-height: 46px;
         }
     }
 }
