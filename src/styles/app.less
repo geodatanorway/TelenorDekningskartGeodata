@@ -185,6 +185,7 @@ img.leaflet-image-layer {
             margin-left: @button-margin;
             float: left;
             .rounded();
+            height: 48px;
             input {
                 display: none;
             }
@@ -492,20 +493,14 @@ img.leaflet-image-layer {
 }
 @media all and (max-width:530px) {
     #panel {
-        width: 95%;
-        width: ~"calc(100% - 1em)"; //fallback
-        margin-left: 0.5em;
-        margin-right: 0.5em;
-        left: 0px;
+        margin-left: -215px;
+        width: 430px;
     }
     #searchBar {
-        width: 95%;
-        width: ~"calc(100% - 1em)"; //fallback
-        margin-left: 0.5em;
-        margin-right: 0.5em;
-        left: 0px;
+        margin-left: -215px;
+        width: 430px;
         input {
-            width: 85%;
+            width: 372px;
         }
         .clear-search {
             //right: 48px;
@@ -532,10 +527,30 @@ img.leaflet-image-layer {
         display: none;
     }
     #searchResults {
-        width: 85% !important;
+        width: 372px !important;
     }
 }
 @media all and (max-width:430px) {
+    
+    #panel {
+        margin-left: -150px;
+        width: 300px;
+    }
+    #searchBar {
+        margin-left: -150px;
+        width: 300px;
+        input {
+            width: 242px;
+        }
+        .clear-search {
+            //right: 48px;
+        }
+    }
+    
+    #searchResults {
+        width: 242px !important;
+    }
+    
     #panel .settings .buttonContainer {
         margin-left: 0px;
         margin-bottom: 10px;
