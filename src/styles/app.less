@@ -266,6 +266,7 @@ img.leaflet-image-layer {
         line-height: @button-height;
         .border();
         border-left: none;
+        .rounded();
     }
     .layer-filter {
         .button-base();
@@ -504,14 +505,10 @@ img.leaflet-image-layer {
         margin-right: 0.5em;
         left: 0px;
         input {
-            width: 100%;
+            width: 85%;
         }
         .clear-search {
-            right: 48px;
-            border-bottom: 1px solid #bbb;
-            border-top: 1px solid #bbb;
-            border-left: 0px solid #bbb;
-            border-right: 0px solid #bbb;
+            //right: 48px;
         }
     }
     #panel .settings .buttonContainer {
@@ -535,7 +532,7 @@ img.leaflet-image-layer {
         display: none;
     }
     #searchResults {
-        width: 100% !important;
+        width: 85% !important;
     }
 }
 @media all and (max-width:430px) {
