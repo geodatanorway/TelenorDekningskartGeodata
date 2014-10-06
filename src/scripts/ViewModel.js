@@ -11,6 +11,7 @@ require('./knockout-plugins');
 require('./jquery-plugins');
 
 class ViewModel {
+
   constructor() {
     var self = this;
     this.searchText = ko.observable("");
