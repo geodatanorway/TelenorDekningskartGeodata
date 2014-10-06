@@ -1,29 +1,17 @@
 var _ = require('lodash');
 
-var AwesomeMarkers = require('./libs/leaflet.awesome-markers');
-
-function icon (options) {
-  options = _.extend({ prefix: 'fa' }, options);
-  return AwesomeMarkers.icon(options);
-}
-
-exports.SearchLocation = icon({
-  markerColor: 'blue',
-  icon: 'circle-o'
+exports.UserLocation = L.icon({
+  iconUrl: '../images/circle-blue.png',
+  iconSize: [21, 21],
+  className: 'icon-user-location'
 });
 
-exports.ClickLocation = icon({
-  markerColor: 'cadetblue',
-  icon: 'circle-o'
+exports.PlaceLocation = L.icon({
+  iconUrl: '../images/marker-white.png',
+  iconSize: [48, 48],
 });
 
-exports.MyLocation = icon({
-  markerColor: 'green',
-  icon: 'circle-o'
+exports.WifiLocation = L.icon({
+  iconUrl: '../images/wifi-marker-blue.png',
+  iconSize: [48, 48],
 });
-
-exports.Wifi = icon({
-  markerColor: 'blue',
-  icon: 'wifi'
-});
-
