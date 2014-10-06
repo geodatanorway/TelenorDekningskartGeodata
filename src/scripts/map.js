@@ -26,7 +26,7 @@ const Opacity = 0.3;
 const SingleOpacity = 0.5;
 
 const MapClickedId = "MapClicked";
-const BaseMapOpacity = 0.4;
+const BaseMapOpacity = 0.3;
 
 var initialLayers = [3];
 initialLayers.outside = true;
