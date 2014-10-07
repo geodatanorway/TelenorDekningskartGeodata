@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var UserLocationSize = 21 / 2,
+var UserLocationSize = 36 / 2,
     MarkerSize = 98 / 2;
 
 exports.UserLocation = L.icon({
