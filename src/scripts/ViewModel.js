@@ -197,7 +197,14 @@ class ViewModel {
       if (event.which === 27) { // escape
         this.clearSearchResults();
       } else if (event.which === 40 || event.which === 9) { // arrow down or TAB
-        $("#searchResults").children().first().focus();
+        var hasResults = (self.searchResults().length > 0);
+        var hasSearchText = (this.searchText().length > 0);
+        if (hasResults) {
+          $("#searchResults").children().first().focus();
+        }
+        else if (hasSearchText) {
+          this.search({ forceSearch: true });
+        }
       } else if (event.which === 13) { // enter
         this.selectFirstResult();
       } else {
