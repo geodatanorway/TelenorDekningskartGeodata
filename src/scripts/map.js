@@ -149,10 +149,24 @@ var thresholds = {
   "4G": { high: -100, low: -107, minimal: -110 },
 };
 
+var hasOpenPopup = false,
+    popupTimeout;
 map.on("click", e => {
+  if (hasOpenPopup) {
+    hidePopup();
+    hasOpenPopup = false;
+
+    if (popupTimeout) {
+      clearTimeout(popupTimeout);
+      popupTimeout = null;
+    }
+    return;
+  }
+
   clickCanceled = false;
-  setTimeout(() => {
+  popupTimeout = setTimeout(() => {
     if (!clickCanceled) {
+      hasOpenPopup = true;
       showGeocodePopup(e.latlng);
     }
   }, 250);
