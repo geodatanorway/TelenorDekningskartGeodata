@@ -77,6 +77,9 @@ class ViewModel {
     });
 
     this.onSearchClick = () => {
+      if (!this.searchText()) {
+        return;
+      }
       this.searchTextThrottled.resume();
       this.search({ forceSearch: true });
       this.searchTextHasFocus(true);
@@ -87,6 +90,8 @@ class ViewModel {
     this.clearSearchText = (e) => {
       this.searchText("");
       this.searchTextHasFocus(true);
+      this.clearSearchResults();
+      delete this.previousSearch;
     };
 
     this.togglePanelVisibility = () => self.showPanel(!self.showPanel());
