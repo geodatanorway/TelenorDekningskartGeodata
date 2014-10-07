@@ -78,7 +78,7 @@ class ViewModel {
 
     this.onSearchClick = () => {
       this.searchTextThrottled.resume();
-      this.search();
+      this.search({ forceSearch: true });
       this.searchTextHasFocus(true);
     };
 
@@ -118,23 +118,41 @@ class ViewModel {
 
     this.searchTextThrottled.subscribe(newValue => this.search());
 
-    this.search = async(function * (selectFirstWhenAvailable) {
+    this.search = async(function * (options) {
+      options = _.extend({
+        selectFirstWhenAvailable: false,
+        forceSearch: false
+      }, options);
+
       var searchText = this.searchText();
-      if (!searchText) {
-        return;
+      if (!options.forceSearch) {
+        if (!searchText || searchText === self.previousSearch) {
+          return;
+        }
       }
       self.previousSearch = searchText;
+
       var rows = yield geodata.autoComplete(searchText);
-      if (rows.length > 0 && selectFirstWhenAvailable) {
-        self.selectItem(rows[0]);
-      } else {
-        self.searchResults(rows);
+
+      if (rows.length > 0) {
+        if (options.selectFirstWhenAvailable) {
+          self.selectItem(rows[0]);
+        } else {
+          // Always show search results if we force a search (on clicking the search input).
+          // Don't show the results if what's first in the incoming rows is what is already searched for.
+          if (!options.forceSearch && searchText === rows[0].suggestion) {
+            self.clearSearchResults();
+          }
+          else {
+            self.searchResults(rows);
+          }
+        }
       }
     });
 
     this.selectFirstResult = () => {
       if (this.searchText() !== this.previousSearch) {
-        this.search(true);
+        this.search({ selectFirstWhenAvailable: true });
       }
       else if (this.searchResults().length > 0) {
         this.selectItem(this.searchResults()[0]);
@@ -149,13 +167,9 @@ class ViewModel {
       setTimeout(() => map.showGeocodePopup(new L.LatLng(item.lat, item.lon)), 1000);
     };
 
-    this.onSuggestionClicked = (item) => {
-      this.selectItem(item);
-    };
+    this.onSuggestionClicked = item => this.selectItem(item);
 
-    this.clearSearchResults = (event) => {
-      this.searchResults.removeAll();
-    };
+    this.clearSearchResults = event =>  this.searchResults.removeAll();
 
     this.onTrackUserClicked = () => {
       var track = !self.trackUser();
