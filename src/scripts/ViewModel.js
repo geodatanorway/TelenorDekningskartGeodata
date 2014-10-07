@@ -14,11 +14,12 @@ class ViewModel {
 
   constructor() {
     var self = this;
+
     this.searchText = ko.observable("");
     this.searchTextHasFocus = ko.observable(false);
     this.searchTextThrottled = ko.pauseableComputed(this.searchText).extend({
       rateLimit: {
-        timeout: 500,
+        timeout: 300,
         method: "notifyWhenChangesStop"
       }
     });
@@ -27,9 +28,6 @@ class ViewModel {
     this.showPanel = ko.observable(true);
 
     this.canTrackUser = ko.observable(false);
-    map.on('location:found', () => this.canTrackUser(true));
-    map.on('location:denied', () => this.canTrackUser(false));
-
     this.trackUser = ko.observable(false);
 
     this.show2g = ko.observable(false);
@@ -43,7 +41,14 @@ class ViewModel {
     this.show3g.subscribe(hideWifi);
     this.show4g.subscribe(hideWifi);
 
-    function hideWifi(newValue) {
+    map.on('location:found', () => this.canTrackUser(true));
+    map.on('location:denied', () => this.canTrackUser(false));
+
+    map.on("loading", () => NProgress.start());
+    map.on("load", () => NProgress.done());
+    map.on('tracking:stop', () => self.trackUser(false));
+
+    function hideWifi (newValue) {
       if (newValue)
         self.showWifi(false);
     }
@@ -57,16 +62,10 @@ class ViewModel {
       map.setWifiVisibility(newValue);
     });
 
-    this.showOutside.subscribe(outside => {
-      this.showInside(!outside);
-    });
-    this.showInside.subscribe(inside => {
-      this.showOutside(!inside);
-    });
+    this.showOutside.subscribe(outside => this.showInside(!outside));
+    this.showInside.subscribe(inside => this.showOutside(!inside));
 
-    this.buttonText = ko.pureComputed(() => {
-      return "";
-    });
+    this.buttonText = ko.pureComputed(() => "");
 
     this.filterCss = ko.pureComputed(() => {
       var css = [];
@@ -115,29 +114,48 @@ class ViewModel {
       return layers;
     });
 
-    this.layers.subscribe(newValue => {
-      map.setLayers(newValue);
-    });
-
-    map.on("loading", () => NProgress.start());
-    map.on("load", () => NProgress.done());
-    map.on('tracking:stop', () => self.trackUser(false));
+    this.layers.subscribe(newValue => map.setLayers(newValue));
 
     this.searchTextThrottled.subscribe(newValue => this.search());
 
-    this.search = async(function * () {
+    this.search = async(function * (selectFirstWhenAvailable) {
       var searchText = this.searchText();
       if (!searchText) {
         return;
       }
+      self.previousSearch = searchText;
       var rows = yield geodata.autoComplete(searchText);
-      if (rows.length > 0 && self.selectFirstWhenAvailable) {
+      if (rows.length > 0 && selectFirstWhenAvailable) {
         self.selectItem(rows[0]);
-        self.selectFirstWhenAvailable = false;
       } else {
         self.searchResults(rows);
       }
     });
+
+    this.selectFirstResult = () => {
+      if (this.searchText() !== this.previousSearch) {
+        this.search(true);
+      }
+      else if (this.searchResults().length > 0) {
+        this.selectItem(this.searchResults()[0]);
+      }
+    };
+
+    this.selectItem = (item) => {
+      this.searchTextThrottled.pause();
+      this.searchText(item.suggestion);
+      this.clearSearchResults();
+      map.centerAt(item.lat, item.lon);
+      setTimeout(() => map.showGeocodePopup(new L.LatLng(item.lat, item.lon)), 1000);
+    };
+
+    this.onSuggestionClicked = (item) => {
+      this.selectItem(item);
+    };
+
+    this.clearSearchResults = (event) => {
+      this.searchResults.removeAll();
+    };
 
     this.onTrackUserClicked = () => {
       var track = !self.trackUser();
@@ -150,35 +168,10 @@ class ViewModel {
       }
     };
 
-    this.selectItem = (item) => {
-      this.searchTextThrottled.pause();
-      this.searchText(item.suggestion);
-      map.centerAt(item.lat, item.lon);
-      this.clearSearchResults();
-      map.setMarker(item.lat, item.lon, "lastSearch", {
-        title: item.suggestion
-      });
-    };
-
-    this.onSuggestionClicked = (item) => {
-      this.selectItem(item);
-    };
-
-    this.clearSearchResults = (event) => {
-      this.searchResults.removeAll();
-    };
-
     this.onListKeyDown = function(vm, event) {
       if (event.which === 8) { // backspace
         self.searchTextHasFocus(true);
       }
-    };
-
-    this.selectFirstResult = () => {
-      if (this.searchResults().length > 0)
-        this.selectItem(this.searchResults()[0]);
-      else
-        this.selectFirstWhenAvailable = true;
     };
 
     this.onSearchKeyDown = (vm, event) => {
