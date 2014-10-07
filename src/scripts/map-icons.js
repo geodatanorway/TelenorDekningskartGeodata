@@ -1,23 +1,26 @@
 var _ = require('lodash');
 
+var UserLocationSize = 21 / 2,
+    MarkerSize = 98 / 2;
+
 exports.UserLocation = L.icon({
   iconUrl: '../images/circle-blue.png',
-  iconSize: [21, 21],
+  iconSize: [UserLocationSize, UserLocationSize],
   className: 'icon-user-location'
 });
 
 exports.UserLocationTracking = L.icon({
   iconUrl: '../images/circle-blue.png',
-  iconSize: [21, 21],
+  iconSize: [UserLocationSize, UserLocationSize],
   className: 'icon-user-location icon-user-location--tracking'
 });
 
 exports.PlaceLocation = L.icon({
   iconUrl: '../images/marker-white.png',
-  iconSize: [48, 48],
+  iconSize: [MarkerSize, MarkerSize],
 });
 
 exports.WifiLocation = L.icon({
   iconUrl: '../images/wifi-marker-blue.png',
-  iconSize: [48, 48],
+  iconSize: [MarkerSize, MarkerSize],
 });
