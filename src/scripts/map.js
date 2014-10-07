@@ -114,16 +114,15 @@ map.on('dragstart', () => {
 var markers = {};
 
 function setMarker(lat, lon, id, options, popupOptions) {
-  deleteMarker(id);
-  hidePopup();
-
   options = _.extend({
     icon: icons.PlaceLocation
   }, options, true);
 
+  deleteMarker(id);
   var marker = L.marker(L.latLng(lat, lon), options);
-  markers[id] = marker;
   map.addLayer(marker);
+  markers[id] = marker;
+
   popupOptions = popupOptions || {};
 
   var popup = L.popup(popupOptions).setContent(options.title);
@@ -132,7 +131,7 @@ function setMarker(lat, lon, id, options, popupOptions) {
 }
 
 function deleteMarker(id) {
-    if (markers[id]) {
+  if (markers[id]) {
     map.removeLayer(markers[id]);
     delete markers[id];
   }
@@ -173,26 +172,21 @@ function setLayerOpacity(opacity) {
   uteDekningLayer.options.opacity = opacity;
 }
 
-var clickCanceled = false;
-
 var thresholds = {
   "2G": { high: -78, low: -91, minimal: -94 },
   "3G": { high: -94, low: -96, minimal: -99 },
   "4G": { high: -100, low: -107, minimal: -110 },
 };
 
-var hasOpenPopup = false,
-    popupTimeout;
+var popupTimeout,
+    hasOpenPopup = false,
+    clickCanceled = false;
 
-map.on('popupclose', () => {
-  deleteMarker(MapClickedId);
-  setTimeout(() => hasOpenPopup = false, 0); // delay til after map receives 'click'
-});
-
+map.on('popupclose', () => setTimeout(closePopup, 0)); // delay til after map receives click
+map.on("dblclick", e => clickCanceled = true);
 map.on("click", e => {
   if (hasOpenPopup) {
-    hidePopup();
-    hasOpenPopup = false;
+    closePopup();
 
     if (popupTimeout) {
       clearTimeout(popupTimeout);
@@ -204,16 +198,15 @@ map.on("click", e => {
   clickCanceled = false;
   popupTimeout = setTimeout(() => {
     if (!clickCanceled) {
-      hasOpenPopup = true;
       showGeocodePopup(e.latlng);
     }
   }, 250);
 });
 
-map.on("dblclick", e => {
-  clickCanceled = true;
-});
-
+function closePopup () {
+  hasOpenPopup = false;
+  deleteMarker(MapClickedId);
+}
 
 var basemap = L.esri.tiledMapLayer(GeodataUrl, {
   opacity: BaseMapOpacity,
@@ -283,13 +276,6 @@ function createDekningLayer() {
   return layer;
 }
 
-function hidePopup() {
-  if (markers[MapClickedId]) {
-    map.removeLayer(markers[MapClickedId]);
-    delete markers[MapClickedId];
-  }
-}
-
 function getDekning(db, threshold){
   if(!db || db === 0)
     return "Ingen dekning";
@@ -310,7 +296,7 @@ function getForventetDekning(db2g, db3g, db4g) {
 }
 
 function showGeocodePopup(latlng) {
-  deleteMarker(MapClickedId);
+  closePopup();
 
   NProgress.start();
   var loc = {
@@ -341,10 +327,12 @@ function showGeocodePopup(latlng) {
     NProgress.done();
     var popupText = (lookupInfo ? lookupInfo + "<br><br>" : "") + "Forventet dekning:<br>" + signalInfo +
       "<br><br><a href='http://www.telenor.no/privat/mobil/mobiltjenester/datapakker/' target='_blank'>Kjøp mer data eller hastighet</a>";
+
     setMarker(latlng.lat, latlng.lng, MapClickedId, {
       title: popupText,
       icon: icons.PlaceLocation
     }).openPopup();
+    hasOpenPopup = true;
   });
 }
 
