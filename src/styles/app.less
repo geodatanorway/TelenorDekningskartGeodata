@@ -414,8 +414,7 @@ a {
   color: #fff;
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0));
-  border-radius: 2px;
-  // not .rounded() since it needs 2px to look perfect
+  .rounded(2px);
 }
 
 .outdoors--mode--selected {
@@ -444,8 +443,7 @@ a {
   background-image: url("../images/location-blue.png");
   background-size: contain;
   background-color: white;
-  border-radius: 2px;
-  // not .rounded() since it needs 2px to look perfect
+  .rounded(2px);
   background-repeat: no-repeat;
 }
 
@@ -456,8 +454,7 @@ a {
   background-image: url("../images/wifi-gray.png");
   background-size: contain;
   background-color: transparent;
-  border-radius: 2px;
-  // not .rounded() since it needs 2px to look perfect
+  .rounded(2px);
   pointer-events: none;
   background-repeat: no-repeat;
 }
@@ -469,8 +466,7 @@ a {
   background-image: url("../images/wifi-white.png");
   background-size: contain;
   background-color: transparent;
-  border-radius: 2px;
-  // not .rounded() since it needs 2px to look perfect
+  .rounded(2px);
 }
 
 .wifi--button--selected {
@@ -529,8 +525,7 @@ a {
   .switch-candy {
 
     .pointer();
-    border-radius: 2px;
-    // not .rounded() since it needs 2px to look perfect
+    .rounded(2px);
     background: @color-white-t;
 
     span {
