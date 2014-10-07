@@ -6,6 +6,9 @@ var EventEmitter = require('events').EventEmitter,
 require('leaflet');
 require('./libs/esri-leaflet');
 require('./libs/esri-leaflet-geocoder');
+require('./libs/leaflet.markercluster-src');
+require('./libs/esri-leaflet-clustered-feature-layer');
+
 Bluebird.promisifyAll(L.esri.Tasks.IdentifyFeatures.prototype);
 //Bluebird.longStackTraces();
 
@@ -220,7 +223,7 @@ initialLayers.outside = true;
 initialLayers.inside = false;
 setLayers(initialLayers);
 
-var wifiLayer = L.esri.featureLayer(DekningUrl + "/10", {
+var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/10", {
   token: DekningToken,
   where: "1=1",
   useCors: false,
