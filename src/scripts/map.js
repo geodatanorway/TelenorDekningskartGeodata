@@ -7,6 +7,7 @@ require('leaflet');
 require('./libs/esri-leaflet');
 require('./libs/esri-leaflet-geocoder');
 Bluebird.promisifyAll(L.esri.Tasks.IdentifyFeatures.prototype);
+//Bluebird.longStackTraces();
 
 var icons = require('./map-icons');
 
@@ -182,6 +183,12 @@ var thresholds = {
 
 var hasOpenPopup = false,
     popupTimeout;
+
+map.on('popupclose', () => {
+  deleteMarker(MapClickedId);
+  setTimeout(() => hasOpenPopup = false, 0); // delay til after map receives 'click'
+});
+
 map.on("click", e => {
   if (hasOpenPopup) {
     hidePopup();
