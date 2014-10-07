@@ -56,13 +56,40 @@ map.locate({
   enableHighAccuracy: true
 });
 
+var trackingUserPosition = false;
+function locate () {
+  var zoom = map.getZoom();
+  map.locate({
+    maxZoom: zoom,
+    setView: true,
+    watch: true,
+    enableHighAccuracy: true
+  });
+
+  trackingUserPosition = true;
+  if (userLocationMarker) {
+    userLocationMarker.setIcon(icons.UserLocationTracking);
+  }
+}
+
+function stopLocate () {
+  map.stopLocate();
+
+  trackingUserPosition = false;
+  if (userLocationMarker) {
+    userLocationMarker.setIcon(icons.UserLocation);
+  }
+}
+
 map.on('locationfound', e => {
   eventBus.emit('location:found');
   if (userLocationMarker) {
-    map.removeLayer(userLocationMarker);
+    userLocationMarker.setLatLng(e.latlng);
   }
-  userLocationMarker = L.marker(e.latlng, { icon: icons.UserLocation });
-  userLocationMarker.addTo(map);
+  else {
+    userLocationMarker = L.marker(e.latlng, { icon: trackingUserPosition ? icons.UserLocationTracking : icons.UserLocation });
+    userLocationMarker.addTo(map);
+  }
 });
 
 map.on('locationerror', e => {
@@ -71,12 +98,16 @@ map.on('locationerror', e => {
   if (positionUnavailable) {
     eventBus.emit('location:denied');
   }
+
+  if (userLocationMarker) {
+    map.removeLayer(userLocationMarker);
+  }
 });
 
 map.on('dragstart', () => {
   eventBus.emit('tracking:stop');
   eventBus.emit('drag');
-  map.stopLocate();
+  stopLocate();
 });
 
 var markers = {};
@@ -217,23 +248,11 @@ module.exports = _.extend(eventBus, {
 
   setLayers: setLayers,
 
-  trackUser: () => {
-    var zoom = map.getZoom();
-    map.locate({
-      maxZoom: zoom,
-      setView: true,
-      watch: true,
-      enableHighAccuracy: true
-    });
-  },
+  trackUser: locate,
 
-  stopTrackUser: () => {
-    map.stopLocate();
-  },
+  stopTrackUser: stopLocate,
 
-  centerAt: (lat, lon) => {
-    map.setView(L.latLng(lat, lon), CenterZoom, MapViewOptions);
-  },
+  centerAt: (lat, lon) => map.setView(L.latLng(lat, lon), CenterZoom, MapViewOptions),
 
   setMarker: setMarker,
 

@@ -6,6 +6,12 @@ exports.UserLocation = L.icon({
   className: 'icon-user-location'
 });
 
+exports.UserLocationTracking = L.icon({
+  iconUrl: '../images/circle-blue.png',
+  iconSize: [21, 21],
+  className: 'icon-user-location icon-user-location--tracking'
+});
+
 exports.PlaceLocation = L.icon({
   iconUrl: '../images/marker-white.png',
   iconSize: [48, 48],

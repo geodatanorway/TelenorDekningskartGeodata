@@ -30,6 +30,7 @@ Modules
 @import 'mixins/rounded';
 @import 'mixins/border';
 @import 'mixins/shadowed';
+@import 'mixins/animation';
 @import 'mixins/pointer';
 @import 'mixins/fa.less';
 @import 'mixins/transition-color';
@@ -115,6 +116,43 @@ a {
 
 .icon-user-location {
   pointer-events: none;
+  .rounded(1em);
+
+  @glow-color: rgba(255, 255, 255, 1);
+
+  .glow() {
+    .box-shadow(0 0 10px @glow-color, 0 0 10px @glow-color);
+  }
+
+  .glow-highlight() {
+    .box-shadow(0 0 15px @glow-color,
+                0 0 15px @glow-color,
+                0 0 15px @glow-color); // twice to makes it more visible
+  }
+
+  .glow();
+
+  &.icon-user-location--tracking {
+    .animation(blinker, 1.8s, linear, infinite);
+
+    @-moz-keyframes blinker {
+      .blink-frames();
+    }
+
+    @-webkit-keyframes blinker {
+      .blink-frames();
+    }
+
+    @keyframes blinker {
+      .blink-frames();
+    }
+
+    .blink-frames() {
+        0%   { .glow();           }
+        50%  { .glow-highlight(); }
+        100% { .glow();           }
+    }
+  }
 }
 
 .color2g {
