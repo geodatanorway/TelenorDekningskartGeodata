@@ -14,7 +14,7 @@ var icons = require('./map-icons');
 const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
 
 const isLocalhost = location.href.indexOf("localhost") !== -1;
-const GeodataToken = isLocalhost ? "w_ii1TYVrGk9QDpnCyqCjQutVr0KaHT6OhKK32vZejId0sTlR7wjVxNwlzsGzspo_fFiRzj2BCehUc-PmEWlRg.." // test token (services)
+const GeodataToken = isLocalhost ? "g5EAFnTvNcwXP5dxo-4Wl-VJCU2Rf0lVAQRuUxZ1HhFftNiecoMPhidDabLhMMwy" // test token (services)
                                  : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
 const GeodataTokenServices2 = isLocalhost ? "PYFSdAYkj-XreaHpzG3drBoNLh7IKjAVOVSEk45mzqKq0qyaRCS7irlB9lya0TKr" // test token (services2)
                                           : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
@@ -31,11 +31,10 @@ const MaxZoom = 14;
 const AnimateDuration = 0.5;
 const MapViewOptions = { animate: true, pan:  { duration: AnimateDuration }, zoom: { duration: AnimateDuration } };
 
-const Opacity = 0.3;
-const SingleOpacity = 0.5;
-
 const MapClickedId = "MapClicked";
-const BaseMapOpacity = 0.3;
+const BaseMapOpacity = 0.5;
+const LayerOpacity = 0.5;
+
 
 var eventBus = new EventEmitter();
 
@@ -149,11 +148,7 @@ function setLayers(layers) {
       insideIds.push(layer - 1);
   }
 
-  if (layers.inside !== layers.outside) {
-    setLayerOpacity(SingleOpacity);
-  } else {
-    setLayerOpacity(Opacity);
-  }
+  setLayerOpacity(LayerOpacity);
 
   inneDekningLayer.setLayers(insideIds);
   uteDekningLayer.setLayers(outsideIds);
@@ -270,7 +265,7 @@ module.exports = _.extend(eventBus, {
 });
 
 function createDekningLayer() {
-  var layer = L.esri.dynamicMapLayer(DekningUrl, { opacity: Opacity, token: DekningToken });
+  var layer = L.esri.dynamicMapLayer(DekningUrl, { opacity: LayerOpacity, token: DekningToken });
   layer.on("loading", event => eventBus.emit("loading"));
   layer.on("load", event => eventBus.emit("load"));
   return layer;
