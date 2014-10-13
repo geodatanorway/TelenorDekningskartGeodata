@@ -11,8 +11,8 @@
                     <label class="switch-light switch-candy">
                         <input type="checkbox" data-bind="checked: showInside">
                         <span>
-                            <span data-bind="css: { 'switched-on': !showInside() }">Ute</span>
-                            <span data-bind="css: { 'switched-on': showInside }">Inne</span>
+                            <span data-bind="css: { 'switched-on': !showInside() }">Meget god</span>
+                            <span data-bind="css: { 'switched-on': showInside }">God</span>
                         </span>
                         <a></a>
                     </label>
@@ -59,7 +59,6 @@
     <div class="bottom-left-buttons" style="display: none" data-bind="visible: true">
         <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, visible: $root.canTrackUser, click: $root.onTrackUserClicked">
             <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
-            <!--<i class="track fa fa-compass no-pointer-events" data-bind="css: { 'track--selected': $root.trackUser }"></i>-->
         </div>
         <div class="legend" data-bind="visible: !showPanel(), click: togglePanelVisibility">
             <div class="text" data-bind="visible: showOutside() && !showWifi()">Utendørs</div>
