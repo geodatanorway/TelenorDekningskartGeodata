@@ -32,6 +32,7 @@ Modules
 @import 'mixins/border';
 @import 'mixins/shadowed';
 @import 'mixins/animation';
+@import 'mixins/tooltip';
 @import 'mixins/pointer';
 @import 'mixins/fa.less';
 @import 'mixins/transition-color';
@@ -248,7 +249,6 @@ a {
 
     .buttonContainer {
       .transition-color();
-      position: relative;
       margin-left: @button-margin;
       float: left;
       .rounded();
@@ -427,6 +427,16 @@ a {
 
 .rightContainer {
   float: right;
+  position: relative;
+
+  .buttonContainer:first-child {
+    margin-left: 0 !important;
+  }
+
+  .button--4g:hover   { .right-tooltip-triangle-position(0); }
+  .button--3g:hover   { .right-tooltip-triangle-position(1); }
+  .button--2g:hover   { .right-tooltip-triangle-position(2); }
+  .button--wifi:hover { .right-tooltip-triangle-position(3); }
 }
 
 .groups {
@@ -625,6 +635,9 @@ a {
 }
 
 @media all and (max-width:430px) {
+  .tooltip {
+    display: none !important;
+  }
 
   #panel {
     margin-left: -150px;

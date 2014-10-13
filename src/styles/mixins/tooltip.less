@@ -1,0 +1,36 @@
+@tooltip-arrow-size: 17px;
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: @button-height + 2 * @button-margin;
+  left: 0;
+  padding: 10px;
+  width: 221px;
+  background-color: @color-white;
+  color: @color-text;
+  .rounded(2px);
+
+  &:before {
+    display: block;
+    content: " ";
+    background-color: @color-white;
+    transform: rotate(45deg);
+    width: @tooltip-arrow-size;
+    height: @tooltip-arrow-size;
+    position: absolute;
+    top: -@tooltip-arrow-size/2;
+  }
+}
+
+@half-triangle: @tooltip-arrow-size/2;
+@first-triangle-position: (@button-height/2px - @half-triangle);
+@next-button-center-position: @button-height + @button-margin;
+.right-tooltip-triangle-position(@num) {
+  .tooltip {
+    display: block;
+    &:before {
+      left: @first-triangle-position + @num * @next-button-center-position;
+    }
+  }
+}
