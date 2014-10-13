@@ -11,8 +11,14 @@
                     <label class="switch-light switch-candy">
                         <input type="checkbox" data-bind="checked: showInside">
                         <span>
-                            <span data-bind="css: { 'switched-on': !showInside() }">Meget god</span>
-                            <span data-bind="css: { 'switched-on': showInside }">God</span>
+                            <span class="outside" data-bind="css: { 'switched-on': !showInside() }">Meget god
+                              <span class="tooltip">Utendørs kan du få <b>meget god dekning</b>.
+                                Husk at vær, bygninger eller topografi påvirker hastigheten.</span>
+                            </span>
+                            <span class="inside" data-bind="css: { 'switched-on': showInside }">God
+                              <span class="tooltip">Innendørs kan du få <b>god dekning</b>.
+                                Husk at husets materialer påvirker hastigheten.</span>
+                            </span>
                         </span>
                         <a></a>
                     </label>

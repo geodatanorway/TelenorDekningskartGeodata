@@ -24,6 +24,7 @@ Variables
 @searchBarWidth: 530px;
 @panelWidth: 530px;
 @button-height: 48px;
+@margin: 10px;
 @button-margin: 10px;
 /* ==========================================================================
 Modules
@@ -415,13 +416,28 @@ a {
 }
 
 .leftContainer {
+  @left-container-width: 200px;
   float: left;
-  width: 200px;
+  width: @left-container-width;
   .rounded();
 
   a {
     border: none;
     outline: 0;
+  }
+
+  .tooltip {
+    margin-left: 0;
+    width: @left-container-width;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  .outside:hover {
+    .left-tooltip-triangle-position(0.25 * @left-container-width);
+  }
+  .inside:hover {
+    .left-tooltip-triangle-position(0.75 * @left-container-width);
   }
 }
 
@@ -482,8 +498,7 @@ a {
 }
 
 .switch-light span span {
-  font-family: Helvetica;
-  font-weight: 100;
+  .font();
 }
 
 .location-image {
