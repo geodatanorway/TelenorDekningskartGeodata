@@ -9,7 +9,7 @@
             <div class="settings">
                 <div class="leftContainer" data-bind="visible: !showWifi()">
                     <label class="switch-light switch-candy">
-                        <input type="checkbox" data-bind="checked: showInside">
+                        <input class="switch-candy--invisible" type="checkbox" data-bind="checked: showInside">
                         <span>
                             <span class="outside" data-bind="css: { 'switched-on': !showInside() }">Meget god
                               <span class="tooltip">Utendørs kan du få <b>meget god dekning</b>.
@@ -32,7 +32,7 @@
                     <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
                         <label for="show3g" class="layer-filter">3G</label>
                         <input type="checkbox" id="show3g" data-bind="checked: show3g">
-                        <div class="tooltip"><b>3G-dekning</b> gir deg mulighet til ringe og sende SMS/MMS, samt Internettsurfing med hastigheter opptil 10 Mbit/s.</div>
+                        <div class="tooltip"><b>3G-dekning</b> gir deg mulighet til å ringe og sende SMS/MMS, samt Internettsurfing med hastigheter opptil 10 Mbit/s.</div>
                     </div>
                     <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
                         <label for="show2g" class="layer-filter">2G</label>

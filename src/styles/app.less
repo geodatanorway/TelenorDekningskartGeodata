@@ -425,6 +425,12 @@ a {
     border: none;
     outline: 0;
   }
+  .switch-candy--invisible {
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    top: -1px;
+  }
 
   .tooltip {
     margin-left: 0;
@@ -434,10 +440,13 @@ a {
   }
 
   .outside:hover {
-    .left-tooltip-triangle-position(0.25 * @left-container-width);
+    .left-tooltip-triangle-position(0.25 * @left-container-width - @half-triangle);
   }
   .inside:hover {
-    .left-tooltip-triangle-position(0.75 * @left-container-width);
+    .left-tooltip-triangle-position(0.75 * @left-container-width - @half-triangle);
+    .tooltip {
+      left: -0.5 * @left-container-width !important;
+    }
   }
 }
 
