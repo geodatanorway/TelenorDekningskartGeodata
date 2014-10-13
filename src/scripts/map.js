@@ -171,9 +171,9 @@ function setLayerOpacity(opacity) {
 }
 
 var thresholds = {
-  "2G": { high: -78, low: -91, minimal: -94 },
-  "3G": { high: -94, low: -96, minimal: -99 },
-  "4G": { high: -100, low: -107, minimal: -110 },
+  "2G": { high: -78, low:  -86, minimal:  -94 },
+  "3G": { high: -83, low:  -91, minimal:  -99 },
+  "4G": { high: -94, low: -102, minimal: -110 },
 };
 
 var popupTimeout,
