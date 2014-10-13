@@ -282,7 +282,7 @@ function getDekning(db, threshold){
   if(db > threshold.low)
     return "God";
   if(db > threshold.minimal)
-    return "Minimal";
+    return "Dekning";
   return "Ingen dekning";
 }
 
