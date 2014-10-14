@@ -163,17 +163,15 @@ a {
   }
 }
 
+.color2g { background-color: @color-layer-2g; }
+.color3g { background-color: @color-layer-3g; }
+.color4g { background-color: @color-layer-4g; }
+
 .buttons() {
   .pointer();
-  &.button--2g {
-    background-color: @color-layer-2g;
-  }
-  &.button--3g {
-    background-color: @color-layer-3g;
-  }
-  &.button--4g {
-    background-color: @color-layer-4g;
-  }
+  &.button--2g { .color2g; }
+  &.button--3g { .color3g; }
+  &.button--4g { .color4g; }
   &.button--wifi {
     background-color: @color-wifi;
   }
