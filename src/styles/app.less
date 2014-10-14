@@ -21,6 +21,10 @@ Variables
 @color-text-dark: #333;
 @color-light-gray: #ddd;
 @color-border: #eee;
+@color-layer-4g: #8399d0;
+@color-layer-3g: #90c7e7;
+@color-layer-2g: #e8c731;
+@color-wifi: #137cc5;
 @searchBarWidth: 530px;
 @panelWidth: 530px;
 @button-height: 48px;
@@ -158,35 +162,19 @@ a {
   }
 }
 
-.color2g {
-  background-color: #9ee394;
-}
-
-.color3g {
-  background-color: #7dc47b;
-}
-
-.color4g {
-  background-color: #7aa0c7;
-}
-
-.colorWifi {
-  background-color: #137cc5;
-}
-
 .buttons() {
   .pointer();
   &.button--2g {
-    .color2g;
+    background-color: @color-layer-2g;
   }
   &.button--3g {
-    .color3g;
+    background-color: @color-layer-3g;
   }
   &.button--4g {
-    .color4g;
+    background-color: @color-layer-4g;
   }
   &.button--wifi {
-    .colorWifi;
+    background-color: @color-wifi;
   }
 }
 
