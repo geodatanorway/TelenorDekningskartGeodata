@@ -1,0 +1,18 @@
+.marker-cluster {
+  .shadowed(0, 0, 2em, 0, rgba(100, 100, 100, 0.5));
+  background-color: @color-white;
+
+  &.marker-cluster-small,
+  &.marker-cluster-medium,
+  &.marker-cluster-large {
+    div {
+      background-color: @color-white;
+    }
+  }
+}
+
+// style the blue polygon showing the bounding box for the clustered markers
+svg.leaflet-zoom-animated .leaflet-clickable {
+  stroke-width: 0;
+  fill-opacity: 0.3;
+}

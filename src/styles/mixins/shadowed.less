@@ -1,6 +1,6 @@
 
-.shadowed() {
-  box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+.shadowed(@h: 0px, @v: 1px, @blur: 4px, @spread: 0px, @color: rgba(0,0,0,0.75)) {
+  box-shadow: @h @v @blur @spread @color;
 }
 
 .box-shadow(@shadow1, @shadow2: transparent 0 0 0, @shadow3: transparent 0 0 0) {
