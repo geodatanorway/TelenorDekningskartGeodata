@@ -426,6 +426,7 @@ a {
     width: @left-container-width;
     line-height: 1.4;
     text-align: left;
+    display: none;
   }
 
   .outside:hover {
@@ -648,7 +649,8 @@ a {
 }
 
 @media all and (max-width:430px) {
-  .tooltip {
+  .tooltip,
+  .tooltip:before {
     display: none !important;
   }
 

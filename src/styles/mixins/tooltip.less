@@ -4,8 +4,9 @@
   // important to override the toggle-switch plugin
   top: @button-height + 2 * @margin !important;
   position: absolute !important;
-  display: none !important;
   left: 0 !important;
+
+  display: none;
 
   padding: 2*@margin;
   width: 222px;
@@ -31,7 +32,7 @@
 @next-button-center-position: @button-height + @button-margin;
 .right-tooltip-triangle-position(@num) {
   .tooltip {
-    display: block !important;
+    display: block;
     &:before {
       left: @first-triangle-position + @num * @next-button-center-position !important;
     }
@@ -40,7 +41,7 @@
 
 .left-tooltip-triangle-position(@pos) {
   .tooltip {
-    display: block !important;
+    display: block;
     &:before {
       left: @pos !important;
     }
