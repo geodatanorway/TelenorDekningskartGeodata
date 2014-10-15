@@ -307,18 +307,12 @@ function showGeocodePopup(latlng) {
       return info.available;
     }
 
-    function not (fn) {
-      return function () {
-        return !fn.apply(this, arguments);
-      };
-    }
-
     var div = document.createElement('div');
     div.innerHTML = lookupInfo; // strip html, lookupInfo contains <br>
 
     var templateData = {
       streetName: div.innerText,
-      coverage : !_.every(signalInfo, not(isAvailable)),
+      coverage: _.any(signalInfo, isAvailable),
       networkInfo: _.filter(signalInfo, isAvailable),
       network4g: signalInfo['4g'],
       network3g: signalInfo['3g'],

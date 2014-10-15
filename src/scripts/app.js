@@ -1,6 +1,7 @@
 var ko = require('knockout');
 var $ = require('zepto-browserify').$;
 var NProgress = require('nprogress');
+var toggler = require('./toggler');
 
 var map = require('./map');
 var ViewModel = require('./ViewModel');
@@ -19,5 +20,7 @@ $(document).on("click", e => {
     viewModel.clearSearchResults();
   }
 });
+
+toggler('.toggler');
 
 ko.applyBindings(viewModel);
