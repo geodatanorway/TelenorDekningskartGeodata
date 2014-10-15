@@ -1,0 +1,66 @@
+@leaflet-popup-tip-z-index: 0;
+
+.leaflet-container {
+  .font(0.9em);
+  margin: 2em 1em;
+
+  a.leaflet-popup-close-button {
+    .font(2em);
+    font-weight: 100;
+    width: auto;
+    height: auto;
+    padding: 0.6em 0.4em;
+    color: @color-text;
+    z-index: @leaflet-popup-tip-z-index + 2;
+  }
+}
+
+.leaflet-popup {
+  position: relative;
+  left: 40px !important; // it is styled from js, need to override
+  @leaflet-popup-offset-top: 50px;
+  top: -@leaflet-popup-offset-top - 5px; // sligtly less
+  width: 400px;
+
+  .leaflet-popup-tip-container {
+    z-index: @leaflet-popup-tip-z-index;
+    position: absolute;
+    top: @leaflet-popup-offset-top;
+    left: -@tooltip-arrow-size/2;
+    width: @tooltip-arrow-size;
+    height: @tooltip-arrow-size;
+    transform: rotate(45deg);
+    .no-shadow();
+
+    .leaflet-popup-tip {
+      .no-shadow();
+      width:  @tooltip-arrow-size;
+      height: @tooltip-arrow-size;
+      transform: rotate(0);
+    }
+  }
+}
+
+.leaflet-popup-content-wrapper {
+  z-index: @leaflet-popup-tip-z-index + 1;
+  position: absolute;
+  border-radius: 0;
+  .no-shadow();
+  .leaflet-popup-content {
+    width: auto !important; // seems to get the width from js, need to override
+    display: block;
+  }
+}
+
+.leaflet-popup-content {
+  margin: 1.5em 1em;
+  p {
+    margin: 1em 0;
+  }
+  a {
+    color: @color-primary;
+    text-decoration: none;
+    border-bottom: 1px solid @color-primary;
+  }
+}
+

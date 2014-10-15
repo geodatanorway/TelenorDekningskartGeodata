@@ -33,6 +33,8 @@ Variables
 /* ==========================================================================
 Modules
 ========================================================================== */
+@import 'mixins/clearfix';
+@import 'mixins/grid';
 @import 'mixins/rounded';
 @import 'mixins/border';
 @import 'mixins/shadowed';
@@ -41,6 +43,9 @@ Modules
 @import 'mixins/pointer';
 @import 'mixins/fa.less';
 @import 'mixins/transition-color';
+
+@import 'modules/dekning-label';
+@import 'modules/popup.less';
 @import 'modules/track-user';
 @import 'modules/clustered-wifi';
 /* ==========================================================================
@@ -63,6 +68,7 @@ body {
 
 a {
   outline: 0;
+  text-decoration: none;
 }
 
 .container {
@@ -88,6 +94,13 @@ a {
   text-align: center;
   width: 100%;
   height: 100% !important;
+}
+
+hr {
+  clear: both;
+  display: block;
+  margin: 1em 0;
+  border-top: 1px solid @color-light-gray;
 }
 
 .leaflet-top.leaflet-left {
@@ -182,16 +195,6 @@ a {
   background-color: #fff;
 }
 
-.leaflet-popup-content-wrapper {
-  .telenor-font();
-  border-radius: 0;
-}
-
-.leaflet-popup-content-wrapper .leaflet-popup-content {
-}
-
-.leaflet-popup-tip-container {
-}
 
 #panel {
   width: @panelWidth;

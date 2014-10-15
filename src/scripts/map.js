@@ -1,7 +1,10 @@
+var fs = require('fs');
+var _  = require('lodash');
+var dekningPopupTemplate = _.template(fs.readFileSync(__dirname + "/../templates/dekning-popup.html", "utf-8"));
+
 var EventEmitter = require('events').EventEmitter,
     Bluebird     = require('bluebird'),
-    NProgress    = require('nprogress'),
-    _  = require('lodash');
+    NProgress    = require('nprogress');
 
 require('leaflet');
 require('./libs/esri-leaflet');
@@ -114,23 +117,6 @@ map.on('dragstart', () => {
 });
 
 var markers = {};
-
-function setMarker(lat, lon, id, options, popupOptions) {
-  options = _.extend({
-    icon: icons.PlaceLocation
-  }, options, true);
-
-  deleteMarker(id);
-  var marker = L.marker(L.latLng(lat, lon), options);
-  map.addLayer(marker);
-  markers[id] = marker;
-
-  popupOptions = popupOptions || {};
-
-  var popup = L.popup(popupOptions).setContent(options.title);
-  marker.bindPopup(popup);
-  return marker;
-}
 
 function deleteMarker(id) {
   if (markers[id]) {
@@ -252,8 +238,6 @@ module.exports = _.extend(eventBus, {
 
   centerAt: (lat, lon) => map.setView(L.latLng(lat, lon), CenterZoom, MapViewOptions),
 
-  setMarker: setMarker,
-
   setWifiVisibility: (visible) => {
     if (visible) {
       map.addLayer(wifiLayer);
@@ -274,23 +258,16 @@ function createDekningLayer() {
   return layer;
 }
 
-function getDekning(db, threshold){
+function getDekning(network, db, threshold){
   if(!db || db === 0)
-    return "Ingen dekning";
+    return { network: network, text: "Ingen dekning", available: false };
   if(db > threshold.high)
-    return "Meget god";
+    return { network: network, text: "Meget god", available: true, high: true };
   if(db > threshold.low)
-    return "God";
+    return { network: network, text: "God", available: true, low: true };
   if(db > threshold.minimal)
-    return "Dekning";
-  return "Ingen dekning";
-}
-
-function getForventetDekning(db2g, db3g, db4g) {
-  var dekning4G = getDekning(db4g, thresholds["4G"]);
-  var dekning3G = getDekning(db3g, thresholds["3G"]);
-  var dekning2G = getDekning(db2g, thresholds["2G"]);
-  return [dekning4G, dekning3G, dekning2G].join("<br>");
+    return { network: network, text: "Dekning", available: true, minimal: true };
+  return { network: network, text: "Ingen dekning", available: false };
 }
 
 function showGeocodePopup(latlng) {
@@ -312,24 +289,65 @@ function showGeocodePopup(latlng) {
     .layers('all:3,7,9')
     .runAsync()
     .spread((featureCollection, response) => {
-      return _.zip(featureCollection.features, response.results).map((results) => {
+      var results = _.zip(featureCollection.features, response.results);
+      return results.reduce((acc, results) => {
         var feature = results[0];
         var point = results[1];
         var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
         var layerName = getLayerName(point.layerId);
-        return layerName + ": " + getDekning(db, thresholds[layerName]);
-      }).join("<br>");
+        acc[layerName.toLowerCase()] = getDekning(layerName.toLowerCase(), db, thresholds[layerName]);
+        return acc;
+      }, {});
     }, error => "Ingen signalinformasjon funnet");
 
   Bluebird.join(reverseLookup, identify, (lookupInfo, signalInfo) => {
     NProgress.done();
-    var popupText = (lookupInfo ? lookupInfo + "<br><br>" : "") + "Forventet dekning:<br>" + signalInfo +
-      "<br><br><a href='http://www.telenor.no/privat/mobil/mobiltjenester/datapakker/' target='_blank'>Kjøp mer data eller hastighet</a>";
 
-    setMarker(latlng.lat, latlng.lng, MapClickedId, {
-      title: popupText,
-      icon: icons.PlaceLocation
-    }).openPopup();
+    function isAvailable (info) {
+      return info.available;
+    }
+
+    function not (fn) {
+      return function () {
+        return !fn.apply(this, arguments);
+      };
+    }
+
+    var div = document.createElement('div');
+    div.innerHTML = lookupInfo; // strip html, lookupInfo contains <br>
+
+    var templateData = {
+      streetName: div.innerText,
+      coverage : !_.every(signalInfo, not(isAvailable)),
+      networkInfo: _.filter(signalInfo, isAvailable),
+      network4g: signalInfo['4g'],
+      network3g: signalInfo['3g'],
+      network2g: signalInfo['2g'],
+      spmOgSvar: {
+        text: "spørsmål og svar om dekning",
+        url: "http://www.telenor.no/privat/dekning/sporsmal-og-svar.jsp"
+      },
+      mobilabb: {
+        text: "Mobil M+, L, eller XL",
+        url: "http://www.telenor.no/privat/mobil/mobilabonnement/"
+      }
+    };
+
+    var popupText = dekningPopupTemplate(templateData);
+
+    deleteMarker(MapClickedId);
+    var marker = L.marker(L.latLng(latlng.lat, latlng.lng), { icon: icons.PlaceLocation });
+    map.addLayer(marker);
+    markers[MapClickedId] = marker;
+
+    var popupOptions = {
+      // TODO adjust width
+      // popupOptions.minWidth: 400,
+      // popupOptions.minHeight: 200,
+      // popupOptions.autoPanPadding: L.point(300, 0)
+    };
+    var popup = L.popup(popupOptions).setContent(popupText);
+    marker.bindPopup(popup).openPopup();
     hasOpenPopup = true;
   });
 }

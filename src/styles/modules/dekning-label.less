@@ -1,0 +1,43 @@
+.dekning-module-wrapper {
+  .module-wrapper();
+}
+
+.dekning-module {
+  padding: 0 @padding-module/2;
+  .third-wide();
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    padding-right: 0;
+  }
+}
+
+.dekning-label {
+  .rounded(2px);
+
+  @dekning-label-size: 30px;
+  height: @dekning-label-size;
+  line-height: @dekning-label-size;
+
+  color: @color-white;
+
+  &.dekning-label--4g { .color4g; }
+  &.dekning-label--3g { .color3g; }
+  &.dekning-label--2g { .color2g; }
+}
+
+.dekning-label-network {
+  .telenor-font();
+  width: 30%;
+  display: inline-block;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.dekning-label-text {
+  width: 70%;
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid @color-white;
+}
