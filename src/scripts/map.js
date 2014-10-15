@@ -11,6 +11,7 @@ require('./libs/esri-leaflet');
 require('./libs/esri-leaflet-geocoder');
 require('./libs/leaflet.markercluster-src');
 require('./libs/esri-leaflet-clustered-feature-layer');
+require('./telenor-leaflet-popup.js');
 
 Bluebird.promisifyAll(L.esri.Tasks.IdentifyFeatures.prototype);
 //Bluebird.longStackTraces();
@@ -327,22 +328,16 @@ function showGeocodePopup(latlng) {
       }
     };
 
-    var popupText = dekningPopupTemplate(templateData);
+
+    var popupText = dekningPopupTemplate({"streetName":"","coverage":true,"networkInfo":[{"network":"4g","text":"Dekning","available":true,"minimal":true},{"network":"3g","text":"Dekning","available":true,"minimal":true},{"network":"2g","text":"Meget god","available":true,"high":true}],"network4g":{"network":"4g","text":"Dekning","available":true,"minimal":true},"network3g":{"network":"3g","text":"Dekning","available":true,"minimal":true},"network2g":{"network":"2g","text":"Meget god","available":true,"high":true},"spmOgSvar":{"text":"spørsmål og svar om dekning","url":"http://www.telenor.no/privat/dekning/sporsmal-og-svar.jsp"},"mobilabb":{"text":"Mobil M+, L, eller XL","url":"http://www.telenor.no/privat/mobil/mobilabonnement/"}});
 
     deleteMarker(MapClickedId);
     var marker = L.marker(L.latLng(latlng.lat, latlng.lng), { icon: icons.PlaceLocation });
     map.addLayer(marker);
     markers[MapClickedId] = marker;
 
-    var popupOptions = {
-      // TODO adjust width
-      // popupOptions.minWidth: 400,
-      // popupOptions.minHeight: 200,
-      // popupOptions.autoPanPadding: L.point(300, 0)
-      className: 'dekning-popup'
-    };
-    var popup = L.popup(popupOptions).setContent(popupText);
-    marker.bindPopup(popup).openPopup();
+    var popup = new L.TelenorPopup({ className: 'dekning-popup' }).setContent(popupText);
+    marker.bindPopup(popup, { offset: [230, 70] }).openPopup();
     hasOpenPopup = true;
   });
 }

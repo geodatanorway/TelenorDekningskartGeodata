@@ -14,10 +14,17 @@
   }
 }
 
-@leaflet-popup-offset-top: 50px;
-.leaflet-popup-base() {
-  position: relative;
-  left: 40px !important; // it is styled from js, need to override
+@leaflet-popup-offset-top: 60px;
+
+// generic popups
+.leaflet-popup {
+  width: 240px;
+  left: -120px;
+}
+
+// telenor coverage popups
+.dekning-popup {
+  width: 400px;
 
   .leaflet-popup-tip-container {
     z-index: @leaflet-popup-tip-z-index;
@@ -36,23 +43,6 @@
       transform: rotate(0);
     }
   }
-}
-
-// generic popups
-.leaflet-popup {
-  .leaflet-popup-base();
-  top: -30px;
-  width: 240px;
-  .leaflet-popup-tip-container {
-    top: 23px;
-  }
-}
-
-// telenor coverage popups
-.dekning-popup {
-  .leaflet-popup-base();
-  top: -@leaflet-popup-offset-top - 5px; // sligtly less
-  width: 400px;
 }
 
 .leaflet-popup-content-wrapper {
@@ -77,8 +67,3 @@
   }
 }
 
-@media all and (max-width:430px) {
-  .dekning-popup {
-    left: 0 !important;
-  }
-}
