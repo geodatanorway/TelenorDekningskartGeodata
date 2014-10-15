@@ -329,7 +329,7 @@ function showGeocodePopup(latlng) {
     };
 
 
-    var popupText = dekningPopupTemplate({"streetName":"","coverage":true,"networkInfo":[{"network":"4g","text":"Dekning","available":true,"minimal":true},{"network":"3g","text":"Dekning","available":true,"minimal":true},{"network":"2g","text":"Meget god","available":true,"high":true}],"network4g":{"network":"4g","text":"Dekning","available":true,"minimal":true},"network3g":{"network":"3g","text":"Dekning","available":true,"minimal":true},"network2g":{"network":"2g","text":"Meget god","available":true,"high":true},"spmOgSvar":{"text":"spørsmål og svar om dekning","url":"http://www.telenor.no/privat/dekning/sporsmal-og-svar.jsp"},"mobilabb":{"text":"Mobil M+, L, eller XL","url":"http://www.telenor.no/privat/mobil/mobilabonnement/"}});
+    var popupText = dekningPopupTemplate(templateData);
 
     deleteMarker(MapClickedId);
     var marker = L.marker(L.latLng(latlng.lat, latlng.lng), { icon: icons.PlaceLocation });
