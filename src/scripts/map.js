@@ -217,7 +217,7 @@ var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/10", {
     return L.marker(latlng, { icon: icons.WifiLocation });
   }
 });
-wifiLayer.bindPopup(features => "<p>Trådløs sone:</p><p>"+features.properties.NAVN_WEB+"</p>");
+wifiLayer.bindPopup(features => features.properties.NAVN_WEB);
 
 // Extend EventBus so we can both subscribe to events and perform additional methods.
 module.exports = _.extend(eventBus, {
@@ -345,6 +345,7 @@ function showGeocodePopup(latlng) {
       // popupOptions.minWidth: 400,
       // popupOptions.minHeight: 200,
       // popupOptions.autoPanPadding: L.point(300, 0)
+      className: 'dekning-popup'
     };
     var popup = L.popup(popupOptions).setContent(popupText);
     marker.bindPopup(popup).openPopup();

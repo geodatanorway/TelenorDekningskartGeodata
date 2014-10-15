@@ -4,8 +4,7 @@
   .font(0.9em);
   margin: 2em 1em;
 
-  a.leaflet-popup-close-button {
-    .font(2em);
+  a.leaflet-popup-close-button { .font(2em);
     font-weight: 100;
     width: auto;
     height: auto;
@@ -15,12 +14,10 @@
   }
 }
 
-.leaflet-popup {
+@leaflet-popup-offset-top: 50px;
+.leaflet-popup-base() {
   position: relative;
   left: 40px !important; // it is styled from js, need to override
-  @leaflet-popup-offset-top: 50px;
-  top: -@leaflet-popup-offset-top - 5px; // sligtly less
-  width: 400px;
 
   .leaflet-popup-tip-container {
     z-index: @leaflet-popup-tip-z-index;
@@ -41,9 +38,29 @@
   }
 }
 
+// generic popups
+.leaflet-popup {
+  .leaflet-popup-base();
+  top: -30px;
+  width: 240px;
+  .leaflet-popup-tip-container {
+    top: 27px;
+  }
+}
+
+// telenor coverage popups
+.dekning-popup {
+  .leaflet-popup-base();
+  top: -@leaflet-popup-offset-top - 5px; // sligtly less
+  width: 400px;
+
+  .leaflet-popup-content-wrapper {
+    position: absolute;
+  }
+}
+
 .leaflet-popup-content-wrapper {
   z-index: @leaflet-popup-tip-z-index + 1;
-  position: absolute;
   border-radius: 0;
   .no-shadow();
   .leaflet-popup-content {
@@ -63,4 +80,3 @@
     border-bottom: 1px solid @color-primary;
   }
 }
-
