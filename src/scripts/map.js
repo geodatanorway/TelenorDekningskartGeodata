@@ -17,9 +17,9 @@ var icons = require('./map-icons');
 const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
 
 const isLocalhost = location.href.indexOf("localhost") !== -1;
-const GeodataToken = isLocalhost ? "g5EAFnTvNcwXP5dxo-4Wl-VJCU2Rf0lVAQRuUxZ1HhFftNiecoMPhidDabLhMMwy" // test token (services)
+const GeodataToken = isLocalhost ? "eQDE6S-Ejra9g4DUNKhW6HJrHdr9jMiTr2EY49on9G3QAvMe37WWOIVUbF23tUsi" // test token (services)
                                  : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
-const GeodataTokenServices2 = isLocalhost ? "PYFSdAYkj-XreaHpzG3drBoNLh7IKjAVOVSEk45mzqKq0qyaRCS7irlB9lya0TKr" // test token (services2)
+const GeodataTokenServices2 = isLocalhost ? "sRv5mq2DSS2Fp6qVyGWUVkk_LmHujy-2w50NPKYutHC4cIci7ooaSOxOLRw9_V5K" // test token (services2)
                                           : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
 
 const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
