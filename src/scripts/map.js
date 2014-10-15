@@ -217,7 +217,7 @@ var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/10", {
     return L.marker(latlng, { icon: icons.WifiLocation });
   }
 });
-wifiLayer.bindPopup(features => features.properties.NAVN_WEB);
+wifiLayer.bindPopup(features => "<p>Trådløs sone:</p><p>"+features.properties.NAVN_WEB+"</p>");
 
 // Extend EventBus so we can both subscribe to events and perform additional methods.
 module.exports = _.extend(eventBus, {
