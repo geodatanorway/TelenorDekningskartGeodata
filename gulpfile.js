@@ -60,10 +60,9 @@ var FILES_SRC = './src',
   FOLDER_FONTS_TARGET = FOLDER_TARGET + '/fonts',
   FOLDER_IMAGES_TARGET = FOLDER_TARGET + '/images';
 
-var isProduction = (process.env.NODE_ENV === 'production');
-
-gulpUtil.log('running gulp with env: ', process.env.NODE_ENV);
-gulpUtil.log('will minify: ', isProduction);
+var isProduction = (process.env.MINIFY === 'true');
+gulpUtil.log('Gulp: running with env.MINIFY:', process.env.MINIFY);
+gulpUtil.log('Gulp: will minify:', isProduction);
 
 // Tasks
 gulp.task('clean', clean(FOLDER_TARGET));

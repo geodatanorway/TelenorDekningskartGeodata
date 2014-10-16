@@ -13,7 +13,7 @@
     "clean": "./node_modules/.bin/gulp clean",
     "compile": "npm run clean && ./node_modules/.bin/gulp default",
     "bundle": "npm run clean && ./node_modules/.bin/gulp bundle",
-    "compile-prod": "NODE_ENV=production npm run bundle",
+    "compile-prod": "MINIFY=true npm run bundle",
     "watch": "npm run clean && ./node_modules/.bin/gulp watch"
   },
   "author": "",

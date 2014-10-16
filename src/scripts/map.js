@@ -299,7 +299,10 @@ function showGeocodePopup(latlng) {
         acc[layerName.toLowerCase()] = getDekning(layerName.toLowerCase(), db, thresholds[layerName]);
         return acc;
       }, {});
-    }, error => "Ingen signalinformasjon funnet");
+    }, error => {
+      console.error('Henting av signalinformasjon feilet', error);
+      return { error: "Henting av signalinformasjon feilet." };
+    });
 
   Bluebird.join(reverseLookup, identify, (lookupInfo, signalInfo) => {
     NProgress.done();
@@ -313,6 +316,7 @@ function showGeocodePopup(latlng) {
 
     var templateData = {
       streetName: div.innerText,
+      error: signalInfo.error,
       coverage: _.any(signalInfo, isAvailable),
       networkInfo: _.filter(signalInfo, isAvailable),
       network4g: signalInfo['4g'],
