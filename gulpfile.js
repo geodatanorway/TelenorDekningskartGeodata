@@ -9,6 +9,7 @@ try {
     es6ify = require('es6ify'),
     gulp = require('gulp'),
     gulpif = require('gulp-if'),
+    gulpUtil = require('gulp-util'),
     imagemin = require('gulp-imagemin'),
     jshint = require('gulp-jshint'),
     less = require('gulp-less'),
@@ -60,6 +61,9 @@ var FILES_SRC = './src',
   FOLDER_IMAGES_TARGET = FOLDER_TARGET + '/images';
 
 var isProduction = (process.env.NODE_ENV === 'production');
+
+gulpUtil.log('running gulp with env: ', process.env.NODE_ENV);
+gulpUtil.log('will minify: ', isProduction);
 
 // Tasks
 gulp.task('clean', clean(FOLDER_TARGET));
