@@ -3,8 +3,23 @@
   font-size: 0.8em;
   color: @color-primary;
 }
-.toggler {
+
+.toggler { }
+
+.toggler-show {
+  .fa-icon(@fa-var-bars);
+  display: block;
+  position: relative;
+  text-align: center;
+
+  &:before {
+    display: inline-block;
+    transform: scale(2.5, 0.9);
+    text-align: center;
+    color: @color-light-gray;
+  }
 }
+
 .toggler-content {
   display: none;
 }

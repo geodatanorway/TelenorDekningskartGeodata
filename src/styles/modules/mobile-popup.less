@@ -1,0 +1,42 @@
+
+.mobile-popup {
+  z-index: @mobile-popup-z-index;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .font(0.8em);
+
+  &.mobile-popup--hide {
+    display: none;
+  }
+
+  &:before {
+    content: " ";
+    display: block;
+    position: relative;
+    height: @tooltip-arrow-size;
+    width: @tooltip-arrow-size;
+    background-color: white;
+    top: @tooltip-arrow-size/2;
+    transform: rotate(45deg);
+    margin: 0 auto;
+  }
+
+  .mobile-popup-close {
+    position: absolute;
+    top: 0.75em;
+    right: 0em;
+    padding: 0.25em 0.5em;
+
+    .font(2em);
+    font-weight: 100;
+    color: @color-text;
+  }
+
+  .mobile-popup-content {
+    background-color: @color-white;
+    padding: 1em;
+  }
+}

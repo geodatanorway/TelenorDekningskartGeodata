@@ -30,6 +30,10 @@ Variables
 @button-height: 48px;
 @margin: 10px;
 @button-margin: 10px;
+
+@panel-z-index: 49;
+@mobile-popup-z-index: 1001; // the "leaflet" text in the bottom right corner has 1000.
+@leaflet-popup-tip-z-index: 0;
 /* ==========================================================================
 Modules
 ========================================================================== */
@@ -44,6 +48,7 @@ Modules
 @import 'mixins/fa.less';
 @import 'mixins/transition-color';
 
+@import 'modules/mobile-popup';
 @import 'modules/toggler';
 @import 'modules/dekning-label';
 @import 'modules/popup.less';
@@ -208,7 +213,7 @@ hr {
   pointer-events: none;
   -ms-touch-action: none;
   touch-action: none;
-  z-index: 49;
+  z-index: @panel-z-index;
   color: @color-text;
 
   .searchBarPlaceholder {

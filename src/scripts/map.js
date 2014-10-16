@@ -1,10 +1,14 @@
 var fs = require('fs');
-var _  = require('lodash');
-var dekningPopupTemplate = _.template(fs.readFileSync(__dirname + "/../templates/dekning-popup.html", "utf-8"));
 
 var EventEmitter = require('events').EventEmitter,
     Bluebird     = require('bluebird'),
-    NProgress    = require('nprogress');
+    NProgress    = require('nprogress'),
+    $  = require('zepto-browserify').$,
+    _  = require('lodash');
+
+var MobilePopup = require('./mobile-popup');
+
+var dekningPopupTemplate = _.template(fs.readFileSync(__dirname + "/../templates/dekning-popup.html", "utf-8"));
 
 require('leaflet');
 require('./libs/esri-leaflet');
@@ -188,8 +192,11 @@ map.on("click", e => {
   }, 250);
 });
 
+MobilePopup.on('close', closePopup);
+
 function closePopup () {
   hasOpenPopup = false;
+  MobilePopup.close();
   deleteMarker(MapClickedId);
 }
 
@@ -314,7 +321,10 @@ function showGeocodePopup(latlng) {
     var div = document.createElement('div');
     div.innerHTML = lookupInfo; // strip html, lookupInfo contains <br>
 
+    var isMobile = matchMedia('only screen and (max-width: 480px)').matches;
+
     var templateData = {
+      mobile: isMobile,
       streetName: div.innerText,
       error: signalInfo.error,
       coverage: _.any(signalInfo, isAvailable),
@@ -332,7 +342,6 @@ function showGeocodePopup(latlng) {
       }
     };
 
-
     var popupText = dekningPopupTemplate(templateData);
 
     deleteMarker(MapClickedId);
@@ -340,8 +349,16 @@ function showGeocodePopup(latlng) {
     map.addLayer(marker);
     markers[MapClickedId] = marker;
 
-    var popup = new L.TelenorPopup({ className: 'dekning-popup' }).setContent(popupText);
-    marker.bindPopup(popup, { offset: [230, 70] }).openPopup();
+    // show custom mobile popup
+    if (isMobile) {
+      MobilePopup.show(popupText);
+      map.panTo(marker.getLatLng());
+    }
+    else {
+      // show leaflet map popup
+      var popup = new L.TelenorPopup({ className: 'dekning-popup' }).setContent(popupText);
+      marker.bindPopup(popup, { offset: [230, 70] }).openPopup();
+    }
     hasOpenPopup = true;
   });
 }
