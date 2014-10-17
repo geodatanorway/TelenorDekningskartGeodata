@@ -221,12 +221,6 @@ hr {
     height: 66px;
   }
 
-  .dataShown {
-    font-size: 13px;
-    color: #000;
-    display: inline-block;
-  }
-
   .settings {
     pointer-events: all;
 
@@ -369,6 +363,7 @@ hr {
   input {
     .rounded();
     .border();
+    .font();
     position: relative;
     float: left;
     height: @button-height;
@@ -378,9 +373,16 @@ hr {
     outline: none;
     padding: 0.2em 2em 0 2.6em;
     text-overflow: ellipsis;
+
+    .placeholder() { color: @color-text; }
+    &::-webkit-input-placeholder { .placeholder(); }
+         &:-ms-input-placeholder { .placeholder(); }
+             &::-moz-placeholder { .placeholder(); } /* Firefox 19+ */
+              &:-moz-placeholder { .placeholder(); } /* older Firefox*/
   }
 
   #searchResults {
+    .font();
     width: 472px;
     max-height: 500px;
     margin-top: 0;
