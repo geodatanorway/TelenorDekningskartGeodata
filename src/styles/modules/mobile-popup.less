@@ -29,41 +29,46 @@
     padding: 1em;
   }
 
-  .toggler-show {
-    .pointer();
-    position: absolute;
-    top: 0;
+}
+
+.mobile-popup .toggler-show {
+  .pointer();
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+
+  text-align: center;
+
+  &:before {
+    content: " ";
+    display: block;
+    position: relative;
+    top: -@tooltip-arrow-size/2;
     left: 0;
     right: 0;
-    display: block;
 
-    text-align: center;
-
-    &:before {
-      content: " ";
-      display: block;
-      position: relative;
-      top: -@tooltip-arrow-size/2;
-      left: 0;
-      right: 0;
-
-      height: @tooltip-arrow-size;
-      width: @tooltip-arrow-size;
-      background-color: @color-white;
-      transform: rotate(45deg);
-      margin: 0 auto;
-    }
-
-    &::after {
-      .fa;
-      content: @fa-var-bars;
-      position: relative;
-      top: -1em;
-
-      display: inline-block;
-      transform: scale(2.5, 0.9);
-      text-align: center;
-      color: @color-light-gray;
-    }
+    height: @tooltip-arrow-size;
+    width: @tooltip-arrow-size;
+    background-color: @color-white;
+    transform: rotate(45deg);
+    margin: 0 auto;
   }
+
+  &::after {
+    .fa;
+    content: @fa-var-bars;
+    position: relative;
+    top: -1em;
+
+    display: inline-block;
+    transform: scale(2.5, 0.9);
+    text-align: center;
+    color: @color-light-gray;
+  }
+}
+
+.mobile-popup .dekning-label-text {
+  .font(0.9em);
 }
