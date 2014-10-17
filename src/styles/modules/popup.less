@@ -1,16 +1,35 @@
+.popup-remove-leaflet-icon() {
+  color: @color-white; // hide the default leaflet marker
+  &:hover {
+    color: @color-white; // hide the default leaflet marker
+  }
+}
+
+.popup-close-icon() {
+  .popup-remove-leaflet-icon();
+
+  &:before {
+    .fa();
+    content: @fa-var-close;
+    color: @color-text;
+    text-align: center;
+    display: block;
+    padding: 1em 1.3em;
+  }
+}
 
 .leaflet-container {
   .font(0.9em);
   margin: 2em 1em;
 
   a.leaflet-popup-close-button {
-    .font(2em);
+    .font(1em);
     font-weight: 100;
     width: auto;
     height: auto;
-    padding: 0.6em 0.4em;
-    color: @color-text;
     z-index: @leaflet-popup-tip-z-index + 2;
+
+    .popup-close-icon();
   }
 }
 
