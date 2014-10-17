@@ -1,15 +1,18 @@
 .bottom-left-buttons {
+  z-index: @bottom-left-buttons-z-index;
   position: absolute;
   bottom: 0.5em;
   left: 0.5em;
   display: inline-block;
   float: left;
+
   & > div {
     float: left;
     margin-right: 0.5em;
     .rounded();
     .border();
   }
+
   .legend {
     color: @color-text;
     height: @button-height;
@@ -24,6 +27,7 @@
       margin-right: 5px;
       float: left;
     }
+
     .layer {
       color: @color-white;
       padding: 5px;
@@ -39,6 +43,7 @@
     }
   }
 }
+
 .track-user {
   .pointer();
   transition: all 1s;
