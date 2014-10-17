@@ -1,6 +1,6 @@
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license
  https://github.com/paulirish/matchMedia.js/blob/master/matchMedia.js */
-window.matchMedia || (window.matchMedia = function() {
+module.exports = window.matchMedia || (window.matchMedia = function() {
     "use strict";
 
     // For browsers that support matchMedium api such as IE 9 and webkit

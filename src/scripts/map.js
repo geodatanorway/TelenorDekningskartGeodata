@@ -6,7 +6,8 @@ var EventEmitter = require('events').EventEmitter,
     $  = require('zepto-browserify').$,
     _  = require('lodash');
 
-var MobilePopup = require('./mobile-popup');
+var MobilePopup = require('./mobile-popup'),
+    matchMedia = require('./libs/match-media');
 
 var dekningPopupTemplate = _.template(fs.readFileSync(__dirname + "/../templates/dekning-popup.html", "utf-8"));
 
