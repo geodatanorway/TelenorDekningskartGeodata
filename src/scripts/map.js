@@ -360,7 +360,7 @@ function showGeocodePopup(latlng) {
       // show leaflet map popup
       var popup = new L.TelenorPopup({ className: 'dekning-popup' }).setContent(popupText);
       marker.bindPopup(popup, {
-        offset: [235, 95] // offset from where click was initiated
+        offset: [250, 93] // offset from where click was initiated, position popup to the right
       }).openPopup();
     }
     hasOpenPopup = true;
