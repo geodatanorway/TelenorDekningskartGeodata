@@ -18,6 +18,8 @@ exports.UserLocationTracking = L.icon({
 exports.PlaceLocation = L.icon({
   iconUrl: '../images/marker-white.png',
   iconSize: [MarkerSize, MarkerSize],
+  iconAnchor: L.point(MarkerSize/2 + 1, // tweak to align the tip of the marker to the cursor
+                      MarkerSize   - 6) // tweak to align the tip of the marker to the cursor
 });
 
 exports.WifiLocation = L.icon({

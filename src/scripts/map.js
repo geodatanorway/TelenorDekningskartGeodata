@@ -359,7 +359,9 @@ function showGeocodePopup(latlng) {
     else {
       // show leaflet map popup
       var popup = new L.TelenorPopup({ className: 'dekning-popup' }).setContent(popupText);
-      marker.bindPopup(popup, { offset: [230, 70] }).openPopup();
+      marker.bindPopup(popup, {
+        offset: [235, 95] // offset from where click was initiated
+      }).openPopup();
     }
     hasOpenPopup = true;
   });
