@@ -10,7 +10,7 @@
     float: left;
     margin-right: 0.5em;
     .rounded();
-    .border();
+    .border(@color-white-t);
   }
 
   .legend {
@@ -50,9 +50,15 @@
   opacity: 0;
   height: @button-height;
   width: @button-height;
+
   &.track-user--visible {
     opacity: 1;
   }
+
+  &.track-user--selected {
+    .border();
+  }
+
   .track {
     background-color: @color-white;
     color: @color-disabled;
@@ -61,6 +67,7 @@
     font-size: 2em;
     .pointer();
   }
+
   .track--selected {
     background-color: #137cc5;
     background-image: url("../images/location-white.png");

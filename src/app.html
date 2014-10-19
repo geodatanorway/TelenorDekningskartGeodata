@@ -62,7 +62,7 @@
     </div>
 
     <div class="bottom-left-buttons" style="display: none" data-bind="visible: true">
-        <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser }, visible: $root.canTrackUser, click: $root.onTrackUserClicked">
+        <div class="track-user" data-bind="css: { 'track-user--visible': $root.canTrackUser, 'track-user--selected': $root.trackUser }, visible: $root.canTrackUser, click: $root.onTrackUserClicked">
             <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
         </div>
         <div class="legend" data-bind="visible: !showPanel(), click: togglePanelVisibility">
