@@ -76,7 +76,8 @@ class ViewModel {
       return css.join(" ");
     });
 
-    this.onSearchClick = () => {
+    this.onSearchClick = (vm, e) => {
+      e.stopPropagation();
       if (!this.searchText()) {
         return;
       }
@@ -85,7 +86,23 @@ class ViewModel {
       this.searchTextHasFocus(true);
     };
 
-    this.searchTextHasFocus.subscribe(hasFocus => this.showPanel(false));
+    var panelWasVisibleWhenSearchGotFocus = false;
+    this.showPanelIfItWasVisible = function () {
+      if (panelWasVisibleWhenSearchGotFocus) {
+        panelWasVisibleWhenSearchGotFocus = false;
+        self.showPanel(true);
+      }
+    };
+    this.hidePanelRememberVisiblity = function () {
+      panelWasVisibleWhenSearchGotFocus = true;
+      self.showPanel(false);
+    };
+
+    this.searchTextHasFocus.subscribe(hasFocus => {
+      if (hasFocus && self.showPanel()) {
+        self.hidePanelRememberVisiblity();
+      }
+    });
 
     this.clearSearchText = (e) => {
       this.searchText("");
@@ -170,6 +187,7 @@ class ViewModel {
       this.clearSearchResults();
       map.centerAt(item.lat, item.lon);
       setTimeout(() => map.showGeocodePopup(new L.LatLng(item.lat, item.lon)), 1000);
+      setTimeout(() => self.showPanelIfItWasVisible(), 0);
     };
 
     this.onSuggestionClicked = item => this.selectItem(item);
