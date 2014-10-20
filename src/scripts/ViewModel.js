@@ -232,10 +232,10 @@ class ViewModel {
       return true;
     };
 
-    $("#searchResults").on("keydown", "li", function(e) {
+    $("#searchResults").on("keydown", "li", function (e) {
       self.searchTextHasFocus(false);
       var $li = $(this);
-      switch (event.which) {
+      switch (e.which) {
         case 27: // esc
           self.clearSearchResults();
           self.searchTextHasFocus(true);
