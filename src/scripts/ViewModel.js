@@ -94,12 +94,14 @@ class ViewModel {
       }
     };
     this.hidePanelRememberVisiblity = function () {
-      panelWasVisibleWhenSearchGotFocus = true;
-      self.showPanel(false);
+      if (self.showPanel()) {
+        panelWasVisibleWhenSearchGotFocus = true;
+        self.showPanel(false);
+      }
     };
 
     this.searchTextHasFocus.subscribe(hasFocus => {
-      if (hasFocus && self.showPanel()) {
+      if (hasFocus) {
         self.hidePanelRememberVisiblity();
       }
     });
@@ -228,6 +230,7 @@ class ViewModel {
       } else {
         this.searchTextThrottled.resume();
       }
+      this.hidePanelRememberVisiblity();
 
       return true;
     };
