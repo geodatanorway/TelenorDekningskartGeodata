@@ -302,7 +302,7 @@ function showGeocodePopup(latlng) {
       return results.reduce((acc, results) => {
         var feature = results[0];
         var point = results[1];
-        var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
+        var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
         var layerName = getLayerName(point.layerId);
         acc[layerName.toLowerCase()] = getDekning(layerName.toLowerCase(), db, thresholds[layerName]);
         return acc;

@@ -21,11 +21,7 @@ function show (content) {
   $popup.find('.' + CLASS_POPUP_CONTENT).html(content);
 }
 
-function close (e) {
-  if (e) {
-    e.preventDefault();
-  }
-
+function close () {
   if (!$popup) {
     return;
   }
@@ -36,8 +32,5 @@ function close (e) {
 
 function initPopup () {
   $popup = $('.' + CLASS_POPUP);
-  $popup.find('.' + CLASS_POPUP_CLOSE).on('click', e => {
-    close(e);
-    this.emit('close');
-  });
+  $popup.find('.' + CLASS_POPUP_CLOSE).on('click', e => this.emit('close'));
 }
