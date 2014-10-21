@@ -31,7 +31,7 @@ ko.applyBindings(viewModel);
 var $searchInput = $('.search-input');
 var defaultPlaceholder = $searchInput.attr('placeholder');
 function changePlaceholderOnSearchInput () {
-  var isMobile = matchMedia('only screen and (max-width: 480px)').matches;
+  var isMobile = matchMedia('only screen and (max-width: 568px)').matches;
   $searchInput.attr('placeholder', isMobile ? 'Søk' : defaultPlaceholder);
 }
 

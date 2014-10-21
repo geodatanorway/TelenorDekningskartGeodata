@@ -323,7 +323,7 @@ function showGeocodePopup(latlng) {
     div.innerHTML = lookupInfo; // strip html, lookupInfo contains <br>
     var streetName = (div.innerText || div.textContent);
 
-    var isMobile = matchMedia('only screen and (max-width: 480px)').matches;
+    var isMobile = matchMedia('only screen and (max-width: 568px)').matches;
 
     var templateData = {
       mobile: isMobile,
