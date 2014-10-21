@@ -311,6 +311,10 @@ hr {
     .clearfix;
   }
 
+  .search-input {
+    &::ms-clear { display: none; /* remove default X in ie > 9 */ }
+  }
+
   .button-base() {
     outline: none;
     height: 3em;
