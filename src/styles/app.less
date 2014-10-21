@@ -443,10 +443,10 @@ hr {
   }
 
   .outside:hover {
-    .left-tooltip-triangle-position(1/2 * @switch-candy-outside-w * @left-container-width - @half-triangle);
+    .left-tooltip-triangle-position(1/2 * (@switch-candy-outside-w * @left-container-width - @half-triangle));
   }
   .inside:hover {
-    .left-tooltip-triangle-position(@left-container-width - (1-@switch-candy-outside-w) / 2 * @left-container-width - @half-triangle);
+    .left-tooltip-triangle-position(@left-container-width - 1/2 * (1-@switch-candy-outside-w) * @left-container-width - @half-triangle);
     .tooltip {
       left: -@switch-candy-outside-w * @left-container-width !important;
     }
