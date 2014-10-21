@@ -42,17 +42,17 @@
         <% if (!network2g.available && !network3g.available) { %>
 
           <% if (network4g.high) { %>
-            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men du kan surfe, sende/motta e-post og se video i HD med den høyeste hastigheten.</p>
+            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men med meget god 4G-dekning kan du surfe, sende/motta e-post og se video i HD.</p>
             <p>Her er det kun 4G-dekning - og du trenger en 4G-mobil for å få nett.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.low) { %>
-            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men du kan surfe, sende/motta e-post og se video i HD med høy hastighet.</p>
+            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men med god 4G-dekning kan du surfe, sende/motta e-post og se video i HD.</p>
             <p>Her er det kun 4G-dekning - og du trenger en 4G-mobil for å få nett.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.minimal) { %>
-            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men du kan surfe, sende/motta e-post og se video med høy hastighet.</p>
+            <p>Her er det ikke mulig å ringe og sende SMS/MMS, men med 4G (dekning) kan du surfe, sende/motta e-post og se video.</p>
             <p>Her er det kun 4G-dekning - og du trenger en 4G-mobil for å få nett.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, <a href="<%- spmOgSvar.url %>">se <%- spmOgSvar.text %></a>.</p>
@@ -61,19 +61,19 @@
         <% } else if (network2g.available && !network3g.available) { %>
 
           <% if (network4g.high) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video i HD med den høyeste hastigheten.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med meget god 4G-dekning kan du også surfe, sende/motta e-post og se video i HD.</p>
             <p>Du trenger en 4G-mobil for å få tilgang til 4G-dekning.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.low) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video i HD med høy hastighet.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med god 4G-dekning kan du også surfe, sende/motta e-post og se video i HD.</p>
             <p>Du trenger en 4G-mobil for å få tilgang til 4G-dekning.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.minimal) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video med høy hastighet.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med 4G (dekning) kan du også surfe, sende/motta e-post og se video.</p>
             <p>Du trenger en 4G-mobil for å få tilgang til 4G-dekning.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
@@ -83,17 +83,17 @@
         <% } else { %>
 
           <% if (network4g.high) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post, samt se video i HD med den høyeste hastigheten.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med meget god 4G-dekning kan du også surfe, sende/motta e-post, samt se video i HD.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.low) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video i HD med høy hastighet.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med god 4G-dekning kan du også surfe, sende/motta e-post og se video i HD.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network4g.minimal) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video i HD med høy hastighet.</p>
+            <p>Her kan du ringe og sende SMS/MMS. Med 4G (dekning) kan du også surfe, sende/motta e-post og se video i HD.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, <a href="<%- spmOgSvar.url %>">se <%- spmOgSvar.text %></a>.</p>
@@ -104,17 +104,17 @@
       <% } else if (network3g.available) { %>
 
           <% if (network3g.high) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post, og se video i HD med høy hastighet.</p>
+            <p>Med meget god 3G-dekning kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post, og se video i HD.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network3g.low) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video med god hastighet.</p>
+            <p>Med god 3G-dekning kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post og se video.</p>
             <p>Skal du streame musikk og video, anbefaler vi mobilabonnementene <a href="<%- mobilabb.url %>"><%- mobilabb.text %></a>.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network3g.minimal) { %>
-            <p>Her kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post, eller se video med god hastighet ved lite trafikk.</p>
+            <p>Med 3G (dekning) kan du ringe og sende SMS/MMS. Du kan også surfe, sende/motta e-post, eller se video ved lite trafikk.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, <a href="<%- spmOgSvar.url %>">se <%- spmOgSvar.text %></a>.</p>
           <% } %>
@@ -122,15 +122,15 @@
       <% } else if (network2g.available) { %>
 
           <% if (network2g.high) { %>
-            <p>Her kan du ringe og sende SMS/MMS.</p>
+            <p>Med meget god 2G-dekning kan du ringe og sende SMS/MMS.</p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network2g.low) { %>
-            <p>Her kan du ringe og sende SMS/MMS. </p>
+            <p>Med god 2G-dekning kan du ringe og sende SMS/MMS. </p>
             <hr>
             <p>Det er mye som kan påvirke dekningen din, bl.a. kan innendørsdekningen påvirkes av veggmaterialer, dører, vinduer, og hvor i huset du befinner. <a href="<%- spmOgSvar.url %>">Se <%- spmOgSvar.text %></a>.</p>
           <% } else if (network2g.minimal) { %>
-            <p>Her kan du ringe og sende SMS/MMS utendørs, men dårlig forbindelse må påberegnes.</p>
+            <p>Med 2G (dekning) kan du ringe og sende SMS/MMS utendørs, men dårlig forbindelse må påberegnes.</p>
           <% } %>
 
       <% } %>
