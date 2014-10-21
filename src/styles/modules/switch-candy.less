@@ -1,0 +1,27 @@
+// switch-candy overrides to have paddings look like the designs
+@switch-candy-outside-w: 0.38; // tweaked to make paddings left/right 25px
+@switch-candy-outside-w-percentage: 100% * @switch-candy-outside-w;
+.switch-candy {
+
+    a {
+      width: @switch-candy-outside-w-percentage;
+      right: 100 - @switch-candy-outside-w-percentage;
+    }
+
+    input:checked ~ a {
+      right: 0%;
+      width: 100 - @switch-candy-outside-w-percentage;
+    }
+
+    > span span {
+      width: 100 - @switch-candy-outside-w-percentage;
+    }
+
+    > span span:last-child {
+      left: @switch-candy-outside-w-percentage;
+    }
+
+    .outside {
+      width: @switch-candy-outside-w-percentage;
+    }
+}
