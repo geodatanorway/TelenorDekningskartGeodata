@@ -268,7 +268,7 @@ function createDekningLayer() {
 }
 
 function getDekning(network, db, threshold){
-  if(!db || db === 0)
+  if(!db || db >= 0)
     return { network: network, text: "Ingen dekning", available: false };
   if(db > threshold.high)
     return { network: network, text: "Meget god", available: true, high: true };
