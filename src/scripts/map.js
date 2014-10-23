@@ -24,17 +24,15 @@ Bluebird.promisifyAll(L.esri.Tasks.IdentifyFeatures.prototype);
 var icons = require('./map-icons');
 
 const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WMAS_WGS84/GeocacheBasis/MapServer";
+const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
 
 const isLocalhost = location.href.indexOf("localhost") !== -1;
-const GeodataToken = isLocalhost ? "eQDE6S-Ejra9g4DUNKhW6HJrHdr9jMiTr2EY49on9G3QAvMe37WWOIVUbF23tUsi" // test token (services)
+const GeodataToken = isLocalhost ? "4RYjbu2KBzImPva3SeGwxl8xi-AZnR7-OxlPTh_c5x3DyquZlCDm_XIcEp8Nshuc" // test token (services)
                                  : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
-const GeodataTokenServices2 = isLocalhost ? "sRv5mq2DSS2Fp6qVyGWUVkk_LmHujy-2w50NPKYutHC4cIci7ooaSOxOLRw9_V5K" // test token (services2)
-                                          : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
+const GeocodeToken = isLocalhost ? "Rg7klMc2FUYQ6rL2DfQ7AQApGecEWzdacyVgI0ykcD6iXTbvkVRAOFsACSLNfPJp" // test token (services2)
+                                 : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
 
-const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
-const GeocodeToken = GeodataTokenServices2;
-
-const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap_beck/MapServer";
+const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap_beck_v2/MapServer";
 const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
 
 const InitialZoom = 6;
@@ -138,9 +136,9 @@ function setLayers(layers) {
   for (var i = 0; i < layers.length; i++) {
     var layer = layers[i];
     if (layers.outside)
-      outsideIds.push(layer);
+      outsideIds.push(layer - 2);
     if (layers.inside)
-      insideIds.push(layer - 1);
+      insideIds.push(layer);
   }
 
   setLayerOpacity(LayerOpacity);
@@ -213,12 +211,13 @@ var inneDekningLayer = createDekningLayer();
 uteDekningLayer.addTo(map);
 inneDekningLayer.addTo(map);
 
-var initialLayers = [3];
+var initialLayers = [2];
 initialLayers.outside = true;
 initialLayers.inside = false;
 setLayers(initialLayers);
 
-var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/10", {
+var wifiLayerNumber = 9;
+var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/" + wifiLayerNumber, {
   token: DekningToken,
   where: "1=1",
   useCors: false,
@@ -232,9 +231,9 @@ wifiLayer.bindPopup(features => features.properties.NAVN_WEB);
 module.exports = _.extend(eventBus, {
 
   Layers: {
-    Out2G: 9,
-    Out3G: 7,
-    Out4G: 3
+    MegetGod4G: 2,
+    MegetGod3G: 5,
+    MegetGod2G: 8
   },
 
   showGeocodePopup: showGeocodePopup,
@@ -295,7 +294,7 @@ function showGeocodePopup(latlng) {
     .on(map)
     .token(DekningToken)
     .at(latlng)
-    .layers('all:3,7,9')
+    .layers('all:0,3,6')
     .runAsync()
     .spread((featureCollection, response) => {
       var results = _.zip(featureCollection.features, response.results);
@@ -308,7 +307,7 @@ function showGeocodePopup(latlng) {
         return acc;
       }, {});
     }, error => {
-      console.error('Henting av signalinformasjon feilet', error);
+      console.error('identify features failed: has the token expired?', error);
       return { error: "Henting av signalinformasjon feilet." };
     });
 
@@ -319,16 +318,13 @@ function showGeocodePopup(latlng) {
       return info.available;
     }
 
-    var div = document.createElement('div');
-    div.innerHTML = lookupInfo; // strip html, lookupInfo contains <br>
-    var streetName = (div.innerText || div.textContent);
-
     var isMobile = matchMedia('only screen and (max-width: 568px)').matches;
 
     var templateData = {
       mobile: isMobile,
-      streetName: streetName,
-      error: signalInfo.error,
+      streetName: lookupInfo.text,
+      adresseError: lookupInfo.error,
+      signalError: signalInfo.error,
       coverage: _.any(signalInfo, isAvailable),
       networkInfo: _.filter(signalInfo, isAvailable),
       network4g: signalInfo['4g'],
@@ -369,29 +365,50 @@ function showGeocodePopup(latlng) {
 
 var geocoding = new L.esri.Services.Geocoding(GeocodeUrl, { token: GeocodeToken });
 
+var didAttachAuthListener = false,
+    authenticationFailedError;
+
 function reverseLookupAsync(location, options) {
+
   return new Promise((resolve, reject) => {
-    geocoding.reverse(location, options, (error, result, response) => {
+
+    if (!didAttachAuthListener) {
+      geocoding.on('authenticationrequired', (err) => {
+        authenticationFailedError = err;
+        failWithAuthenticationFailed(err);
+      });
+      didAttachAuthListener = true;
+    }
+
+    if (authenticationFailedError) {
+      failWithAuthenticationFailed(authenticationFailedError);
+    }
+
+    geocoding.reverse(location, options, function (error, result, response)  {
       var popupText = "";
-      if (!error) {
+      if (!error) { // we get errors if the address is not found
         var address = response.address;
-        if (address.Adresse)
-          popupText += address.Adresse + "<br>";
+        if (address.Adresse) popupText += address.Adresse;
         popupText += address.Postnummer + " " + address.Poststed;
       }
-      resolve(popupText);
+      resolve({ text: popupText });
     });
+
+    function failWithAuthenticationFailed (error) {
+      if (error) {
+        console.error('reverse geocoding failed: authentication failed, has the token expired?', error);
+        resolve({ error: error });
+        return;
+      }
+    }
   });
 }
 
-function getLayerName(layerId) {
+function getLayerName (layerId) {
   switch (layerId) {
-    case 2: return "4G innendørs";
-    case 3: return "4G";
-    case 6: return "3G innendørs";
-    case 7: return "3G";
-    case 8: return "2G innendørs";
-    case 9: return "2G";
+    case 0: return "4G";
+    case 3: return "3G";
+    case 6: return "2G";
     default: return "Ukjent";
   }
 }

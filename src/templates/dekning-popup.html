@@ -5,7 +5,9 @@
 
   <% if (streetName) { %>
     <p>Dekning ved <%= streetName %></p>
-  <% } else {%>
+  <% } else if (adresseError) { %>
+    <p>Henting av adresse-informasjon feilet.</p>
+  <% } else { %>
     <p>Dekning på valgt sted</p>
   <% } %>
 
@@ -21,7 +23,7 @@
       <% }); %>
     </div>
     <hr>
-  <% } else if (error) { %>
+  <% } else if (signalError) { %>
     <hr>
     <p>Henting av signal-informasjon feilet.</p>
   <% } else { %>

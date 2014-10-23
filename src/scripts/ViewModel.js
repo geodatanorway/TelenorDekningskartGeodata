@@ -124,15 +124,15 @@ class ViewModel {
       }
 
       if (this.show2g()) {
-        layers.push(map.Layers.Out2G);
+        layers.push(map.Layers.MegetGod2G);
       }
 
       if (this.show3g()) {
-        layers.push(map.Layers.Out3G);
+        layers.push(map.Layers.MegetGod3G);
       }
 
       if (this.show4g()) {
-        layers.push(map.Layers.Out4G);
+        layers.push(map.Layers.MegetGod4G);
       }
 
       return layers;
