@@ -10,8 +10,8 @@
                     <label class="switch-light switch-candy">
                         <input class="switch-candy--invisible" type="checkbox" data-bind="checked: showInside">
                         <span>
-                            <span class="outside" data-bind="css: { 'switched-on': !showInside() }">God
-                              <span class="tooltip">Med <b>God dekning</b> har du muligheten til å ringe og surfe utendørs, og enkelte steder inne. Husk at vær, bygninger eller topografi påvirker dekningen.</span>
+                            <span class="outside" data-bind="css: { 'switched-on': !showInside() }">Dekning
+                              <span class="tooltip">Med <b>Dekning</b> har du muligheten til å ringe og surfe utendørs, og enkelte steder inne. Husk at vær, bygninger eller topografi påvirker dekningen.</span>
                             </span>
                             <span class="inside" data-bind="css: { 'switched-on': showInside }">Meget god
                               <span class="tooltip">Med <b>Meget god</b> dekning har du muligheten til å ringe og surfe ute og inne. Husk at innendørsdekning kan bli påvirket av husets materialer.</span>
@@ -65,7 +65,7 @@
             <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
         </div>
         <div class="legend" data-bind="visible: !showPanel(), click: togglePanelVisibility">
-            <div class="text" data-bind="visible: showOutside() && !showWifi()">God</div>
+            <div class="text" data-bind="visible: showOutside() && !showWifi()">Dekning</div>
             <div class="text" data-bind="visible: showInside() && !showWifi()">Meget god</div>
             <div class="text" data-bind="visible: showWifi()">Trådløspunkt</div>
             <div class="layer color4g" data-bind="visible: show4g">4G</div>

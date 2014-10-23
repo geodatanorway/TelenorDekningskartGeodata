@@ -33,8 +33,8 @@ class ViewModel {
     this.show2g = ko.observable(false);
     this.show3g = ko.observable(false);
     this.show4g = ko.observable(true);
-    this.showOutside = ko.observable(true);
-    this.showInside = ko.observable(false);
+    this.showOutside = ko.observable(true); // dekning
+    this.showInside = ko.observable(false); // meget god dekning
     this.showWifi = ko.observable(false);
 
     this.show2g.subscribe(hideWifi);

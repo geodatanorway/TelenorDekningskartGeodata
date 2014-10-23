@@ -161,9 +161,9 @@ function setLayerOpacity(opacity) {
 }
 
 var thresholds = {
-  "2G": { high: -78, low:  -86, minimal:  -94 },
-  "3G": { high: -83, low:  -91, minimal:  -99 },
-  "4G": { high: -94, low: -102, minimal: -110 },
+  "2g": { high: -78, low:  -86, minimal:  -94 },
+  "3g": { high: -83, low:  -91, minimal:  -99 },
+  "4g": { high: -94, low: -102, minimal: -110 },
 };
 
 var popupTimeout,
@@ -216,8 +216,21 @@ initialLayers.outside = true;
 initialLayers.inside = false;
 setLayers(initialLayers);
 
-var wifiLayerNumber = 9;
-var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/" + wifiLayerNumber, {
+var Layers = {
+  Dekning4G: 0,
+  God4G: 1,
+  MegetGod4G: 2,
+  Dekning3G: 3,
+  God3G: 4,
+  MegetGod3G: 5,
+  Dekning2G: 6,
+  God2G: 7,
+  MegetGod2G: 8,
+  Wifi: 9,
+  InsideNorway: 10
+};
+
+var wifiLayer = L.esri.clusteredFeatureLayer(DekningUrl + "/" + Layers.Wifi, {
   token: DekningToken,
   where: "1=1",
   useCors: false,
@@ -230,11 +243,7 @@ wifiLayer.bindPopup(features => features.properties.NAVN_WEB);
 // Extend EventBus so we can both subscribe to events and perform additional methods.
 module.exports = _.extend(eventBus, {
 
-  Layers: {
-    MegetGod4G: 2,
-    MegetGod3G: 5,
-    MegetGod2G: 8
-  },
+  Layers: Layers,
 
   showGeocodePopup: showGeocodePopup,
 
@@ -294,18 +303,31 @@ function showGeocodePopup(latlng) {
     .on(map)
     .token(DekningToken)
     .at(latlng)
-    .layers('all:0,3,6')
+    .layers('all:' + [Layers.Dekning4G,
+                      Layers.Dekning3G,
+                      Layers.Dekning2G,
+                      Layers.InsideNorway].join(','))
     .runAsync()
     .spread((featureCollection, response) => {
       var results = _.zip(featureCollection.features, response.results);
+
+      var responseForInsideNorwayLayer = _(response.results).filter(filterGeometryPoints).any(hasResponseFromInsideNorway);
+
       return results.reduce((acc, results) => {
         var feature = results[0];
         var point = results[1];
-        var db = parseInt(point.attributes.DB_LEVEL || point.attributes["Pixel Value"]);
-        var layerName = getLayerName(point.layerId);
-        acc[layerName.toLowerCase()] = getDekning(layerName.toLowerCase(), db, thresholds[layerName]);
+        var pixelValue = (point.DB_VALUE || point.attributes["Pixel Value"]);
+        var db = parseInt(pixelValue);
+        var clickWasOutsideOfNorway = (!responseForInsideNorwayLayer || point.layerId === Layers.InsideNorway && db !== 999); // layer 10 will always have pixelValue 999 inside the borders of Norway, outside its not present
+        if (clickWasOutsideOfNorway) {
+          acc.outsideOfNorway = true;
+        }
+        else {
+          var layerName = getLayerName(point.layerId);
+          acc[point.layerId] = getDekning(layerName, db, thresholds[layerName]);
+        }
         return acc;
-      }, {});
+      }, { outsideOfNorway: !responseForInsideNorwayLayer });
     }, error => {
       console.error('identify features failed: has the token expired?', error);
       return { error: "Henting av signalinformasjon feilet." };
@@ -327,9 +349,10 @@ function showGeocodePopup(latlng) {
       signalError: signalInfo.error,
       coverage: _.any(signalInfo, isAvailable),
       networkInfo: _.filter(signalInfo, isAvailable),
-      network4g: signalInfo['4g'],
-      network3g: signalInfo['3g'],
-      network2g: signalInfo['2g'],
+      network4g: signalInfo[Layers.Dekning4G],
+      network3g: signalInfo[Layers.Dekning3G],
+      network2g: signalInfo[Layers.Dekning2G],
+      outsideOfNorway: signalInfo.outsideOfNorway,
       spmOgSvar: {
         text: "spørsmål og svar om dekning",
         url: "http://www.telenor.no/privat/dekning/sporsmal-og-svar.jsp"
@@ -381,7 +404,7 @@ function reverseLookupAsync(location, options) {
     }
 
     if (authenticationFailedError) {
-      failWithAuthenticationFailed(authenticationFailedError);
+      return failWithAuthenticationFailed(authenticationFailedError);
     }
 
     geocoding.reverse(location, options, function (error, result, response)  {
@@ -398,7 +421,6 @@ function reverseLookupAsync(location, options) {
       if (error) {
         console.error('reverse geocoding failed: authentication failed, has the token expired?', error);
         resolve({ error: error });
-        return;
       }
     }
   });
@@ -406,9 +428,17 @@ function reverseLookupAsync(location, options) {
 
 function getLayerName (layerId) {
   switch (layerId) {
-    case 0: return "4G";
-    case 3: return "3G";
-    case 6: return "2G";
+    case Layers.Dekning4G: return "4g";
+    case Layers.Dekning3G: return "3g";
+    case Layers.Dekning2G: return "2g";
     default: return "Ukjent";
   }
+}
+
+function filterGeometryPoints (result) {
+  return result.geometryType === 'esriGeometryPoint';
+}
+
+function hasResponseFromInsideNorway (result) {
+  return result.layerId === Layers.InsideNorway;
 }
