@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 var map = require('./map');
 var ViewModel = require('./ViewModel');
-var matchMedia = require('./libs/match-media');
+var matchmedia = require('./libs/match-media');
 
 // removes the ~200ms delay on mobile
 var attachFastClick = require('fastclick');
@@ -31,7 +31,7 @@ ko.applyBindings(viewModel);
 var $searchInput = $('.search-input');
 var defaultPlaceholder = $searchInput.attr('placeholder');
 function changePlaceholderOnSearchInput () {
-  var isMobile = matchMedia('only screen and (max-width: 568px)').matches;
+  var isMobile = matchmedia('only screen and (max-width: 568px)').matches;
   $searchInput.attr('placeholder', isMobile ? 'Søk' : defaultPlaceholder);
 }
 

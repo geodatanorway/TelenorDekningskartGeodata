@@ -7,7 +7,7 @@ var EventEmitter = require('events').EventEmitter,
     _  = require('lodash');
 
 var MobilePopup = require('./mobile-popup'),
-    matchMedia = require('./libs/match-media');
+    matchmedia = require('./libs/match-media');
 
 var dekningPopupTemplate = _.template(fs.readFileSync(__dirname + "/../templates/dekning-popup.html", "utf-8"));
 
@@ -340,7 +340,7 @@ function showGeocodePopup(latlng) {
       return info.available;
     }
 
-    var isMobile = matchMedia('only screen and (max-width: 568px)').matches;
+    var isMobile = matchmedia('only screen and (max-width: 568px)').matches;
 
     var templateData = {
       mobile: isMobile,
