@@ -28,7 +28,12 @@
     <p>Henting av signal-informasjon feilet.</p>
   <% } else { %>
     <hr>
-    <p>Her er det desverre ingen dekning<% if (outsideOfNorway) { %> med Telenor Norges nett<% } %>. <a href='http://www.telenor.no/privat/dekning/utbygging.jsp'>Se Telenors utbyggingsplaner</a>.</p>
+    <% if (outsideOfNorway) { %>
+      <p>Her har du ikke tilgang til norsk Telenordekning. <a href="http://www.telenor.no/privat/mobil/utlandet/">Se hvor mye det koster å ringe eller bruke data i utlandet.</a></p>
+    <% } else { %>
+      <p>Her er det desverre ingen dekning. <a href='http://www.telenor.no/privat/dekning/utbygging.jsp'>Se Telenors utbyggingsplaner</a>.</p>
+    <% } %>
+
   <% } %>
 
   <% if (coverage) { %>
