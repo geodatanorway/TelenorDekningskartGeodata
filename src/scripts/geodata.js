@@ -1,7 +1,7 @@
 var ajax = require('./ajax');
 var async = require('./async');
 
-var SearchUrl = "http://ws.geodataonline.no/search/geodataservice/autocomplete?token=xWZMDJR2KMEMdOpMzf5nqPnepXvI9dKj-tjPzKd_Trr0WtFM-WNdzJLl4ai__oOA&query=";
+var SearchUrl = "http://ws.geodataonline.no/search/geodataservice/autocomplete?token=TDWIG-g6DAtt3qecC_CQnVJ6YOgYdEPvDz8AmK-FaJvINCb-IMpgn0rRLTCTe7ty&query=";
 var GeometryUrl = "http://services2.geodataonline.no/arcgis/rest/services/Utilities/Geometry/GeometryServer/project";
 
 exports.autoComplete = async(function * (query) {

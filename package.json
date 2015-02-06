@@ -10,11 +10,11 @@
   "scripts": {
     "start": "node server",
     "postinstall": "npm run bundle",
-    "clean": "./node_modules/.bin/gulp clean",
-    "compile": "npm run clean && ./node_modules/.bin/gulp default",
-    "bundle": "npm run clean && ./node_modules/.bin/gulp bundle",
-    "compile-prod": "MINIFY=true npm run bundle",
-    "watch": "npm run clean && ./node_modules/.bin/gulp watch"
+    "clean": "node_modules\\.bin\\gulp clean",
+    "compile": "npm run clean && node_modules\\.bin\\gulp default",
+    "bundle": "npm run clean && node_modules\\.bin\\gulp bundle",
+    "compile-prod": "npm run bundle",
+    "watch": "npm run clean && node_modules\\.bin\\gulp watch"
   },
   "author": "",
   "dependencies": {

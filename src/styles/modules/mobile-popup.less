@@ -31,19 +31,8 @@
 .mobile-popup .dekning-label {
   font-size: 0.95em;
 }
-
-.mobile-popup .toggler-show {
-  .pointer();
-  z-index: @mobile-popup-z-index + 1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: block;
-
-  text-align: center;
-
-  &:before {
+.mobile-popup .toggler-show-mobile .arrow {
+     
     content: " ";
     display: block;
     position: relative;
@@ -57,13 +46,24 @@
     transform: rotate(45deg);
     margin: 0 auto;
   }
+.mobile-popup .toggler-show-mobile {
+  .pointer();
+  z-index: @mobile-popup-z-index + 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block;
+
+  text-align: center;
+
+
 
   &::after {
-    .fa;
+    .fa();
     content: @fa-var-bars;
     position: relative;
     top: -0.75em;
-
     display: inline-block;
     transform: scale(2.5, 0.9);
     text-align: center;

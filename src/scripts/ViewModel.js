@@ -30,10 +30,10 @@ class ViewModel {
     this.canTrackUser = ko.observable(false);
     this.trackUser = ko.observable(false);
 
-    this.show2g = ko.observable(false);
-    this.show3g = ko.observable(false);
+    this.show2g = ko.observable(true);
+    this.show3g = ko.observable(true);
     this.show4g = ko.observable(true);
-    this.showOutside = ko.observable(true); // dekning
+    this.showOutside = ko.observable(true); // basis
     this.showInside = ko.observable(false); // meget god dekning
     this.showWifi = ko.observable(false);
 

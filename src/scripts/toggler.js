@@ -8,11 +8,11 @@ var $ = require('zepto-browserify').$;
  * - searches down for selector + "-content" and shows it
  */
 module.exports = function (selector) {
-  $(document).on('click', selector + '-show', function (e) {
+    $(document).on('click', selector + '-show-mobile', function (e) {
+    
     e.preventDefault();
-
     var el = $(e.currentTarget);
-    el.hide();
+    //el.hide();
 
     var parentElement = el.closest(selector);
     if (!parentElement) {
@@ -26,6 +26,30 @@ module.exports = function (selector) {
       return;
     }
 
-    content.show();
+    content.toggle();
+    $(".arrow").toggleClass("toggler-arrow");
+
+  });
+    
+  $(document).on('click', selector + '-show', function (e) {
+      e.preventDefault();
+      var el = $(e.currentTarget);
+      el.hide();
+
+      var parentElement = el.closest(selector);
+      if (!parentElement) {
+          console.error("Could not find parent toggler element with class ", selector);
+          return;
+      }
+
+      var content = parentElement.find(selector + "-content");
+      if (!content) {
+          console.error("Could not find child toggler-content element with class", selector);
+          return;
+      }
+
+      content.toggle();
+      $(".arrow").toggleClass("toggler-arrow");
+
   });
 };

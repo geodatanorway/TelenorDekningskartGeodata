@@ -27,10 +27,10 @@ const GeodataUrl = "http://{s}.geodataonline.no/arcgis/rest/services/Geocache_WM
 const GeocodeUrl = "http://services2.geodataonline.no/arcgis/rest/services/Geosok/GeosokLokasjon2/GeocodeServer/reverseGeocode";
 
 const isLocalhost = location.href.indexOf("localhost") !== -1;
-const GeodataToken = isLocalhost ? "4RYjbu2KBzImPva3SeGwxl8xi-AZnR7-OxlPTh_c5x3DyquZlCDm_XIcEp8Nshuc" // test token (services)
-                                 : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
-const GeocodeToken = isLocalhost ? "Rg7klMc2FUYQ6rL2DfQ7AQApGecEWzdacyVgI0ykcD6iXTbvkVRAOFsACSLNfPJp" // test token (services2)
-                                 : "q_rPZCcz2VvkdBSKl-tbHc31C4mRhKKdqZQlXl4kaGrCyrkuHU4oasH28tN41YGrVaKQZaVms3xV4e4hbZM1Ag..";
+const GeodataToken = isLocalhost ? "pmX2mkImLSYYAslhZGsMP4BMd6LvaSyqAFbUFSpcX0o." // test token (services)
+                                 : "pmX2mkImLSYYAslhZGsMP4BMd6LvaSyqAFbUFSpcX0o.";
+const GeocodeToken = isLocalhost ? "pmX2mkImLSYYAslhZGsMP4BMd6LvaSyqAFbUFSpcX0o." // test token (services2)
+                                 : "pmX2mkImLSYYAslhZGsMP4BMd6LvaSyqAFbUFSpcX0o.";
 
 const DekningUrl = "http://153.110.250.77/arcgis/rest/services/covragemap/coveragemap_beck_v2/MapServer";
 const DekningToken = "sg0Aq_ztEufQ6N-nw_NLkyRYRoQArMLOcLFPT77jzeKrqCbVdow5BAnbh6x-7lHs";
@@ -159,6 +159,19 @@ function setLayerOpacity(opacity) {
   inneDekningLayer.options.opacity = opacity;
   uteDekningLayer.options.opacity = opacity;
 }
+function setWidthOnDekningModule(numberOfModules) {
+        switch(numberOfModules) {
+            case 1:
+                $(".dekning-module").addClass('full-width');
+                break;
+            case 2:
+                $(".dekning-module").addClass('half-width');
+                break;
+            case 3:
+                $(".dekning-module").addClass('third-width'); 
+                break;
+        }
+    }
 
 var thresholds = {
   "2g": { high: -78, low:  -86, minimal:  -94 },
@@ -171,6 +184,13 @@ var popupTimeout,
     clickCanceled = false;
 
 map.on('popupclose', () => setTimeout(closePopup, 0)); // delay til after map receives click
+map.on('popupopen', function(e) {
+    var numberOfDekning = $(".dekning-module").length;
+    if (numberOfDekning)
+        setWidthOnDekningModule(numberOfDekning);
+});
+
+
 map.on("dblclick", e => clickCanceled = true);
 map.on("click", e => {
   if (hasOpenPopup) {
@@ -191,7 +211,8 @@ map.on("click", e => {
   }, 250);
 });
 
-MobilePopup.on('close', closePopup);
+  MobilePopup.on('close', closePopup);
+  
 
 function closePopup () {
   hasOpenPopup = false;
@@ -211,7 +232,7 @@ var inneDekningLayer = createDekningLayer();
 uteDekningLayer.addTo(map);
 inneDekningLayer.addTo(map);
 
-var initialLayers = [2];
+var initialLayers = [2,5,8];
 initialLayers.outside = true;
 initialLayers.inside = false;
 setLayers(initialLayers);
@@ -283,7 +304,7 @@ function getDekning(network, db, threshold){
   if(db > threshold.low)
     return { network: network, text: "God", available: true, low: true };
   if(db > threshold.minimal)
-    return { network: network, text: "Dekning", available: true, minimal: true };
+    return { network: network, text: "Basis", available: true, minimal: true };
   return { network: network, text: "Ingen dekning", available: false };
 }
 
@@ -340,7 +361,7 @@ function showGeocodePopup(latlng) {
       return info.available;
     }
 
-    var isMobile = matchmedia('only screen and (max-width: 568px)').matches;
+    var isMobile = matchmedia('only screen and (max-width: 736px)').matches;
 
     var templateData = {
       mobile: isMobile,
@@ -373,7 +394,10 @@ function showGeocodePopup(latlng) {
     // show custom mobile popup
     if (isMobile) {
       MobilePopup.show(popupText);
-      map.panTo(marker.getLatLng());
+      //map.panTo(marker.getLatLng());
+      var numberOfDekning = $(".dekning-module").length;
+      if (numberOfDekning)
+          setWidthOnDekningModule(numberOfDekning);
     }
     else {
       // show leaflet map popup
@@ -410,8 +434,8 @@ function reverseLookupAsync(location, options) {
     geocoding.reverse(location, options, function (error, result, response)  {
       var popupText = "";
       if (!error) { // we get errors if the address is not found
-        var address = response.address;
-        if (address.Adresse) popupText += address.Adresse;
+          var address = response.address;
+          if (address.Adresse) popupText += address.Adresse + ", ";
         popupText += address.Postnummer + " " + address.Poststed;
       }
       resolve({ text: popupText });

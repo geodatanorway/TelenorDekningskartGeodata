@@ -1,10 +1,15 @@
 .dekning-module-wrapper {
   .module-wrapper();
+  display: table;
+  width: 100%;
 }
 
 .dekning-module {
+  display: table-cell;
+
   padding: 0 @padding-module/2;
-  .third-wide();
+  
+  
   &:first-child {
     padding-left: 0;
   }

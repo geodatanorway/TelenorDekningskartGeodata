@@ -7,15 +7,17 @@
             <div class="searchBarPlaceholder"></div>
             <div class="settings">
                 <div class="leftContainer" data-bind="visible: !showWifi()">
-                    <label class="switch-light switch-candy">
-                        <input class="switch-candy--invisible" type="checkbox" data-bind="checked: showInside">
-                        <span>
-                            <span class="outside" data-bind="css: { 'switched-on': !showInside() }">Dekning
-                              <span class="tooltip">Med <b>Dekning</b> har du muligheten til å ringe og surfe utendørs, og enkelte steder inne. Husk at vær, bygninger eller topografi påvirker dekningen.</span>
+                    <label class="switch-light switch-candy" onclick="">
+                        <input class="switch-candy--invisible" type="checkbox" data-bind="checked: showOutside">
+                        
+                            <span class="noPointerEvents">
+                        
+                            <span class="inside needsclick"  data-bind="css: { 'switched-on': !showOutside() }" >Meget god
+                                <span class="tooltip">Med <b>Meget god dekning</b> kan du ringe og surfe utendørs og stort sett innendørs. Husk at innendørs dekningen kan bli påvirket av husets materialer.</span>
                             </span>
-                            <span class="inside" data-bind="css: { 'switched-on': showInside }">Meget god
-                              <span class="tooltip">Med <b>Meget god</b> dekning har du muligheten til å ringe og surfe ute og inne. Husk at innendørsdekning kan bli påvirket av husets materialer.</span>
-                            </span>
+                            <span class="outside needsclick" data-bind="css: { 'switched-on': showOutside }" >Basis
+                                <span class="tooltip">Med <b>Basis dekning</b> har du god mulighet for å ringe og surfe utendørs, og enkelte steder innendørs. Husk at vær, bygninger eller topografi påvirker dekningen.</span>
+                          </span>
                         </span>
                         <a></a>
                     </label>
@@ -27,11 +29,11 @@
                     </div>
                     <div class="buttonContainer button--3g" data-bind="css: { 'button--selected': show3g }">
                         <label for="show3g" class="layer-filter">3G<input type="checkbox" id="show3g" data-bind="checked: show3g"></label>
-                        <div class="tooltip"><b>3G-dekning</b> gir deg mulighet til å ringe og sende SMS/MMS, samt surfing med hastigheter opptil 10 Mbit/s.</div>
+                        <div class="tooltip"><b>3G-dekning</b> gir deg mulighet til å ringe og sende SMS/MMS, samt surfing med hastigheter opptil 20 Mbit/s.</div>
                     </div>
                     <div class="buttonContainer button--2g" data-bind="css: { 'button--selected': show2g }">
                         <label for="show2g" class="layer-filter">2G<input type="checkbox" id="show2g" data-bind="checked: show2g"></label>
-                        <div class="tooltip"><b>2G- og Edge-dekning</b> gir deg mulighet til å ringe og sende SMS/MMS, samt surfe med mobilen med begrenset hastighet.</div>
+                        <div class="tooltip"><b>2G- og Edge-dekning</b> gir deg mulighet til å ringe og sende SMS/MMS, samt enkel internettbruk med begrenset hastighet.</div>
                     </div>
                     <div class="buttonContainer button--wifi" data-bind="css: { 'button--selected': showWifi }">
                         <label for="showWifi" class="layer-filter"><div class="wifi-image" data-bind="css: { 'wifi--button--selected': showWifi }"></div><input type="checkbox" id="showWifi" data-bind="checked: showWifi"></label>
@@ -65,7 +67,7 @@
             <div class="location-image" data-bind="css: { 'track--selected': $root.trackUser }"></div>
         </div>
         <div class="legend" data-bind="visible: !showPanel(), click: togglePanelVisibility">
-            <div class="text" data-bind="visible: showOutside() && !showWifi()">Dekning</div>
+            <div class="text" data-bind="visible: showOutside() && !showWifi()">Basis</div>
             <div class="text" data-bind="visible: showInside() && !showWifi()">Meget god</div>
             <div class="text" data-bind="visible: showWifi()">Trådløspunkt</div>
             <div class="layer color4g" data-bind="visible: show4g">4G</div>

@@ -20,7 +20,7 @@ L.TelenorPopup = L.Popup.extend({
     var pos = this._map.latLngToLayerPoint(this._latlng),
     animated = this._animated,
     offset = L.point(this.options.offset);
-
+      
     if (animated) {
       L.DomUtil.setPosition(this._container, pos);
     }
@@ -72,9 +72,12 @@ L.TelenorPopup = L.Popup.extend({
     if (containerPos.x - dx - paddingTL.x < 0) { // left
       dx = containerPos.x - paddingTL.x;
     }
-    if (containerPos.y + containerHeight + paddingBR.y > size.y) { // bottom
-      dy = containerPos.y + containerHeight - size.y + paddingBR.y;
-    }
+    var y = (containerPos.y + this.options.offset[1] + containerHeight*2 + paddingBR.y);
+      if (y > size.y) { // bottom
+          //dy = containerPos.y + containerHeight * 2 - size.y + paddingBR.y;
+          // Fix to pan map by 350px if clicked at the bottom of the map.
+          dy = 350; 
+      }
     if (containerPos.y - dy - paddingTL.y < 0) { // top
       dy = containerPos.y - paddingTL.y;
     }
